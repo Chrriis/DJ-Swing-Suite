@@ -1,0 +1,21 @@
+Here are the UIManager keys to define the various messages.
+
+--------------------------------------------------------------------------------
+
+* TextEntryField.invalidInputMessage
+  Default: = "Invalid input"
+
+* TextEntryField.maxTextLengthMessage
+  Default: "Max length: {0}"
+  Params: maximumLength<Integer>
+
+* NumberEntryField.invalidFormatMessage
+  Default: = "Invalid format"
+
+* NumberEntryField.maxDecimalsMessage
+  Default: "Max decimals: {0}"
+  Params: decimalCount<Integer>
+
+* NumberEntryField.rangeMessage
+  Default: "Range: {0} .. {1}"
+  Params: rangeMin<String>, rangeMax<String>

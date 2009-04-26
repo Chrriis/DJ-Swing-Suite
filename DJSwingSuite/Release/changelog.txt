@@ -1,0 +1,13 @@
+The DJ project - Swing Suite
+http://djproject.sourceforge.net
+Christopher Deckers (chrriis@nextencia.net)
+Licence terms: LGPL (see licence.txt)
+
+---------------------------------- Change log ----------------------------------
+
+* Version 0.9.1 (xxxxxxxxxxxxx):
+
+- Text entry fields are implemented with validators, formatters and masks. 
+- Number entry fields are implemented using the text entry fields. 
+- Combo buttons are implemented.
+- Titled separators are implemented.
