@@ -84,14 +84,30 @@ public class JComboButton extends JButton {
   private int arrowWidth;
   private int arrowSpaceWidth;
 
+  /**
+   * Construct a combo button with an icon.
+   * @param icon the icon to use.
+   * @param isDivided true if the button is to be devided in two sections (button area, arrow area), false otherwise.
+   */
   public JComboButton(Icon icon, boolean isDivided) {
     this(null, icon, isDivided);
   }
 
+  /**
+   * Construct a combo button with some text.
+   * @param text the text to use.
+   * @param isDivided true if the button is to be devided in two sections (button area, arrow area), false otherwise.
+   */
   public JComboButton(String text, boolean isDivided) {
     this(text, null, isDivided);
   }
 
+  /**
+   * Construct a combo button with an icon and some text.
+   * @param text the text to use.
+   * @param icon the icon to use.
+   * @param isDivided true if the button is to be devided in two sections (button area, arrow area), false otherwise.
+   */
   public JComboButton(String text, Icon icon, boolean isDivided) {
     super("M");
     arrowWidth = getPreferredSize().height / 4;

@@ -61,6 +61,10 @@ public class JTitledSeparator extends JPanel {
   private SeparatorPane westSeparator;
   private JLabel label = new JLabel();
 
+  /**
+   * Construct a separator with a title.
+   * @param title the title to set.
+   */
   public JTitledSeparator(String title) {
     super(new BorderLayout());
     JPanel westPanel = new JPanel(new BorderLayout()) {
@@ -100,18 +104,26 @@ public class JTitledSeparator extends JPanel {
     adjustLook();
   }
 
+  /**
+   * Get the title of this separator.
+   * @return the title.
+   */
   public String getTitle() {
     return label.getText();
   }
 
-  public void setTitle(String text) {
-    if(text == null) {
-      text = "";
+  /**
+   * Set the title of the separator.
+   * @param title the new title.
+   */
+  public void setTitle(String title) {
+    if(title == null) {
+      title = "";
     }
-    boolean isVisible = text.length() != 0;
+    boolean isVisible = title.length() != 0;
     westSeparator.setVisible(isVisible);
     label.setVisible(isVisible);
-    label.setText(text);
+    label.setText(title);
   }
 
   @Override

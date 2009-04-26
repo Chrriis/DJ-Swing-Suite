@@ -26,6 +26,9 @@ import javax.swing.text.JTextComponent;
  */
 public class SwingSuiteUtils {
 
+  private SwingSuiteUtils() {
+  }
+
   private static class SelectAllOnFocusListener extends MouseAdapter implements MouseMotionListener, FocusListener {
     private boolean isSettingFocus = false;
     public void focusGained(FocusEvent e) {
