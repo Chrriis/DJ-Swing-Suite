@@ -45,136 +45,117 @@ public class TextAndNumberFieldsExample extends JPanel {
     // A default text field.
     updateLabel = new JLabel();
     centerPane.add(new JLabel("Text field:"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-    centerPane.add(createDefaultTextEntryField(updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+    centerPane.add(connectUpdateLabel(createDefaultTextEntryField(), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
     // A text field with a maximum length of 4 chars.
     updateLabel = new JLabel();
     centerPane.add(new JLabel("Text field, max 4 characters:"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-    centerPane.add(createTextEntryFieldWithMaxLength(updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+    centerPane.add(connectUpdateLabel(createTextEntryFieldWithMaxLength(), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
     // New section: Numbers
     centerPane.add(new JTitledSeparator("Numbers (Byte, Short, Integer, Long, BigInteger, Float, Double, BigDecimal)"), new GridBagConstraints(0, y++, 3, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, sectionInsets, 0, 0));
     // A default integer field.
     updateLabel = new JLabel();
     centerPane.add(new JLabel("Integer field:"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-    centerPane.add(createDefaultIntegerField(updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+    centerPane.add(connectUpdateLabel(createDefaultIntegerField(), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
     // An integer field with a range [-20;50].
     updateLabel = new JLabel();
     centerPane.add(new JLabel("Integer field, [-20;50]:"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-    centerPane.add(createIntegerFieldWithRange(updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+    centerPane.add(connectUpdateLabel(createIntegerFieldWithRange(), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
     // A default double field.
     updateLabel = new JLabel();
     centerPane.add(new JLabel("Double field:"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-    centerPane.add(createDefaultDoubleField(updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+    centerPane.add(connectUpdateLabel(createDefaultDoubleField(), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
     // A double field with maximum 3 decimals.
     updateLabel = new JLabel();
     centerPane.add(new JLabel("Double field, max 3 decimals:"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-    centerPane.add(createDoubleFieldWithDecimals(updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+    centerPane.add(connectUpdateLabel(createDoubleFieldWithDecimals(), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
     // A big decimal field with maximum 3 decimals.
     updateLabel = new JLabel();
     centerPane.add(new JLabel("BigDecimal field, max 3 decimals:"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-    centerPane.add(createBigDecimalFieldWithDecimals(updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+    centerPane.add(connectUpdateLabel(createBigDecimalFieldWithDecimals(), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
     // A big decimal field with a range [0; +infinity].
     updateLabel = new JLabel();
     centerPane.add(new JLabel("BigInteger field, [0;+\u221E]:"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-    centerPane.add(createBigDecimalFieldWithRange(updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+    centerPane.add(connectUpdateLabel(createBigDecimalFieldWithRange(), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
     // New section: miscellaneous
     centerPane.add(new JTitledSeparator("Miscellaneous"), new GridBagConstraints(0, y++, 3, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, sectionInsets, 0, 0));
     // A double field that does not show the tip when input is invalid.
     updateLabel = new JLabel();
     centerPane.add(new JLabel("Double field, no tip on error:"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-    centerPane.add(createDoubleFieldWithoutTip(updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+    centerPane.add(connectUpdateLabel(createDoubleFieldWithoutTip(), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
     // A String field with no selection on focus.
     updateLabel = new JLabel();
     centerPane.add(new JLabel("String field, no selection on focus:"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-    centerPane.add(createTextEntryFieldWithNoSelectionOnFocus(updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+    centerPane.add(connectUpdateLabel(createTextEntryFieldWithNoSelectionOnFocus(), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
     // A String field with a validator and trapping focus.
     updateLabel = new JLabel();
     centerPane.add(new JLabel("Integer field, trap focus when invalid:"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-    centerPane.add(createIntegerEntryFieldWithFocusTrappedOnError(updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+    centerPane.add(connectUpdateLabel(createIntegerEntryFieldWithFocusTrappedOnError(), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
     // Rest of the initialisation
     add(centerPane, BorderLayout.CENTER);
   }
 
-  private JTextEntryField createDefaultTextEntryField(JLabel updateLabel) {
-    JTextEntryField textEntryField = new JTextEntryField("Some string", 14);
-    connectUpdateLabel(textEntryField, updateLabel);
-    return textEntryField;
+  private JTextEntryField createDefaultTextEntryField() {
+    return new JTextEntryField("Some string", 14);
   }
 
-  private JTextEntryField createTextEntryFieldWithMaxLength(JLabel updateLabel) {
-    JTextEntryField textEntryField = new JTextEntryField("abc", 14, 4);
-    connectUpdateLabel(textEntryField, updateLabel);
-    return textEntryField;
+  private JTextEntryField createTextEntryFieldWithMaxLength() {
+    return new JTextEntryField("abc", 14, 4);
   }
 
-  private JNumberEntryField<Integer> createDefaultIntegerField(JLabel updateLabel) {
-    JNumberEntryField<Integer> numberEntryField = new JNumberEntryField<Integer>(486, 14);
-    connectUpdateLabel(numberEntryField, updateLabel);
-    return numberEntryField;
+  private JNumberEntryField<Integer> createDefaultIntegerField() {
+    return new JNumberEntryField<Integer>(486, 14);
   }
 
-  private JNumberEntryField<Integer> createIntegerFieldWithRange(JLabel updateLabel) {
-    JNumberEntryField<Integer> numberEntryField = new JNumberEntryField<Integer>(0, 14, -20, 50);
-    connectUpdateLabel(numberEntryField, updateLabel);
-    return numberEntryField;
+  private JNumberEntryField<Integer> createIntegerFieldWithRange() {
+    return new JNumberEntryField<Integer>(0, 14, -20, 50);
   }
 
-  private JNumberEntryField<Double> createDefaultDoubleField(JLabel updateLabel) {
-    JNumberEntryField<Double> numberEntryField = new JNumberEntryField<Double>(1234567890123.123d, 14);
-    connectUpdateLabel(numberEntryField, updateLabel);
-    return numberEntryField;
+  private JNumberEntryField<Double> createDefaultDoubleField() {
+    return new JNumberEntryField<Double>(1234567890123.123d, 14);
   }
 
-  private JNumberEntryField<Double> createDoubleFieldWithDecimals(JLabel updateLabel) {
-    JNumberEntryField<Double> numberEntryField = new JNumberEntryField<Double>(0.0, 14, 3);
-    connectUpdateLabel(numberEntryField, updateLabel);
-    return numberEntryField;
+  private JNumberEntryField<Double> createDoubleFieldWithDecimals() {
+    return new JNumberEntryField<Double>(0.0, 14, 3);
   }
 
-  private JNumberEntryField<Double> createDoubleFieldWithoutTip(JLabel updateLabel) {
+  private JNumberEntryField<Double> createDoubleFieldWithoutTip() {
     JNumberEntryField<Double> numberEntryField = new JNumberEntryField<Double>(0.0, 14, 3, null, null);
     numberEntryField.setTipDisplayedOnError(false);
-    connectUpdateLabel(numberEntryField, updateLabel);
     return numberEntryField;
   }
 
-  private JNumberEntryField<BigDecimal> createBigDecimalFieldWithDecimals(JLabel updateLabel) {
-    JNumberEntryField<BigDecimal> numberEntryField = new JNumberEntryField<BigDecimal>(BigDecimal.ZERO, 14, 3);
-    connectUpdateLabel(numberEntryField, updateLabel);
-    return numberEntryField;
+  private JNumberEntryField<BigDecimal> createBigDecimalFieldWithDecimals() {
+    return new JNumberEntryField<BigDecimal>(BigDecimal.ZERO, 14, 3);
   }
 
-  private JNumberEntryField<BigInteger> createBigDecimalFieldWithRange(JLabel updateLabel) {
-    JNumberEntryField<BigInteger> numberEntryField = new JNumberEntryField<BigInteger>(BigInteger.ZERO, 14, BigInteger.ZERO, null);
-    connectUpdateLabel(numberEntryField, updateLabel);
-    return numberEntryField;
+  private JNumberEntryField<BigInteger> createBigDecimalFieldWithRange() {
+    return new JNumberEntryField<BigInteger>(BigInteger.ZERO, 14, BigInteger.ZERO, null);
   }
 
-  private JTextEntryField createTextEntryFieldWithNoSelectionOnFocus(JLabel updateLabel) {
+  private JTextEntryField createTextEntryFieldWithNoSelectionOnFocus() {
     JTextEntryField textEntryField = new JTextEntryField("ab", 14);
     textEntryField.setSelectingAllOnFocus(false);
-    connectUpdateLabel(textEntryField, updateLabel);
     return textEntryField;
   }
 
-  private JTextEntryField createIntegerEntryFieldWithFocusTrappedOnError(JLabel updateLabel) {
+  private JTextEntryField createIntegerEntryFieldWithFocusTrappedOnError() {
     JNumberEntryField<Integer> numberEntryField = new JNumberEntryField<Integer>(0, 14, 0, 9);
     numberEntryField.setFocusTrappedOnInvalidText(true);
-    connectUpdateLabel(numberEntryField, updateLabel);
     return numberEntryField;
   }
 
-  private void connectUpdateLabel(JTextEntryField field, final JLabel updateLabel) {
+  private JTextEntryField connectUpdateLabel(JTextEntryField field, final JLabel updateLabel) {
     updateLabel.setPreferredSize(new Dimension(150, 0));
     updateLabel.setText(field.getValidText());
     field.addTextEntryFieldListener(new TextEntryFieldListener() {
@@ -182,6 +163,7 @@ public class TextAndNumberFieldsExample extends JPanel {
         updateLabel.setText(textEntryField.getValidText());
       }
     });
+    return field;
   }
 
   /* Standard main method to try that test as a standalone application. */
