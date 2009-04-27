@@ -10,4 +10,5 @@ Licence terms: LGPL (see licence.txt)
 - Text entry fields are implemented with validators, formatters and masks. 
 - Number entry fields are implemented using the text entry fields. 
 - Combo buttons are implemented.
+- Links are implemented.
 - Titled separators are implemented.

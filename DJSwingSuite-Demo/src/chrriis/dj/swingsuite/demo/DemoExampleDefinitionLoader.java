@@ -14,6 +14,7 @@ import chrriis.dj.swingsuite.demo.examples.entryfields.TextAndNumberFieldsExampl
 import chrriis.dj.swingsuite.demo.examples.entryfields.ValidatorsFormattersAndMasksExample;
 import chrriis.dj.swingsuite.demo.examples.introduction.SwingSuite;
 import chrriis.dj.swingsuite.demo.fundamentalcomponents.ComboButtonExample;
+import chrriis.dj.swingsuite.demo.fundamentalcomponents.LinkExample;
 import chrriis.dj.swingsuite.demo.fundamentalcomponents.TitledSeparatorExample;
 
 /**
@@ -32,6 +33,7 @@ public class DemoExampleDefinitionLoader {
     }));
     exampleGroupList.add(new ExampleGroup("Toolbox", new Example[] {
         new Example("Combo Buttons", ComboButtonExample.class, "Combo buttons are generally found in tool bars, often to offer a list of choices and optionally a default action.", true),
+        new Example("Links", LinkExample.class, "Users are generally familiar with links: they are simple, intuitive and generally provide some information through tool tips.", true),
         new Example("Titled Separator", TitledSeparatorExample.class, "Titled separators are generally more elegant than titled borders and do not require nesting panels.", true),
     }));
     return exampleGroupList;

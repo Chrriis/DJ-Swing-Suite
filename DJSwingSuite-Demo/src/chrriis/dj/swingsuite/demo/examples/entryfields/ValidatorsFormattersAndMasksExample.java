@@ -43,7 +43,7 @@ public class ValidatorsFormattersAndMasksExample extends JPanel {
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 0, 5), 0, 0));
     Insets insets = new Insets(2, 5, 0, 5);
     Insets sectionInsets = new Insets(10, 5, 0, 5);
-    // New section: validators
+    // New section: validators.
     centerPane.add(new JTitledSeparator("Validators"), new GridBagConstraints(0, y++, 3, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 5, 0, 5), 0, 0));
     // New section: formatters
     // A text field with a custom validator that forbid spaces and requires the letters 'a' and 'b'.
@@ -65,7 +65,7 @@ public class ValidatorsFormattersAndMasksExample extends JPanel {
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
     // New section: masks
     centerPane.add(new JTitledSeparator("Masks"), new GridBagConstraints(0, y++, 3, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, sectionInsets, 0, 0));
-    // A String field with a mask
+    // A String field with a mask.
     updateLabel = new JLabel();
     centerPane.add(new JLabel("Pattern-based mask (#A-UL-?* '# H):"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(connectUpdateLabel(createTextEntryFieldWithMask(), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
@@ -80,7 +80,7 @@ public class ValidatorsFormattersAndMasksExample extends JPanel {
     centerPane.add(new JLabel("Mask ([123]-[456]-[789]):"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(connectUpdateLabel(createTextEntryFieldWithCustomMask(), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
-    // Rest of the initialisation
+    // Rest of the initialisation.
     add(new JScrollPane(centerPane), BorderLayout.CENTER);
   }
 

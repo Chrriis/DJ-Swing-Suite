@@ -19,3 +19,10 @@ Here are the UIManager keys to define the various messages.
 * NumberEntryField.rangeMessage
   Default: "Range: {0} .. {1}"
   Params: rangeMin<String>, rangeMax<String>
+
+* Link.linkActivationErrorTitle
+  Default: "Link error"
+  
+* Link.linkActivationErrorMessage
+  Default: "Failed to open the link \"{0}\"."
+  Params: target<String>

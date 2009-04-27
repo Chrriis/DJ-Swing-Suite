@@ -41,7 +41,7 @@ public class TextAndNumberFieldsExample extends JPanel {
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 0, 5), 0, 0));
     Insets insets = new Insets(2, 5, 0, 5);
     Insets sectionInsets = new Insets(10, 5, 0, 5);
-    // New section: Text
+    // New section: Text.
     centerPane.add(new JTitledSeparator("Text"), new GridBagConstraints(0, y++, 3, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 5, 0, 5), 0, 0));
     // A default text field.
     updateLabel = new JLabel();
@@ -53,7 +53,7 @@ public class TextAndNumberFieldsExample extends JPanel {
     centerPane.add(new JLabel("Text field, max 4 characters:"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(connectUpdateLabel(createTextEntryFieldWithMaxLength(), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
-    // New section: Numbers
+    // New section: Numbers.
     centerPane.add(new JTitledSeparator("Numbers (Byte, Short, Integer, Long, BigInteger, Float, Double, BigDecimal)"), new GridBagConstraints(0, y++, 3, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, sectionInsets, 0, 0));
     // A default integer field.
     updateLabel = new JLabel();
@@ -85,7 +85,7 @@ public class TextAndNumberFieldsExample extends JPanel {
     centerPane.add(new JLabel("BigInteger field, [0;+\u221E]:"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(connectUpdateLabel(createBigDecimalFieldWithRange(), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
-    // New section: miscellaneous
+    // New section: miscellaneous.
     centerPane.add(new JTitledSeparator("Miscellaneous"), new GridBagConstraints(0, y++, 3, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, sectionInsets, 0, 0));
     // A double field that does not show the tip when input is invalid.
     updateLabel = new JLabel();
@@ -102,7 +102,7 @@ public class TextAndNumberFieldsExample extends JPanel {
     centerPane.add(new JLabel("Integer field, trap focus when invalid:"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(connectUpdateLabel(createIntegerEntryFieldWithFocusTrappedOnError(), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
-    // Rest of the initialisation
+    // Rest of the initialisation.
     add(new JScrollPane(centerPane), BorderLayout.CENTER);
   }
 

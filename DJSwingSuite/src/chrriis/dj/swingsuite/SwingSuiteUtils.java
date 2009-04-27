@@ -29,6 +29,8 @@ public class SwingSuiteUtils {
   private SwingSuiteUtils() {
   }
 
+  public static final boolean IS_JAVA_6_OR_GREATER = System.getProperty("java.version").compareTo("1.6") >= 0;
+
   private static class SelectAllOnFocusListener extends MouseAdapter implements MouseMotionListener, FocusListener {
     private boolean isSettingFocus = false;
     public void focusGained(FocusEvent e) {
