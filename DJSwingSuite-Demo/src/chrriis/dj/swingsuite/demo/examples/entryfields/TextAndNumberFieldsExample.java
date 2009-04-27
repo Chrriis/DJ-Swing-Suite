@@ -18,6 +18,7 @@ import java.math.BigInteger;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import chrriis.dj.swingsuite.JNumberEntryField;
@@ -102,7 +103,7 @@ public class TextAndNumberFieldsExample extends JPanel {
     centerPane.add(connectUpdateLabel(createIntegerEntryFieldWithFocusTrappedOnError(), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
     // Rest of the initialisation
-    add(centerPane, BorderLayout.CENTER);
+    add(new JScrollPane(centerPane), BorderLayout.CENTER);
   }
 
   private JTextEntryField createDefaultTextEntryField() {
