@@ -30,14 +30,26 @@ import javax.swing.event.MouseInputAdapter;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
 
 /**
+ * A simple link class. With Java 6, the default handler supports String, URL, URI and File objects, in which case the content can be processed as a file, a directory, an e-mail or a web site.
  * @author Christopher Deckers
  */
 public class JLink<T> extends JLabel {
 
+  /**
+   * Construct a link, with a given text and a target.
+   * @param text the text of the link.
+   * @param target the target of the link.
+   */
   public JLink(String text, T target) {
     this(text, target, null);
   }
 
+  /**
+   * Construct a link, with a given text and a target and a custom tool tip.
+   * @param text the text of the link.
+   * @param target the target of the link.
+   * @param toolTip the tool tip, or null for the default one.
+   */
   public JLink(String text, T target, String toolTip) {
     super(text);
     this.isDefaultToolTipShown = toolTip == null;
@@ -54,7 +66,6 @@ public class JLink<T> extends JLabel {
         repaint();
       }
       public void focusLost(FocusEvent e) {
-        setForeground(Color.BLUE);
         repaint();
       }
     });
@@ -63,6 +74,12 @@ public class JLink<T> extends JLabel {
       public void mousePressed(MouseEvent e) {
         setForeground(Color.RED);
         requestFocus();
+        repaint();
+      }
+      @Override
+      public void mouseReleased(MouseEvent e) {
+        setForeground(Color.BLUE);
+        repaint();
       }
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -76,7 +93,7 @@ public class JLink<T> extends JLabel {
     addMouseMotionListener(mouseListener);
     addKeyListener(new KeyAdapter() {
       @Override
-      public void keyTyped(KeyEvent e) {
+      public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_ENTER) {
           fireLinkActivated();
         }
@@ -169,6 +186,10 @@ public class JLink<T> extends JLabel {
     super.setToolTipText(text);
   }
 
+  /**
+   * Set the link target.
+   * @param target the target of the link.
+   */
   public void setTaget(T target) {
     this.target = target;
     if(isDefaultToolTipShown) {
@@ -180,14 +201,26 @@ public class JLink<T> extends JLabel {
     return target;
   }
 
+  /**
+   * Add a listener that will be invoked when the link is activated.
+   * @param linkListener the listener to register.
+   */
   public void addLinkListener(LinkListener<T> linkListener) {
     listenerList.add(LinkListener.class, linkListener);
   }
 
+  /**
+   * Remove a listener from the list of listeners that are invoked when the link is activated.
+   * @param linkListener the listener to unregister.
+   */
   public void removeLinkListener(LinkListener<T> linkListener) {
     listenerList.remove(LinkListener.class, linkListener);
   }
 
+  /**
+   * Get all the listeners that are invoked when a link is activated.
+   * @return the link listeners.
+   */
   @SuppressWarnings("unchecked")
   public LinkListener<T>[] getLinkListeners() {
     return listenerList.getListeners(LinkListener.class);
