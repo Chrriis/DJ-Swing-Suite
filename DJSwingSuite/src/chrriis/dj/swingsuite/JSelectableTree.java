@@ -251,6 +251,9 @@ public class JSelectableTree extends JTree {
       if(color == null) {
         color = Color.BLUE;
       }
+      if(color.getRed() > 128 && color.getGreen() > 128 && color.getBlue() > 128) {
+        color = color.darker();
+      }
       g.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 70));
       g.fillRect(x1, y1, x2 - x1, y2 - y1);
       g.setColor(color);
