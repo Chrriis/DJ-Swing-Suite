@@ -35,7 +35,6 @@ import chrriis.dj.swingsuite.LinkListener;
 import chrriis.dj.swingsuite.SwingSuiteUtils;
 
 /**
- * A link, which by default recognizes objects of type String, File, URI and URL.
  * @author Christopher Deckers
  */
 public class LinkExample extends JPanel {

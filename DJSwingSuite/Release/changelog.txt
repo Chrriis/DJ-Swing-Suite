@@ -11,4 +11,5 @@ Licence terms: LGPL (see licence.txt)
 - Number entry fields are implemented using the text entry fields. 
 - Combo buttons are implemented.
 - Links are implemented.
+- Selectable tree is added.
 - Titled separators are implemented.
