@@ -50,6 +50,16 @@ public class JSelectableTree extends JTree {
       this.currentLocation = currentLocation;
     }
 
+    private boolean isSelectionStarted;
+
+    public void setSelectionStarted() {
+      isSelectionStarted = true;
+    }
+
+    public boolean isSelectionStarted() {
+      return isSelectionStarted;
+    }
+
     public Point getCurrentLocation() {
       return currentLocation;
     }
@@ -122,12 +132,18 @@ public class JSelectableTree extends JTree {
       @Override
       public void mouseReleased(MouseEvent e) {
         if(e.getButton() == MouseEvent.BUTTON1) {
+          if(selectionData != null && !selectionData.isSelectionStarted()) {
+            maybeClearSelection(e);
+          }
           selectionData = null;
           repaint();
         }
       }
       @Override
       public void mouseClicked(MouseEvent e) {
+        maybeClearSelection(e);
+      }
+      private void maybeClearSelection(MouseEvent e) {
         if(e.getClickCount() == 1 && !e.isControlDown() && !e.isShiftDown()) {
           int closestRowForLocation = getClosestRowForLocation(e.getX(), e.getY());
           boolean isClearing = true;
@@ -152,8 +168,13 @@ public class JSelectableTree extends JTree {
       public void mouseDragged(MouseEvent e) {
         if((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0 && selectionData != null) {
           Point currentLocation = e.getPoint();
-          selectionData.setCurrentLocation(currentLocation);
           Point pressedLocation = selectionData.getPressedLocation();
+          selectionData.setCurrentLocation(currentLocation);
+          if(Math.abs(currentLocation.x - pressedLocation.x) < 4 && Math.abs(currentLocation.y - pressedLocation.y) < 4) {
+            repaint();
+            return;
+          }
+          selectionData.setSelectionStarted();
           int x1 = Math.max(0, Math.min(pressedLocation.x, currentLocation.x));
           int x2 = Math.max(pressedLocation.x, currentLocation.x);
           int y1 = Math.max(0, Math.min(pressedLocation.y, currentLocation.y));
