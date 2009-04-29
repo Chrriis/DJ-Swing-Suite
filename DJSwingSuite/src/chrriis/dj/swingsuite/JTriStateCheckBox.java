@@ -1,19 +1,26 @@
 package chrriis.dj.swingsuite;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Method;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.plaf.ActionMapUIResource;
+import javax.swing.plaf.ButtonUI;
 import javax.swing.plaf.basic.BasicRadioButtonUI;
+import javax.swing.plaf.synth.SynthContext;
 
 public class JTriStateCheckBox extends JCheckBox {
 
@@ -187,27 +194,78 @@ public class JTriStateCheckBox extends JCheckBox {
   }
 
   private static class IndeterminateIcon implements Icon {
+
     private Icon icon;
+
     public IndeterminateIcon(Icon icon) {
       this.icon = icon;
     }
+
     public int getIconWidth() {
       return icon.getIconWidth();
     }
+
     public int getIconHeight() {
       return icon.getIconHeight();
     }
+
+    private static Method getContextMethod;
+    private static Method paintIconMethod;
+    private BufferedImage image;
+
     public void paintIcon(Component c, Graphics g, int x, int y) {
-      icon.paintIcon(c, g, x, y);
-      if((((JTriStateCheckBox)c).getState() == CheckState.INDETERMINATE)) {
+      JTriStateCheckBox checkBox = (JTriStateCheckBox)c;
+      boolean isSynthPainted = false;
+      int width = icon.getIconWidth();
+      int height = icon.getIconHeight();
+      try {
+        Class<?> synthIconClass = Class.forName("sun.swing.plaf.synth.SynthIcon");
+        if(synthIconClass.isAssignableFrom(icon.getClass())) {
+          ButtonUI ui = checkBox.getUI();
+          if(paintIconMethod == null) {
+            getContextMethod = ui.getClass().getMethod("getContext", JComponent.class);
+            getContextMethod.setAccessible(true);
+            paintIconMethod = synthIconClass.getMethod("paintIcon", SynthContext.class, Graphics.class, int.class, int.class, int.class, int.class);
+            paintIconMethod.setAccessible(true);
+          }
+          SynthContext context = (SynthContext)getContextMethod.invoke(ui, checkBox);
+          if(checkBox.getState() == CheckState.INDETERMINATE) {
+            if(image == null) {
+              image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            }
+            Graphics2D g2d = (Graphics2D)image.getGraphics();
+            g2d.setComposite(AlphaComposite.Clear);
+            g2d.fillRect(0, 0, width, height);
+            g2d.setComposite(AlphaComposite.Src);
+            paintIconMethod.invoke(icon, context, g2d, 0, 0, getIconWidth(), getIconHeight());
+            g2d.setComposite(AlphaComposite.SrcAtop);
+            g2d.setColor(new Color(indeterminateColor.getRed(), indeterminateColor.getGreen(), indeterminateColor.getBlue(), 120));
+            g2d.fillRect(0, 0, width, height);
+            g2d.dispose();
+            g.translate(x, y);
+            g.drawImage(image, 0, 0, c);
+            g.translate(-x, -y);
+          } else {
+            paintIconMethod.invoke(icon, context, g, x, y, getIconWidth(), getIconHeight());
+          }
+          isSynthPainted = true;
+        }
+      } catch (Exception e) {
+      }
+      if(!isSynthPainted) {
+        icon.paintIcon(c, g, x, y);
+      }
+      if(!isSynthPainted && checkBox.getState() == CheckState.INDETERMINATE) {
         g.setColor(indeterminateColor);
-        g.fillRect(x + 3, y + 3, icon.getIconWidth() - 6, icon.getIconHeight() - 6);
+        int gap = checkBox.gap;
+        g.fillRect(x + gap, y + gap, width - 2 * gap, height - 2 * gap);
       }
     }
 
   }
 
   private static Color indeterminateColor;
+  private int gap;
 
   @Override
   public void updateUI() {
@@ -244,10 +302,17 @@ public class JTriStateCheckBox extends JCheckBox {
       }
       indeterminateColor = new Color(rgb);
     }
-    Icon icon = ((BasicRadioButtonUI)getUI()).getDefaultIcon();
+    ButtonUI ui = getUI();
+    Icon icon;
+    if(ui instanceof BasicRadioButtonUI) {
+      icon = ((BasicRadioButtonUI)ui).getDefaultIcon();
+    } else {
+      icon = UIManager.getIcon("CheckBox.icon");
+    }
     if(icon instanceof IndeterminateIcon) {
       return;
     }
+    gap = Math.round(icon.getIconWidth() / 4f);
     setIcon(new IndeterminateIcon(icon));
   }
 

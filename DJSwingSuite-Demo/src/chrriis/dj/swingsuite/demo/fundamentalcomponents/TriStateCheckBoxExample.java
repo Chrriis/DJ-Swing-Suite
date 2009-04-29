@@ -60,7 +60,7 @@ public class TriStateCheckBoxExample extends JPanel {
     });
     centerPane.add(codeOnlyTriStatePanel, new GridBagConstraints(0, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     // A tri-state check box blocked to a state.
-    final JTriStateCheckBox blockedTriState = new JTriStateCheckBox("Limited to a certain state");
+    final JTriStateCheckBox blockedTriState = new JTriStateCheckBox("Limited to certain states (only indeterminate here)");
     blockedTriState.setState(CheckState.INDETERMINATE);
     blockedTriState.setRollingStates(CheckState.INDETERMINATE);
     centerPane.add(blockedTriState, new GridBagConstraints(0, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
