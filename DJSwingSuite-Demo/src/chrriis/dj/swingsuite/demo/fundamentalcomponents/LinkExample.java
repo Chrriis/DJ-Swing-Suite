@@ -69,8 +69,8 @@ public class LinkExample extends JPanel {
       JPanel localFileLinkPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
       final JLink<File> fileLink = new JLink<File>("<select a target>", null, "First, select a file from your system");
       localFileLinkPanel.add(fileLink);
-      JButton fileSelectionButton = new JButton("...");
       localFileLinkPanel.add(Box.createHorizontalStrut(5));
+      JButton fileSelectionButton = new JButton("...");
       localFileLinkPanel.add(fileSelectionButton);
       fileSelectionButton.addActionListener(new ActionListener() {
         private  JFileChooser fileChooser = new JFileChooser();

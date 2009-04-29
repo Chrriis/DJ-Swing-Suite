@@ -159,7 +159,7 @@ public class JSelectableTree extends JTree {
           int y1 = Math.max(0, Math.min(pressedLocation.y, currentLocation.y));
           int y2 = Math.max(pressedLocation.y, currentLocation.y);
           int row1 = Math.max(0, getClosestRowForLocation(x1, y1));
-          int row2 = Math.max(0, getClosestRowForLocation(x2, y2));
+          int row2 = Math.min(Math.max(0, getClosestRowForLocation(x2, y2)), getRowCount() - 1);
           Set<Integer> newRowSet = new HashSet<Integer>();
           int modifiers = selectionData.getModifiers();
           boolean isControl = (modifiers & MouseEvent.CTRL_DOWN_MASK) != 0;
@@ -178,8 +178,11 @@ public class JSelectableTree extends JTree {
           int[] newRows = isControl || isShift? originalSelectedRows: new int[0];
           boolean isSelecting = false;
           for(int i=row1; i<=row2; i++) {
-            if(!isSelecting && getRowBounds(i).intersects(rectangle)) {
-              isSelecting = true;
+            if(!isSelecting) {
+              Rectangle rowBounds = getRowBounds(i);
+              if(rowBounds != null && rowBounds.intersects(rectangle)) {
+                isSelecting = true;
+              }
             }
             if(isControl && newRowSet.contains(i)) {
               newRowSet.remove(i);
