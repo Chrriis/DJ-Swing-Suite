@@ -18,6 +18,7 @@ import java.awt.event.HierarchyListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultButtonModel;
 import javax.swing.Icon;
@@ -85,6 +86,25 @@ public class JComboButton extends JButton {
   private int arrowSpaceWidth;
 
   /**
+   * Construct a combo button with an action.
+   * @param action the action to use.
+   * @param isDivided true if the button is to be devided in two sections (button area, arrow area), false otherwise.
+   */
+  public JComboButton(Action action, boolean isDivided) {
+    super("M");
+    init(isDivided);
+    setAction(action);
+  }
+
+  /**
+   * Construct a combo button.
+   * @param isDivided true if the button is to be devided in two sections (button area, arrow area), false otherwise.
+   */
+  public JComboButton(boolean isDivided) {
+    this(null, null, isDivided);
+  }
+
+  /**
    * Construct a combo button with an icon.
    * @param icon the icon to use.
    * @param isDivided true if the button is to be devided in two sections (button area, arrow area), false otherwise.
@@ -110,11 +130,16 @@ public class JComboButton extends JButton {
    */
   public JComboButton(String text, Icon icon, boolean isDivided) {
     super("M");
+    init(isDivided);
+    setText(text);
+    setIcon(icon);
+  }
+
+  private void init(boolean isDivided) {
     arrowWidth = getPreferredSize().height / 4;
     arrowWidth -= (arrowWidth + 1) % 2;
     arrowSpaceWidth = arrowWidth + 7;
-    setText(text);
-    setIcon(icon);
+    setText(null);
     setDivided(isDivided);
     addHierarchyListener(new HierarchyListener() {
       public void hierarchyChanged(HierarchyEvent e) {
