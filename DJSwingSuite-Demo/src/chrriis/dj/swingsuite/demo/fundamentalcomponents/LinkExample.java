@@ -79,7 +79,7 @@ public class LinkExample extends JPanel {
             File selectedFile = fileChooser.getSelectedFile();
             fileLink.setText(selectedFile.getName());
             fileLink.setToolTipText(selectedFile.getAbsolutePath());
-            fileLink.setTaget(selectedFile);
+            fileLink.setTarget(selectedFile);
           }
         }
       });

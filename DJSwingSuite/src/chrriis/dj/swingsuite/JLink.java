@@ -59,7 +59,7 @@ public class JLink<T> extends JLabel {
     Map<TextAttribute, Object> attributeMap = new HashMap<TextAttribute, Object>();
     attributeMap.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);
     setFont(getFont().deriveFont(attributeMap));
-    setTaget(target);
+    setTarget(target);
     setFocusable(true);
     addFocusListener(new FocusListener() {
       public void focusGained(FocusEvent e) {
@@ -190,7 +190,7 @@ public class JLink<T> extends JLabel {
    * Set the link target.
    * @param target the target of the link.
    */
-  public void setTaget(T target) {
+  public void setTarget(T target) {
     this.target = target;
     if(isDefaultToolTipShown) {
       setToolTipText(null);

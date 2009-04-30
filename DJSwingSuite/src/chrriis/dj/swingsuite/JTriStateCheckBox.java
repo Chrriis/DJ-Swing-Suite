@@ -1,3 +1,10 @@
+/*
+ * Christopher Deckers (chrriis@nextencia.net)
+ * http://www.nextencia.net
+ *
+ * See the file "readme.txt" for information on usage and redistribution of
+ * this file, and for a DISCLAIMER OF ALL WARRANTIES.
+ */
 package chrriis.dj.swingsuite;
 
 import java.awt.AlphaComposite;
@@ -22,6 +29,10 @@ import javax.swing.plaf.ButtonUI;
 import javax.swing.plaf.basic.BasicRadioButtonUI;
 import javax.swing.plaf.synth.SynthContext;
 
+/**
+ * A check box with three states.
+ * @author Christopher Deckers
+ */
 public class JTriStateCheckBox extends JCheckBox {
 
   public static enum CheckState {
@@ -182,6 +193,10 @@ public class JTriStateCheckBox extends JCheckBox {
 
   private boolean isUIAdjustement;
 
+  /**
+   * Set the state of the check box.
+   * @param state the state to set.
+   */
   public void setState(CheckState state) {
     isUIAdjustement = true;
     model.setState(state);
@@ -189,6 +204,10 @@ public class JTriStateCheckBox extends JCheckBox {
     model.adjustRollingState(state);
   }
 
+  /**
+   * Get the state of the check box.
+   * @return the state of the check box.
+   */
   public CheckState getState() {
     return model.getState();
   }

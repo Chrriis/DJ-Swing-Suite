@@ -14,6 +14,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 
 /**
+ * A combo box which allows a wide popup when the combo size is smaller than long items it contains.
  * @author Christopher Deckers
  */
 public class JWidePopupComboBox extends JComboBox {
@@ -54,18 +55,30 @@ public class JWidePopupComboBox extends JComboBox {
     return size;
   }
 
-  private Integer maxWidth;
+  private Integer preferredWidth;
 
-  public void setMaximumWidth(Integer maxWidth) {
-    this.maxWidth = maxWidth;
+  /**
+   * Set the preferred width of the combo, which is taken into account in the preferred size computations.
+   * @param preferredWidth the preferred width to set, or null to clear it.
+   */
+  public void setPreferredWidth(Integer preferredWidth) {
+    this.preferredWidth = preferredWidth;
     preferredSize = null;
+  }
+
+  /**
+   * Get the preferred width of the combo.
+   * @return the preferred width, or null if it is not set.
+   */
+  public Integer getPreferredWidth() {
+    return preferredWidth;
   }
 
   private Dimension preferredSize;
 
   @Override
   public void setPreferredSize(Dimension preferredSize) {
-    maxWidth = null;
+    preferredWidth = null;
     this.preferredSize = preferredSize;
   }
 
@@ -75,8 +88,8 @@ public class JWidePopupComboBox extends JComboBox {
       return preferredSize;
     }
     Dimension preferredSize = super.getPreferredSize();
-    if(maxWidth != null) {
-      preferredSize.width = maxWidth;
+    if(preferredWidth != null) {
+      preferredSize.width = preferredWidth;
     }
     return preferredSize;
   }
