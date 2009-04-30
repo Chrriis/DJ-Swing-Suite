@@ -12,7 +12,6 @@ import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.awt.event.KeyEvent;
@@ -176,21 +175,22 @@ public class JComboButton extends JButton {
     });
     addMouseListener(mouseHandler);
     addMouseMotionListener(mouseHandler);
-    addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        boolean oldIsArrowMouseOver = isArrowMouseOver;
-        isArrowMouseOver = false;
-        getModel().setPressed(false);
-        isArrowMouseOver = oldIsArrowMouseOver;
-        if(isArrowEvent(e)) {
-          requestFocus();
-          if(popupMenu != null) {
-            popupMenu.show(JComboButton.this, getComponentOrientation().isLeftToRight()? 0: getWidth() - popupMenu.getPreferredSize().width, getHeight());
-          }
-        }
-      }
-    });
     enableEvents(KeyEvent.KEY_EVENT_MASK);
+  }
+
+  private boolean showPopup(ActionEvent e) {
+    boolean oldIsArrowMouseOver = isArrowMouseOver;
+    isArrowMouseOver = false;
+    getModel().setPressed(false);
+    isArrowMouseOver = oldIsArrowMouseOver;
+    if(isArrowEvent(e)) {
+      requestFocus();
+      if(popupMenu != null) {
+        popupMenu.show(JComboButton.this, getComponentOrientation().isLeftToRight()? 0: getWidth() - popupMenu.getPreferredSize().width, getHeight());
+        return true;
+      }
+    }
+    return false;
   }
 
   private boolean isKeyEvent;
@@ -201,7 +201,7 @@ public class JComboButton extends JButton {
       isKeyEvent = true;
       if(e.getKeyCode() == KeyEvent.VK_DOWN) {
         if(e.getID() == KeyEvent.KEY_PRESSED) {
-          super.fireActionPerformed(new ActionEvent(JComboButton.this, ActionEvent.ACTION_PERFORMED, getOriginalActionEvent() + ARROW_EVENT_SUFFIX, e.getModifiers()));
+          fireActionPerformed_(new ActionEvent(JComboButton.this, ActionEvent.ACTION_PERFORMED, getOriginalActionEvent() + ARROW_EVENT_SUFFIX, e.getModifiers()));
         }
         e.consume();
         return;
@@ -224,7 +224,10 @@ public class JComboButton extends JButton {
 
   private String getOriginalActionEvent() {
     String command = getActionCommand();
-    if(command != null && command.endsWith(ARROW_EVENT_SUFFIX)) {
+    if(command == null) {
+      return "";
+    }
+    if(command.endsWith(ARROW_EVENT_SUFFIX)) {
       return command.substring(0, command.length() - ARROW_EVENT_SUFFIX.length());
     }
     return command;
@@ -241,6 +244,12 @@ public class JComboButton extends JButton {
           e = new ActionEvent(JComboButton.this, ActionEvent.ACTION_PERFORMED, getOriginalActionEvent() + ARROW_EVENT_SUFFIX, e.getWhen(), e.getModifiers());
         }
       }
+      fireActionPerformed_(e);
+    }
+  }
+
+  private void fireActionPerformed_(ActionEvent e) {
+    if(!showPopup(e)) {
       super.fireActionPerformed(e);
     }
   }
@@ -317,7 +326,8 @@ public class JComboButton extends JButton {
   private JPopupMenu popupMenu;
 
   /**
-   * Set a popup menu that is automatically shown when the arrow is pressed.
+   * Set a popup menu that is automatically shown when the arrow is pressed.<br>
+   * Note that setting an automatically managed popup menu prevents the firing of action events from the arrow.
    * @param popupMenu the popup menu to show, or null to remove the popup menu.
    */
   public void setPopupMenu(JPopupMenu popupMenu) {
