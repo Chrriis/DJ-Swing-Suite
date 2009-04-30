@@ -644,7 +644,7 @@ public class JTextEntryField extends JTextField {
         return message;
       }
     }
-    return SwingSuiteUtils.getUIManagerMessage("TextEntryField.invalidInputMessage", "Invalid input");
+    return SwingSuiteUtilities.getUIManagerMessage("TextEntryField.invalidInputMessage", "Invalid input");
   }
 
   /**
@@ -653,7 +653,7 @@ public class JTextEntryField extends JTextField {
    * @return the message.
    */
   private String getMaximumLengthValidationErrorMessage() {
-    return SwingSuiteUtils.getUIManagerMessage("TextEntryField.maxTextLengthMessage", "Max length: {0}", maximumLength);
+    return SwingSuiteUtilities.getUIManagerMessage("TextEntryField.maxTextLengthMessage", "Max length: {0}", maximumLength);
   }
 
   private TextEntryFormatter formatter;
@@ -824,7 +824,7 @@ public class JTextEntryField extends JTextField {
    */
   public void setSelectingAllOnFocus(boolean isSelectingAllOnFocus) {
     this.isSelectingAllOnFocus = isSelectingAllOnFocus;
-    SwingSuiteUtils.setSelectingAllOnFocus(this, isSelectingAllOnFocus);
+    SwingSuiteUtilities.setSelectingAllOnFocus(this, isSelectingAllOnFocus);
   }
 
   /**

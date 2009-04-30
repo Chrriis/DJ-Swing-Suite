@@ -24,9 +24,9 @@ import javax.swing.text.JTextComponent;
 /**
  * @author Christopher Deckers
  */
-public class SwingSuiteUtils {
+public class SwingSuiteUtilities {
 
-  private SwingSuiteUtils() {
+  private SwingSuiteUtilities() {
   }
 
   public static final boolean IS_JAVA_6_OR_GREATER = System.getProperty("java.version").compareTo("1.6") >= 0;

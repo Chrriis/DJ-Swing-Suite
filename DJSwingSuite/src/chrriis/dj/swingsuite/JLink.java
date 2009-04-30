@@ -104,7 +104,7 @@ public class JLink<T> extends JLabel {
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
-    if(!SwingSuiteUtils.IS_JAVA_6_OR_GREATER) {
+    if(!SwingSuiteUtilities.IS_JAVA_6_OR_GREATER) {
       FontMetrics fm = g.getFontMetrics();
       int y = fm.getHeight() - fm.getDescent() + 1;
       g.drawLine(0, y, getWidth(), y);
@@ -167,7 +167,7 @@ public class JLink<T> extends JLabel {
         return;
       }
     } catch(Throwable ex) {
-      JOptionPane.showMessageDialog(JLink.this, SwingSuiteUtils.getUIManagerMessage("Link.linkActivationErrorMessage", "Failed to open the link \"{0}\".", target), SwingSuiteUtils.getUIManagerMessage("Link.linkActivationErrorTitle", "Link error"), JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(JLink.this, SwingSuiteUtilities.getUIManagerMessage("Link.linkActivationErrorMessage", "Failed to open the link \"{0}\".", target), SwingSuiteUtilities.getUIManagerMessage("Link.linkActivationErrorTitle", "Link error"), JOptionPane.ERROR_MESSAGE);
     }
   }
 

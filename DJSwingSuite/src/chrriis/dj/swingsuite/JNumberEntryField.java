@@ -64,12 +64,12 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
           }
         }
         if(isInvalid || !hasDigit) {
-          return SwingSuiteUtils.getUIManagerMessage("NumberEntryField.invalidFormatMessage", "Invalid format");
+          return SwingSuiteUtilities.getUIManagerMessage("NumberEntryField.invalidFormatMessage", "Invalid format");
         }
       } else if(!isDecimalCountValid(invalidText)) {
-        return SwingSuiteUtils.getUIManagerMessage("NumberEntryField.maxDecimalsMessage", "Max decimals: {0}", decimalCount);
+        return SwingSuiteUtilities.getUIManagerMessage("NumberEntryField.maxDecimalsMessage", "Max decimals: {0}", decimalCount);
       }
-      return SwingSuiteUtils.getUIManagerMessage("NumberEntryField.rangeMessage", "Range: {0} .. {1}", rangeMin == null? "-\u221E": rangeMin, rangeMax == null? "+\u221E": rangeMax);
+      return SwingSuiteUtilities.getUIManagerMessage("NumberEntryField.rangeMessage", "Range: {0} .. {1}", rangeMin == null? "-\u221E": rangeMin, rangeMax == null? "+\u221E": rangeMax);
     }
 
     @SuppressWarnings("unchecked")

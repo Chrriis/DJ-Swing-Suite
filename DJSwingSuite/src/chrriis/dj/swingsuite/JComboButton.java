@@ -23,8 +23,6 @@ import javax.swing.DefaultButtonModel;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JPopupMenu;
-import javax.swing.JToolBar;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
 
@@ -147,10 +145,6 @@ public class JComboButton extends JButton {
           if(e.getChanged() == JComboButton.this) {
             Container parent = getParent();
             if(parent != null) {
-              String osName = System.getProperty("os.name");
-              if(!Boolean.parseBoolean(System.getProperty("swing.noxp")) && osName.startsWith("Windows") && UIManager.getLookAndFeel().isNativeLookAndFeel()) {
-                setFocusPainted(!(parent instanceof JToolBar));
-              }
               if(originalBorder == null) {
                 originalBorder = getBorder();
                 if(getComponentOrientation().isLeftToRight()) {
