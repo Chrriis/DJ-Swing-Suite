@@ -264,23 +264,29 @@ public class JComboButton extends JButton {
     Insets borderInsets = originalBorder.getBorderInsets(this);
     boolean isEnabled = isEnabled();
     Color foregroundColor = getForeground();
-    Color dividerColor = new Color(foregroundColor.getRed(), foregroundColor.getGreen(), foregroundColor.getBlue(), 100);
+    int x;
+    int y1 = borderInsets.top;
+    int y2 = h - borderInsets.bottom;
     if(getComponentOrientation().isLeftToRight()) {
-      int x = w - arrowSpaceWidth - borderInsets.right + 1;
-      if(isDivided && (isMouseOver || hasFocus()) && isEnabled) {
-        g.setColor(dividerColor);
-        g.drawLine(x, borderInsets.top + 1, x, h - borderInsets.bottom - 1);
-      }
+      x = w - arrowSpaceWidth - borderInsets.right + 1;
       int size = (arrowWidth + 1) / 2;
       paintTriangle(g, x + arrowSpaceWidth / 2, (h - size) / 2, size, isEnabled);
     } else {
-      int x = arrowSpaceWidth + borderInsets.left - 1;
-      if(isDivided && (isMouseOver || hasFocus()) && isEnabled) {
-        g.setColor(dividerColor);
-        g.drawLine(x, borderInsets.top + 1, x, h - borderInsets.bottom - 1);
-      }
+      x = arrowSpaceWidth + borderInsets.left - 1;
       int size = (arrowWidth + 1) / 2;
       paintTriangle(g, x - 1 - arrowWidth, (h - size) / 2, size, isEnabled);
+    }
+    if(isDivided && (isMouseOver || hasFocus()) && isEnabled) {
+      int gradientHeight = Math.max((y2 - y1 + 1) / 5, 1);
+      float gradientIncrement = 100f / gradientHeight;
+      for(int i=0; i<gradientHeight; i++) {
+        g.setColor(new Color(foregroundColor.getRed(), foregroundColor.getGreen(), foregroundColor.getBlue(), (int)(gradientIncrement * (i + 1))));
+        g.drawLine(x, y1 + i, x, y1 + i);
+        g.drawLine(x, y2 - i, x, y2 - i);
+      }
+      Color dividerColor = new Color(foregroundColor.getRed(), foregroundColor.getGreen(), foregroundColor.getBlue(), 100);
+      g.setColor(dividerColor);
+      g.drawLine(x, y1 + gradientHeight, x, y2 - gradientHeight);
     }
     g.setColor(origColor);
   }
