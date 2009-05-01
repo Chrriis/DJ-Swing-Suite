@@ -25,7 +25,7 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import chrriis.dj.swingsuite.JComboButton;
-import chrriis.dj.swingsuite.SwingSuiteUtils;
+import chrriis.dj.swingsuite.SwingSuiteUtilities;
 
 /**
  * @author Christopher Deckers
@@ -51,22 +51,22 @@ public class ComboButtonExample extends JPanel {
     // A combo button with an icon.
     JComboButton comboButtonIcon = new JComboButton(icon, false);
     comboButtonIcon.setPopupMenu(popupMenu);
-    SwingSuiteUtils.adjustToolbarButtonFocus(comboButtonIcon);
+    SwingSuiteUtilities.adjustToolbarButtonFocus(comboButtonIcon);
     toolBar.add(comboButtonIcon);
     // A combo button with an icon and some text.
     JComboButton comboButtonIconAndText = new JComboButton("Text", icon, false);
     comboButtonIconAndText.setPopupMenu(popupMenu);
-    SwingSuiteUtils.adjustToolbarButtonFocus(comboButtonIconAndText);
+    SwingSuiteUtilities.adjustToolbarButtonFocus(comboButtonIconAndText);
     toolBar.add(comboButtonIconAndText);
     // A combo button with some text.
     JComboButton comboButtonText = new JComboButton("Text", false);
     comboButtonText.setPopupMenu(popupMenu);
-    SwingSuiteUtils.adjustToolbarButtonFocus(comboButtonText);
+    SwingSuiteUtilities.adjustToolbarButtonFocus(comboButtonText);
     toolBar.add(comboButtonText);
     // A combo button with an icon and some text, disabled.
     JComboButton comboButtonIconAndTextDisabled = new JComboButton("Text", icon, false);
     comboButtonIconAndTextDisabled.setEnabled(false);
-    SwingSuiteUtils.adjustToolbarButtonFocus(comboButtonIconAndTextDisabled);
+    SwingSuiteUtilities.adjustToolbarButtonFocus(comboButtonIconAndTextDisabled);
     toolBar.add(comboButtonIconAndTextDisabled);
     // A combo button without popups, but which shows the events.
     JComboButton comboButtonIconNoPopup = new JComboButton(icon, false);
@@ -75,7 +75,7 @@ public class ComboButtonExample extends JPanel {
         JOptionPane.showMessageDialog(ComboButtonExample.this, "ActionEvent received. On arrow=" + JComboButton.isArrowEvent(e));
       }
     });
-    SwingSuiteUtils.adjustToolbarButtonFocus(comboButtonIconNoPopup);
+    SwingSuiteUtilities.adjustToolbarButtonFocus(comboButtonIconNoPopup);
     toolBar.add(comboButtonIconNoPopup);
     centerPane.add(new JLabel("Integral Combo buttons:"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(toolBar, new GridBagConstraints(1, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
@@ -86,22 +86,22 @@ public class ComboButtonExample extends JPanel {
     // A divided combo button with an icon.
     JComboButton comboButtonIconDivided = new JComboButton(icon, true);
     comboButtonIconDivided.setPopupMenu(popupMenu);
-    SwingSuiteUtils.adjustToolbarButtonFocus(comboButtonIconDivided);
+    SwingSuiteUtilities.adjustToolbarButtonFocus(comboButtonIconDivided);
     toolBar.add(comboButtonIconDivided);
     // A combo button with an icon and some text.
     JComboButton comboButtonIconAndTextDivided = new JComboButton("Text", icon, true);
     comboButtonIconAndTextDivided.setPopupMenu(popupMenu);
-    SwingSuiteUtils.adjustToolbarButtonFocus(comboButtonIconAndTextDivided);
+    SwingSuiteUtilities.adjustToolbarButtonFocus(comboButtonIconAndTextDivided);
     toolBar.add(comboButtonIconAndTextDivided);
     // A combo button with some text.
     JComboButton comboButtonTextDivided = new JComboButton("Text", true);
     comboButtonTextDivided.setPopupMenu(popupMenu);
-    SwingSuiteUtils.adjustToolbarButtonFocus(comboButtonTextDivided);
+    SwingSuiteUtilities.adjustToolbarButtonFocus(comboButtonTextDivided);
     toolBar.add(comboButtonTextDivided);
     // A combo button with an icon and some text, disabled.
     JComboButton comboButtonIconAndTextDividedDisabled = new JComboButton("Text", icon, true);
     comboButtonIconAndTextDividedDisabled.setEnabled(false);
-    SwingSuiteUtils.adjustToolbarButtonFocus(comboButtonIconAndTextDividedDisabled);
+    SwingSuiteUtilities.adjustToolbarButtonFocus(comboButtonIconAndTextDividedDisabled);
     toolBar.add(comboButtonIconAndTextDividedDisabled);
     // A divided combo button without popups, but which shows the events.
     JComboButton comboButtonIconDividedNoPopup = new JComboButton(icon, true);
@@ -110,7 +110,7 @@ public class ComboButtonExample extends JPanel {
         JOptionPane.showMessageDialog(ComboButtonExample.this, "ActionEvent received. On arrow=" + JComboButton.isArrowEvent(e));
       }
     });
-    SwingSuiteUtils.adjustToolbarButtonFocus(comboButtonIconDividedNoPopup);
+    SwingSuiteUtilities.adjustToolbarButtonFocus(comboButtonIconDividedNoPopup);
     toolBar.add(comboButtonIconDividedNoPopup);
     centerPane.add(new JLabel("Divided Combo buttons:"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(toolBar, new GridBagConstraints(1, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
@@ -120,7 +120,7 @@ public class ComboButtonExample extends JPanel {
 
   /* Standard main method to try that test as a standalone application. */
   public static void main(String[] args) {
-    SwingSuiteUtils.setPreferredLookAndFeel();
+    SwingSuiteUtilities.setPreferredLookAndFeel();
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         JFrame frame = new JFrame("DJ Swing Suite Test");

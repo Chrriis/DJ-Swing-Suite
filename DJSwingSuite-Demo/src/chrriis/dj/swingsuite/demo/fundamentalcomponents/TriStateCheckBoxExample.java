@@ -24,7 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import chrriis.dj.swingsuite.JTriStateCheckBox;
-import chrriis.dj.swingsuite.SwingSuiteUtils;
+import chrriis.dj.swingsuite.SwingSuiteUtilities;
 import chrriis.dj.swingsuite.TriStateCheckBoxListener;
 import chrriis.dj.swingsuite.JTriStateCheckBox.CheckState;
 
@@ -78,7 +78,7 @@ public class TriStateCheckBoxExample extends JPanel {
 
   /* Standard main method to try that test as a standalone application. */
   public static void main(String[] args) {
-    SwingSuiteUtils.setPreferredLookAndFeel();
+    SwingSuiteUtilities.setPreferredLookAndFeel();
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         JFrame frame = new JFrame("DJ Swing Suite Test");

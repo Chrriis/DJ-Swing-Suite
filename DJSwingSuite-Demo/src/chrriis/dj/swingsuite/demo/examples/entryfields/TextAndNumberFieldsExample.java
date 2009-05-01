@@ -24,7 +24,7 @@ import javax.swing.SwingUtilities;
 import chrriis.dj.swingsuite.JNumberEntryField;
 import chrriis.dj.swingsuite.JTextEntryField;
 import chrriis.dj.swingsuite.JTitledSeparator;
-import chrriis.dj.swingsuite.SwingSuiteUtils;
+import chrriis.dj.swingsuite.SwingSuiteUtilities;
 import chrriis.dj.swingsuite.TextEntryFieldListener;
 
 /**
@@ -169,7 +169,7 @@ public class TextAndNumberFieldsExample extends JPanel {
 
   /* Standard main method to try that test as a standalone application. */
   public static void main(String[] args) {
-    SwingSuiteUtils.setPreferredLookAndFeel();
+    SwingSuiteUtilities.setPreferredLookAndFeel();
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         JFrame frame = new JFrame("DJ Swing Suite Test");

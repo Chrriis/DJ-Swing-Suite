@@ -44,7 +44,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import chrriis.common.Disposable;
 import chrriis.common.ui.source.SourcePane;
-import chrriis.dj.swingsuite.SwingSuiteUtils;
+import chrriis.dj.swingsuite.SwingSuiteUtilities;
 
 /**
  * @author Christopher Deckers
@@ -194,7 +194,7 @@ public class DemoFrame extends JFrame {
   }
 
   public static void main(String[] args) {
-    SwingSuiteUtils.setPreferredLookAndFeel();
+    SwingSuiteUtilities.setPreferredLookAndFeel();
     Toolkit.getDefaultToolkit().setDynamicLayout(true);
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {

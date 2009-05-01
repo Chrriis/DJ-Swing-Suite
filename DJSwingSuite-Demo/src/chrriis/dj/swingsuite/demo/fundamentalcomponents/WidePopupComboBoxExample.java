@@ -20,7 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import chrriis.dj.swingsuite.JWidePopupComboBox;
-import chrriis.dj.swingsuite.SwingSuiteUtils;
+import chrriis.dj.swingsuite.SwingSuiteUtilities;
 
 /**
  * @author Christopher Deckers
@@ -58,7 +58,7 @@ public class WidePopupComboBoxExample extends JPanel {
 
   /* Standard main method to try that test as a standalone application. */
   public static void main(String[] args) {
-    SwingSuiteUtils.setPreferredLookAndFeel();
+    SwingSuiteUtilities.setPreferredLookAndFeel();
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         JFrame frame = new JFrame("DJ Swing Suite Test");
