@@ -37,7 +37,7 @@ public class LayeredIconExample extends JPanel {
         return 12;
       }
       public int getIconHeight() {
-        return 8;
+        return 6;
       }
       public void paintIcon(Component c, Graphics g, int x, int y) {
         g.setColor(Color.BLUE);
@@ -48,7 +48,7 @@ public class LayeredIconExample extends JPanel {
     LayeredIcon layeredIcon = new LayeredIcon(20, 16);
     layeredIcon.addIcon(icon);
     layeredIcon.addIcon(loadingBackgroundIcon, 6, 6);
-    layeredIcon.addIcon(loadingIcon, 12, 8);
+    layeredIcon.addIcon(loadingIcon, 11, 7);
     centerPane.add(new JLabel("layered icon with an image, a custom icon and an animated image", layeredIcon, JLabel.LEFT));
     add(centerPane, BorderLayout.CENTER);
   }
