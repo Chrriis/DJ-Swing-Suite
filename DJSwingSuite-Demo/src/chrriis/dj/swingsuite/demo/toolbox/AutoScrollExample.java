@@ -25,9 +25,9 @@ public class AutoScrollExample extends JPanel {
 
   public AutoScrollExample() {
     super(new BorderLayout());
-    JPanel panel = new JPanel(new GridLayout(100, 100, 10, 10));
-    for(int i=0; i<100; i++) {
-      for(int j=0; j<100; j++) {
+    JPanel panel = new JPanel(new GridLayout(20, 20, 100, 100));
+    for(int i=0; i<20; i++) {
+      for(int j=0; j<20; j++) {
         panel.add(new JLabel("Label " + i + "x" + j));
       }
     }
