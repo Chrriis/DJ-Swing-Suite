@@ -58,7 +58,11 @@ class AutoScrollActivator {
 
   private void deactivateAutoScroll() {
     autoScrollProperties.timer.stop();
-    Toolkit.getDefaultToolkit().removeAWTEventListener(autoScrollProperties.toolkitListener);
+    try {
+      Toolkit.getDefaultToolkit().removeAWTEventListener(autoScrollProperties.toolkitListener);
+    } catch(Exception e) {
+      // This is possible if we deactivate because of an exception when activating.
+    }
     autoScrollProperties.iconPopupMenu.setVisible(false);
     autoScrollProperties = null;
   }
@@ -158,7 +162,12 @@ class AutoScrollActivator {
         }
       }
     };
-    Toolkit.getDefaultToolkit().addAWTEventListener(autoScrollProperties.toolkitListener, AWTEvent.MOUSE_MOTION_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.WINDOW_FOCUS_EVENT_MASK);
+    try {
+      Toolkit.getDefaultToolkit().addAWTEventListener(autoScrollProperties.toolkitListener, AWTEvent.MOUSE_MOTION_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.WINDOW_FOCUS_EVENT_MASK);
+    } catch(Exception ex) {
+      deactivateAutoScroll();
+      // If an exception is thrown, well, too bad, no activation of this feature.
+    }
   }
 
   private static class AutoScrollMouseListener extends MouseAdapter {
