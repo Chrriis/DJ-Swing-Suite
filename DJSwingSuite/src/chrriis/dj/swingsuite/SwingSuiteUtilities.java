@@ -18,6 +18,7 @@ import java.awt.event.MouseMotionListener;
 import java.text.MessageFormat;
 
 import javax.swing.AbstractButton;
+import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.text.JTextComponent;
 
@@ -136,6 +137,18 @@ public class SwingSuiteUtilities {
     }
   }
 
+  /**
+   * Set whether the auto-scroll feature is enabled. Auto-scoll is triggered when the user clicks with the middle mouse button on an area that does not trap mouse events (like on labels, but not on text fields).
+   * @param scrollPane The scroll pane for which to enable or disable the feature.
+   * @param isEnabled true if the feature is to be enabled, false otherwise.
+   */
+  public static void setAutoScrollEnabled(JScrollPane scrollPane, boolean isEnabled) {
+    AutoScrollActivator.setAutoScrollEnabled(scrollPane, isEnabled);
+  }
+
+  /**
+   * Set the look and feel that users tend to prefer for the current platform.
+   */
   public static void setPreferredLookAndFeel() {
     try {
       String systemLookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();

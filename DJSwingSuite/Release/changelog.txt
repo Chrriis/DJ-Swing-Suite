@@ -16,3 +16,4 @@ Licence terms: LGPL (see licence.txt)
 - Selectable tree is added.
 - Titled separators are implemented.
 - Layered icon is added.
+- Auto-scroll feature is added.

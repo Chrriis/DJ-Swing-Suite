@@ -13,13 +13,14 @@ import java.util.List;
 import chrriis.dj.swingsuite.demo.examples.entryfields.TextAndNumberFieldsExample;
 import chrriis.dj.swingsuite.demo.examples.entryfields.ValidatorsFormattersAndMasksExample;
 import chrriis.dj.swingsuite.demo.examples.introduction.SwingSuite;
-import chrriis.dj.swingsuite.demo.fundamentalcomponents.ComboButtonExample;
-import chrriis.dj.swingsuite.demo.fundamentalcomponents.LayeredIconExample;
-import chrriis.dj.swingsuite.demo.fundamentalcomponents.LinkExample;
-import chrriis.dj.swingsuite.demo.fundamentalcomponents.SelectableTreeExample;
-import chrriis.dj.swingsuite.demo.fundamentalcomponents.TitledSeparatorExample;
-import chrriis.dj.swingsuite.demo.fundamentalcomponents.TriStateCheckBoxExample;
-import chrriis.dj.swingsuite.demo.fundamentalcomponents.WidePopupComboBoxExample;
+import chrriis.dj.swingsuite.demo.toolbox.AutoScrollExample;
+import chrriis.dj.swingsuite.demo.toolbox.ComboButtonExample;
+import chrriis.dj.swingsuite.demo.toolbox.LayeredIconExample;
+import chrriis.dj.swingsuite.demo.toolbox.LinkExample;
+import chrriis.dj.swingsuite.demo.toolbox.SelectableTreeExample;
+import chrriis.dj.swingsuite.demo.toolbox.TitledSeparatorExample;
+import chrriis.dj.swingsuite.demo.toolbox.TriStateCheckBoxExample;
+import chrriis.dj.swingsuite.demo.toolbox.WidePopupComboBoxExample;
 
 /**
  * @author Christopher Deckers
@@ -39,6 +40,7 @@ public class DemoExampleDefinitionLoader {
         new Example("Selectable Tree", SelectableTreeExample.class, "A tree where the user can click in the empty area, and drag the mouse over some nodes to select them. Modifiers (control and shift) can add or exclude to the current selection.", true),
         new Example("Titled Separator", TitledSeparatorExample.class, "Titled separators are generally more elegant than titled borders and do not require nesting panels.", true),
         new Example("Layered Icon", LayeredIconExample.class, "A layered icon is an icon that aggregates icons, which can be at any location within their parent icon. Layered icons even support animated images in their composition.", true),
+        new Example("Auto scroll", AutoScrollExample.class, "Enable the auto-scroll feature to simplify scrolling: a click with the middle mouse button then moving the mouse directs scrolling (as seen in web browsers).", true),
     }));
     exampleGroupList.add(new ExampleGroup("Entry Fields", new Example[] {
         new Example("Text and Numbers", TextAndNumberFieldsExample.class, "This is a simple example that shows text and number fields.", true),
