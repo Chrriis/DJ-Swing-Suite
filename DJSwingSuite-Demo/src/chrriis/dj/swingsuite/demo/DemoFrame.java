@@ -188,7 +188,7 @@ public class DemoFrame extends JFrame {
     JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, new JScrollPane(demoTree), displayArea);
     contentPane.add(splitPane, BorderLayout.CENTER);
     setSize(800, 600);
-    splitPane.setDividerLocation(170);
+    splitPane.setDividerLocation(190);
     demoTree.expandRow(0);
     demoTree.setSelectionRow(1);
   }
