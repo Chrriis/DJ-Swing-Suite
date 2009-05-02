@@ -257,7 +257,6 @@ public class JComboButton extends JButton {
     int h = getHeight();
     Insets borderInsets = originalBorder.getBorderInsets(this);
     boolean isEnabled = isEnabled();
-    Color foregroundColor = getForeground();
     int x;
     int y1 = borderInsets.top;
     int y2 = h - borderInsets.bottom;
@@ -273,6 +272,7 @@ public class JComboButton extends JButton {
     if(isDivided && (isMouseOver || hasFocus()) && isEnabled) {
       int gradientHeight = Math.max((y2 - y1 + 1) / 5, 1);
       float gradientIncrement = 100f / gradientHeight;
+      Color foregroundColor = getForeground();
       for(int i=0; i<gradientHeight; i++) {
         g.setColor(new Color(foregroundColor.getRed(), foregroundColor.getGreen(), foregroundColor.getBlue(), (int)(gradientIncrement * (i + 1))));
         g.drawLine(x, y1 + i, x, y1 + i);
