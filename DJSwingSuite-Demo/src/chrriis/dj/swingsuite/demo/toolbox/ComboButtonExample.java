@@ -50,17 +50,17 @@ public class ComboButtonExample extends JPanel {
     toolBar.setRollover(true);
     // A combo button with an icon.
     JComboButton comboButtonIcon = new JComboButton(icon, false);
-    comboButtonIcon.setPopupMenu(popupMenu);
+    comboButtonIcon.setArrowPopupMenu(popupMenu);
     SwingSuiteUtilities.adjustToolbarButtonFocus(comboButtonIcon);
     toolBar.add(comboButtonIcon);
     // A combo button with an icon and some text.
     JComboButton comboButtonIconAndText = new JComboButton("Text", icon, false);
-    comboButtonIconAndText.setPopupMenu(popupMenu);
+    comboButtonIconAndText.setArrowPopupMenu(popupMenu);
     SwingSuiteUtilities.adjustToolbarButtonFocus(comboButtonIconAndText);
     toolBar.add(comboButtonIconAndText);
     // A combo button with some text.
     JComboButton comboButtonText = new JComboButton("Text", false);
-    comboButtonText.setPopupMenu(popupMenu);
+    comboButtonText.setArrowPopupMenu(popupMenu);
     SwingSuiteUtilities.adjustToolbarButtonFocus(comboButtonText);
     toolBar.add(comboButtonText);
     // A combo button with an icon and some text, disabled.
@@ -85,17 +85,17 @@ public class ComboButtonExample extends JPanel {
     toolBar.setRollover(true);
     // A divided combo button with an icon.
     JComboButton comboButtonIconDivided = new JComboButton(icon, true);
-    comboButtonIconDivided.setPopupMenu(popupMenu);
+    comboButtonIconDivided.setArrowPopupMenu(popupMenu);
     SwingSuiteUtilities.adjustToolbarButtonFocus(comboButtonIconDivided);
     toolBar.add(comboButtonIconDivided);
     // A combo button with an icon and some text.
     JComboButton comboButtonIconAndTextDivided = new JComboButton("Text", icon, true);
-    comboButtonIconAndTextDivided.setPopupMenu(popupMenu);
+    comboButtonIconAndTextDivided.setArrowPopupMenu(popupMenu);
     SwingSuiteUtilities.adjustToolbarButtonFocus(comboButtonIconAndTextDivided);
     toolBar.add(comboButtonIconAndTextDivided);
     // A combo button with some text.
     JComboButton comboButtonTextDivided = new JComboButton("Text", true);
-    comboButtonTextDivided.setPopupMenu(popupMenu);
+    comboButtonTextDivided.setArrowPopupMenu(popupMenu);
     SwingSuiteUtilities.adjustToolbarButtonFocus(comboButtonTextDivided);
     toolBar.add(comboButtonTextDivided);
     // A combo button with an icon and some text, disabled.

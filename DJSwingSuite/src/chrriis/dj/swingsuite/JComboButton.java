@@ -179,8 +179,8 @@ public class JComboButton extends JButton {
     isArrowMouseOver = oldIsArrowMouseOver;
     if(isArrowEvent(e)) {
       requestFocus();
-      if(popupMenu != null) {
-        popupMenu.show(JComboButton.this, getComponentOrientation().isLeftToRight()? 0: getWidth() - popupMenu.getPreferredSize().width, getHeight());
+      if(arrowPopupMenu != null) {
+        arrowPopupMenu.show(JComboButton.this, getComponentOrientation().isLeftToRight()? 0: getWidth() - arrowPopupMenu.getPreferredSize().width, getHeight());
         return true;
       }
     }
@@ -323,23 +323,23 @@ public class JComboButton extends JButton {
     g.setColor(oldColor);
   }
 
-  private JPopupMenu popupMenu;
+  private JPopupMenu arrowPopupMenu;
 
   /**
    * Set a popup menu that is automatically shown when the arrow is pressed.<br>
    * Note that setting an automatically managed popup menu prevents the firing of action events from the arrow.
-   * @param popupMenu the popup menu to show, or null to remove the popup menu.
+   * @param arrowPopupMenu the popup menu to show, or null to remove the popup menu.
    */
-  public void setPopupMenu(JPopupMenu popupMenu) {
-    this.popupMenu = popupMenu;
+  public void setArrowPopupMenu(JPopupMenu arrowPopupMenu) {
+    this.arrowPopupMenu = arrowPopupMenu;
   }
 
   /**
-   * Get the popup menu that is currently associated.
-   * @return the popup menu, or null of no popup menu is set.
+   * Get the popup menu that is currently associated to the arrow.
+   * @return the popup menu, or null of no popup menu is set for the arrow.
    */
-  public JPopupMenu getPopupMenu() {
-    return popupMenu;
+  public JPopupMenu getArrowPopupMenu() {
+    return arrowPopupMenu;
   }
 
 }
