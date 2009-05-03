@@ -20,11 +20,11 @@ import javax.swing.ImageIcon;
 
 public class LayeredIcon extends ImageIcon {
 
-  protected List<Icon> iconList = new ArrayList<Icon>();
-  protected List<Point> positionsList = new ArrayList<Point>();
+  private List<Icon> iconList = new ArrayList<Icon>(3);
+  private List<Point> locationList = new ArrayList<Point>(3);
 
-  protected int width;
-  protected int height;
+  private int width;
+  private int height;
 
   public LayeredIcon(int width, int height) {
     this.width = width;
@@ -36,36 +36,97 @@ public class LayeredIcon extends ImageIcon {
     return width;
   }
 
-
   @Override
   public int getIconHeight() {
     return height;
   }
 
-  protected Component component;
+  private Component component;
 
   @Override
   public void paintIcon(Component component, Graphics g, int x, int y) {
     this.component = component;
     for(int i=0; i<iconList.size(); i++) {
-      Point position = positionsList.get(i);
-      iconList.get(i).paintIcon(component, g, x + position.x, y + position.y);
+      Point location = locationList.get(i);
+      iconList.get(i).paintIcon(component, g, x + location.x, y + location.y);
     }
   }
 
+  /**
+   * Get all the icons.
+   * @return the icons.
+   */
+  public Icon[] getIcons() {
+    return iconList.toArray(new Icon[0]);
+  }
+
+  /**
+   * Get all the icon locations.
+   * @return the locations of all the icons.
+   */
+  public Point[] getIconLocations() {
+    return locationList.toArray(new Point[0]);
+  }
+
+  /**
+   * Get the number of icons.
+   * @return the number of icons.
+   */
+  public int getIconCount() {
+    return iconList.size();
+  }
+
+  /**
+   * Remove an icon.
+   * @param icon the icon to remove.
+   */
+  public void removeIcon(Icon icon) {
+    int index = iconList.indexOf(icon);
+    if(index >= 0) {
+      iconList.remove(index);
+      locationList.remove(index);
+    }
+  }
+
+  /**
+   * Add an icon starting at the top left corner.
+   * @param icon the icon to add.
+   */
   public void addIcon(Icon icon) {
     addIcon(icon, new Point(0, 0));
   }
 
-  protected ImageObserver observer;
-
-  protected Image currentImage;
-
+  /**
+   * Add an icon starting at a specific location.
+   * @param icon the icon to add.
+   * @param x the x coordinate.
+   * @param y the y coordinate.
+   */
   public void addIcon(Icon icon, int x, int y) {
     addIcon(icon, new Point(x, y));
   }
 
-  public void addIcon(Icon icon, Point position) {
+  private ImageObserver observer;
+  private Image currentImage;
+
+  /**
+   * Add an icon starting at a specific location.
+   * @param icon the icon to add.
+   * @param location the location.
+   */
+  public void addIcon(Icon icon, Point location) {
+    addIcon(icon, location, getIconCount());
+  }
+
+  /**
+   * Add an icon starting at a specific location.
+   * @param icon the icon to add.
+   * @param location the location.
+   * @param zOrder the zOrder of this icon, where 0 means at the back.
+   */
+  public void addIcon(Icon icon, Point location, int zOrder) {
+    iconList.add(zOrder, icon);
+    locationList.add(zOrder, location);
     if(icon instanceof ImageIcon) {
       if(observer == null) {
         observer = new ImageObserver() {
@@ -82,9 +143,6 @@ public class LayeredIcon extends ImageIcon {
       }
       ((ImageIcon)icon).setImageObserver(observer);
     }
-    iconList.add(icon);
-    positionsList.add(position);
-//    computeAttributes();
   }
 
   @Override
