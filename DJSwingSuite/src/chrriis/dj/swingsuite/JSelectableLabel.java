@@ -414,6 +414,13 @@ public class JSelectableLabel extends JTextField {
   }
 
   @Override
+  public Dimension getPreferredSize() {
+      Dimension preferredSize = super.getPreferredSize();
+      // The default width is always 1 pixel short
+      return new Dimension(preferredSize.width + 1, preferredSize.height);
+  }
+
+  @Override
   public void paintComponent(Graphics g) {
     if(UIManager.getLookAndFeel() instanceof SynthLookAndFeel) {
       super.paintComponent(new LabelGraphics2D((Graphics2D)g));
