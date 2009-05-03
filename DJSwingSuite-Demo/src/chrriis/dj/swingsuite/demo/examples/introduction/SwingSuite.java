@@ -29,8 +29,10 @@ public class SwingSuite extends JPanel {
         "    <p>Swing is a powerful user-interface toolkit. It offers many components that one can customize in various ways.</p>" + LS +
         "    <p>The problem is that after developping Swing applications for a while, we all find certain limitations and we keep re-inventing the wheel.</p>" + LS +
         "    <h1>A better wheel?</h1>" + LS +
-        "    <p>Most of the time, we end up coding those components for the immediate task at hand: certain components have hundreds of variations but no general purpose API.</p>" + LS +
-        "    <p>This project aims at creating such re-usable general purpose components to simplify the development of rich Swing user interfaces.</p>" + LS +
+        "    <p>Most of the time, we end up coding some components and utilities for the immediate task at hand: the result is hundreds of variations but no general purpose API.</p>" + LS +
+        "    <p>This project aims at creating such re-usable general purpose components and utilities to simplify the development of rich Swing user interfaces.</p>" + LS +
+        "    <h1>Disclaimer</h1>" + LS +
+        "    <p>Look and feels do not always behave in consistent ways, thus there is no guarantee that these components or utilities work as expected under non-tested look and feels. The only way to know is to try!</p>" + LS +
         "  </body>" + LS +
         "</html");
     editorPane.setEditable(false);
