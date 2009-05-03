@@ -9,6 +9,7 @@ package chrriis.dj.swingsuite.demo.examples.entryfields;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -24,7 +25,7 @@ import chrriis.dj.swingsuite.JNumberEntryField;
 import chrriis.dj.swingsuite.JTextEntryField;
 import chrriis.dj.swingsuite.JTitledSeparator;
 import chrriis.dj.swingsuite.SwingSuiteUtilities;
-import chrriis.dj.swingsuite.TextEntryFieldListener;
+import chrriis.dj.swingsuite.TextEntryFieldAdapter;
 import chrriis.dj.swingsuite.TextEntryFormatter;
 import chrriis.dj.swingsuite.TextEntryMask;
 import chrriis.dj.swingsuite.TextEntryValidator;
@@ -46,7 +47,7 @@ public class ValidatorsFormattersAndMasksExample extends JPanel {
     // New section: validators.
     centerPane.add(new JTitledSeparator("Validators"), new GridBagConstraints(0, y++, 3, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 5, 0, 5), 0, 0));
     // New section: formatters
-    // A text field with a custom validator that forbid spaces and requires the letters 'a' and 'b'.
+    // A text field with a custom validator that requires the letters 'a' and 'b'.
     updateLabel = new JLabel();
     centerPane.add(new JLabel("Text field, custom validator (try 'm'):"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(connectUpdateLabel(createTextEntryFieldWithCustomValidator(), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
@@ -80,6 +81,15 @@ public class ValidatorsFormattersAndMasksExample extends JPanel {
     centerPane.add(new JLabel("Mask ([123]-[456]-[789]):"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(connectUpdateLabel(createTextEntryFieldWithCustomMask(), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
+    // New section: custom error display
+    centerPane.add(new JTitledSeparator("Custom error display"), new GridBagConstraints(0, y++, 3, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, sectionInsets, 0, 0));
+    // A text field with custom error display.
+    updateLabel = new JLabel();
+    centerPane.add(new JLabel("Number field, custom error display:"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+    final JLabel customErrorMessageDisplayLabel = new JLabel();
+    centerPane.add(connectUpdateLabel(createNumberEntryFieldWithCustomErrorDisplay(customErrorMessageDisplayLabel), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+    centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
+    centerPane.add(customErrorMessageDisplayLabel, new GridBagConstraints(1, y++, 2, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
     // Rest of the initialisation.
     add(new JScrollPane(centerPane), BorderLayout.CENTER);
   }
@@ -231,10 +241,30 @@ public class ValidatorsFormattersAndMasksExample extends JPanel {
     return maskField;
   }
 
+  private JNumberEntryField<Double> createNumberEntryFieldWithCustomErrorDisplay(final JLabel customErrorMessageDisplayLabel) {
+    customErrorMessageDisplayLabel.setText(" ");
+    customErrorMessageDisplayLabel.setFont(customErrorMessageDisplayLabel.getFont().deriveFont(Font.BOLD));
+    JNumberEntryField<Double> numberEntryField = new JNumberEntryField<Double>(0.12, 14, 2, -20.0, 50.0);
+    numberEntryField.setTipDisplayedOnError(false);
+    numberEntryField.addTextEntryFieldListener(new TextEntryFieldAdapter() {
+      @Override
+      public void errorMessageChanged(JTextEntryField validationField, String errorMessage) {
+        if(errorMessage == null) {
+          errorMessage = " ";
+        } else {
+          errorMessage = "ERROR -> " + errorMessage;
+        }
+        customErrorMessageDisplayLabel.setText(errorMessage);
+      }
+    });
+    return numberEntryField;
+  }
+
   private JTextEntryField connectUpdateLabel(JTextEntryField field, final JLabel updateLabel) {
     updateLabel.setPreferredSize(new Dimension(150, 0));
     updateLabel.setText(field.getValidText());
-    field.addTextEntryFieldListener(new TextEntryFieldListener() {
+    field.addTextEntryFieldListener(new TextEntryFieldAdapter() {
+      @Override
       public void textCommitted(JTextEntryField textEntryField) {
         updateLabel.setText(textEntryField.getValidText());
       }

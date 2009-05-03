@@ -7,22 +7,23 @@
  */
 package chrriis.dj.swingsuite;
 
-import java.util.EventListener;
 
 /**
- * The listener interface for receiving events.
+ * An adapter for the text entry listener interface.
  * @author Christopher Deckers
  */
-public interface TextEntryFieldListener extends EventListener {
+public abstract class TextEntryFieldAdapter implements TextEntryFieldListener {
 
   /**
    * Invoked when an error message is set or cleared.
    */
-  public void errorMessageChanged(JTextEntryField validationField, String errorMessage);
+  public void errorMessageChanged(JTextEntryField validationField, String errorMessage) {
+  }
 
   /**
    * Invoked when a valid text of an entry field is committed.
    */
-  public void textCommitted(JTextEntryField validationField);
+  public void textCommitted(JTextEntryField validationField) {
+  }
 
 }

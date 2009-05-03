@@ -461,8 +461,12 @@ public class JTextEntryField extends JTextField {
   }
 
   private void hidePopup() {
+    if(lastDisplayedMessage != null && isTextValid(getText_())) {
+      lastDisplayedMessage = null;
+      fireErrorMessageChangedEvent(null);
+    }
+    lastMessage = null;
     if(popup != null) {
-      lastMessage = null;
       if(popup.isVisible()) {
         popup.setVisible(false);
       }
@@ -470,24 +474,28 @@ public class JTextEntryField extends JTextField {
     }
   }
 
+  private String lastDisplayedMessage;
   private String lastMessage;
   private boolean preventPopupRespawn;
 
   private void showPopup(final boolean isMaxLengthPopup) {
     preventPopupRespawn = false;
-    if(!isTipDisplayedOnError()) {
-      return;
-    }
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         if(isShowing()) {
-          if(!isTipDisplayedOnError() || !hasFocus()) {
+          if(!hasFocus()) {
             return;
           }
           String text = getText_();
           boolean isTextValid = isTextValid(text);
           String message = !isTextValid? getInvalidTextErrorMessage(text): getMaximumLengthValidationErrorMessage();
-          if(message.equals(lastMessage)) {
+          if(!isTextValid || isMaxLengthPopup) {
+            if(!message.equals(lastDisplayedMessage)) {
+              lastDisplayedMessage = message;
+              fireErrorMessageChangedEvent(lastDisplayedMessage);
+            }
+          }
+          if(!isTipDisplayedOnError() || message.equals(lastMessage)) {
             return;
           }
           hidePopup();
@@ -710,7 +718,7 @@ public class JTextEntryField extends JTextField {
     }
     if(!lastValidText.equals(text)) {
       lastValidText = text;
-      fireValueCommittedEvent();
+      fireTextCommittedEvent();
     }
   }
 
@@ -835,9 +843,15 @@ public class JTextEntryField extends JTextField {
     return isSelectingAllOnFocus;
   }
 
-  private void fireValueCommittedEvent() {
+  private void fireTextCommittedEvent() {
     for(TextEntryFieldListener listener: getTextEntryFieldListeners()) {
       listener.textCommitted(this);
+    }
+  }
+
+  private void fireErrorMessageChangedEvent(String errorMessage) {
+    for(TextEntryFieldListener listener: getTextEntryFieldListeners()) {
+      listener.errorMessageChanged(this, errorMessage);
     }
   }
 

@@ -25,7 +25,7 @@ import chrriis.dj.swingsuite.JNumberEntryField;
 import chrriis.dj.swingsuite.JTextEntryField;
 import chrriis.dj.swingsuite.JTitledSeparator;
 import chrriis.dj.swingsuite.SwingSuiteUtilities;
-import chrriis.dj.swingsuite.TextEntryFieldListener;
+import chrriis.dj.swingsuite.TextEntryFieldAdapter;
 
 /**
  * @author Christopher Deckers
@@ -159,7 +159,8 @@ public class TextAndNumberFieldsExample extends JPanel {
   private JTextEntryField connectUpdateLabel(JTextEntryField field, final JLabel updateLabel) {
     updateLabel.setPreferredSize(new Dimension(150, 0));
     updateLabel.setText(field.getValidText());
-    field.addTextEntryFieldListener(new TextEntryFieldListener() {
+    field.addTextEntryFieldListener(new TextEntryFieldAdapter() {
+      @Override
       public void textCommitted(JTextEntryField textEntryField) {
         updateLabel.setText(textEntryField.getValidText());
       }
