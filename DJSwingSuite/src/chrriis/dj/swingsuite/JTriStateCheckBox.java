@@ -258,8 +258,15 @@ public class JTriStateCheckBox extends JCheckBox {
             g2d.setComposite(AlphaComposite.Src);
             paintIconMethod.invoke(icon, context, g2d, 0, 0, getIconWidth(), getIconHeight());
             g2d.setComposite(AlphaComposite.SrcAtop);
-            g2d.setColor(new Color(indeterminateColor.getRed(), indeterminateColor.getGreen(), indeterminateColor.getBlue(), 120));
-            g2d.fillRect(0, 0, width, height);
+            for(int i=0; i<width; i++) {
+              for(int j=0; j<height; j++) {
+                int alpha = (image.getRGB(i, j) >> 24 & 0xff) / 2;
+                g2d.setColor(new Color(indeterminateColor.getRed(), indeterminateColor.getGreen(), indeterminateColor.getBlue(), alpha));
+                g2d.drawLine(i, j, i, j);
+              }
+            }
+//            g2d.setColor(new Color(indeterminateColor.getRed(), indeterminateColor.getGreen(), indeterminateColor.getBlue(), 120));
+//            g2d.fillRect(0, 0, width, height);
             g2d.dispose();
             g.translate(x, y);
             g.drawImage(image, 0, 0, c);
