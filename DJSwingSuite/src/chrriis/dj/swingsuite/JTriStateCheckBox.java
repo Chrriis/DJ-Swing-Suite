@@ -284,12 +284,15 @@ public class JTriStateCheckBox extends JCheckBox {
   }
 
   private static Color indeterminateColor;
+  private String lafClassName;
   private int gap;
 
   @Override
   public void updateUI() {
     super.updateUI();
-    if(indeterminateColor == null) {
+    String currentLafClassName = UIManager.getLookAndFeel().getClass().getName();
+    if(indeterminateColor == null || !currentLafClassName.equals(lafClassName)) {
+      lafClassName = currentLafClassName;
       JCheckBox checkBox = new JCheckBox();
       checkBox.setSize(checkBox.getPreferredSize());
       int imgWidth = checkBox.getWidth() - 4;

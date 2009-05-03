@@ -8,28 +8,35 @@
 package chrriis.dj.swingsuite.demo;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -44,6 +51,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import chrriis.common.Disposable;
 import chrriis.common.ui.source.SourcePane;
+import chrriis.dj.swingsuite.JWidePopupComboBox;
 import chrriis.dj.swingsuite.SwingSuiteUtilities;
 
 /**
@@ -69,7 +77,14 @@ public class DemoFrame extends JFrame {
     }
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setLocationByPlatform(true);
-    Container contentPane = getContentPane();
+    setSize(800, 600);
+    JPanel contentPane = new JPanel(new BorderLayout());
+    createContent(contentPane);
+    getContentPane().add(contentPane, BorderLayout.CENTER);
+  }
+
+  private void createContent(final JComponent contentPane) {
+    contentPane.removeAll();
     final JPanel displayArea = new JPanel(new BorderLayout(0, 0)) {
       @Override
       public Dimension getMinimumSize() {
@@ -185,12 +200,44 @@ public class DemoFrame extends JFrame {
         }
       }
     });
-    JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, new JScrollPane(demoTree), displayArea);
+    JPanel westPane = new JPanel(new BorderLayout());
+    LookAndFeelInfo[] installedLookAndFeels = UIManager.getInstalledLookAndFeels();
+    final JWidePopupComboBox lafComboBox = new JWidePopupComboBox(installedLookAndFeels);
+    lafComboBox.setRenderer(new DefaultListCellRenderer() {
+      @Override
+      public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        return super.getListCellRendererComponent(list, ((LookAndFeelInfo)value).getName(), index, isSelected, cellHasFocus);
+      }
+    });
+    String currentLafClassName = UIManager.getLookAndFeel().getClass().getName();
+    for(int i=0; i<installedLookAndFeels.length; i++) {
+      if(installedLookAndFeels[i].getClassName().equals(currentLafClassName)) {
+        lafComboBox.setSelectedIndex(i);
+        break;
+      }
+    }
+    lafComboBox.addItemListener(new ItemListener() {
+      public void itemStateChanged(ItemEvent e) {
+        if(e.getStateChange() == ItemEvent.SELECTED) {
+          try {
+            UIManager.setLookAndFeel(((LookAndFeelInfo)lafComboBox.getSelectedItem()).getClassName());
+            createContent(contentPane);
+            SwingUtilities.updateComponentTreeUI(DemoFrame.this);
+          } catch (Exception ex) {
+            JOptionPane.showMessageDialog(DemoFrame.this, "An error occured while switching to a different look and feel.", "Look and feel switch failed", JOptionPane.ERROR_MESSAGE);
+          }
+        }
+      }
+    });
+    westPane.add(lafComboBox, BorderLayout.NORTH);
+    westPane.add(new JScrollPane(demoTree), BorderLayout.CENTER);
+    JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, westPane, displayArea);
     contentPane.add(splitPane, BorderLayout.CENTER);
-    setSize(800, 600);
     splitPane.setDividerLocation(190);
     demoTree.expandRow(0);
     demoTree.setSelectionRow(1);
+    contentPane.revalidate();
+    contentPane.repaint();
   }
 
   public static void main(String[] args) {
