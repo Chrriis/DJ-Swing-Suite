@@ -15,5 +15,6 @@ Licence terms: LGPL (see licence.txt)
 - Wide popup combo boxes are added.
 - Selectable tree is added.
 - Titled separators are implemented.
+- Selectable label is added.
 - Layered icon is added.
 - Auto-scroll feature is added.
