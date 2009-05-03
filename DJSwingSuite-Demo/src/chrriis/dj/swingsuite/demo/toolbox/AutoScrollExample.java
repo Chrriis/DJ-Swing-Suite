@@ -25,9 +25,9 @@ public class AutoScrollExample extends JPanel {
 
   public AutoScrollExample() {
     super(new BorderLayout());
-    JPanel panel = new JPanel(new GridLayout(20, 20, 100, 100));
-    for(int i=0; i<20; i++) {
-      for(int j=0; j<20; j++) {
+    JPanel panel = new JPanel(new GridLayout(10, 10, 100, 100));
+    for(int i=0; i<10; i++) {
+      for(int j=0; j<10; j++) {
         JTextField textField = new JTextField("Text " + i + "x" + j);
         textField.setEnabled(i % 2 == 0);
         // We enable auto scroll on the text fields as well because it captures mouse inputs:
