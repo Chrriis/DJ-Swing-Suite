@@ -18,7 +18,7 @@ import java.awt.event.MouseMotionListener;
 import java.text.MessageFormat;
 
 import javax.swing.AbstractButton;
-import javax.swing.JScrollPane;
+import javax.swing.JComponent;
 import javax.swing.UIManager;
 import javax.swing.text.JTextComponent;
 
@@ -138,12 +138,13 @@ public class SwingSuiteUtilities {
   }
 
   /**
-   * Set whether the auto-scroll feature is enabled. Auto-scoll is triggered when the user clicks with the middle mouse button on an area that does not trap mouse events (like on labels, but not on text fields).
-   * @param scrollPane The scroll pane for which to enable or disable the feature.
+   * Set whether the auto-scroll feature is enabled. Auto-scoll is triggered when the user clicks with the middle mouse button and the component is a scroll pane or has a scroll pane ancestor.<br>
+   * Note that clicking on a descendant component activates the auto-scroll feature only if it has not register a mouse listener. Otherwise, you need to activate the auto scroll on these components as well.
+   * @param component The component for which to enable or disable the feature.
    * @param isEnabled true if the feature is to be enabled, false otherwise.
    */
-  public static void setAutoScrollEnabled(JScrollPane scrollPane, boolean isEnabled) {
-    AutoScrollActivator.setAutoScrollEnabled(scrollPane, isEnabled);
+  public static void setAutoScrollEnabled(JComponent component, boolean isEnabled) {
+    AutoScrollActivator.setAutoScrollEnabled(component, isEnabled);
   }
 
   /**

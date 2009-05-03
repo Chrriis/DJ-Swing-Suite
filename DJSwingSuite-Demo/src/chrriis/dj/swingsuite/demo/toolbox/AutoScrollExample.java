@@ -11,9 +11,9 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import chrriis.dj.swingsuite.SwingSuiteUtilities;
@@ -28,7 +28,12 @@ public class AutoScrollExample extends JPanel {
     JPanel panel = new JPanel(new GridLayout(20, 20, 100, 100));
     for(int i=0; i<20; i++) {
       for(int j=0; j<20; j++) {
-        panel.add(new JLabel("Label " + i + "x" + j));
+        JTextField textField = new JTextField("Text " + i + "x" + j);
+        textField.setEnabled(i % 2 == 0);
+        // We enable auto scroll on the text fields as well because it captures mouse inputs:
+        // the auto scroll at the scroll pane level cannot be triggered.
+        SwingSuiteUtilities.setAutoScrollEnabled(textField, true);
+        panel.add(textField);
       }
     }
     JScrollPane scrollPane = new JScrollPane(panel);

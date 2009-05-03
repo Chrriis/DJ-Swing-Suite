@@ -38,11 +38,7 @@ import javax.swing.border.Border;
  */
 class AutoScrollActivator {
 
-  private JScrollPane scrollPane;
-
-  private AutoScrollActivator(JScrollPane scrollPane) {
-    this.scrollPane = scrollPane;
-    configureScrollPane();
+  private AutoScrollActivator() {
   }
 
   private static class AutoScrollProperties {
@@ -52,6 +48,7 @@ class AutoScrollActivator {
     public AWTEventListener toolkitListener;
     public boolean isDragMode;
     public JPopupMenu iconPopupMenu;
+    private JScrollPane scrollPane;
   }
 
   private AutoScrollProperties autoScrollProperties;
@@ -68,9 +65,17 @@ class AutoScrollActivator {
   }
 
   private void activateAutoScroll(MouseEvent e) {
+    Component c = e.getComponent();
+    while(c!= null && !(c instanceof JScrollPane)) {
+      c = c.getParent();
+    }
+    if(c == null) {
+      return;
+    }
     autoScrollProperties = new AutoScrollProperties();
+    autoScrollProperties.scrollPane = (JScrollPane)c;
     autoScrollProperties.isDragMode = false;
-    JViewport viewport = scrollPane.getViewport();
+    JViewport viewport = autoScrollProperties.scrollPane.getViewport();
     autoScrollProperties.currentLocation = MouseInfo.getPointerInfo().getLocation();
     SwingUtilities.convertPointFromScreen(autoScrollProperties.currentLocation, viewport);
     autoScrollProperties.startLocation = autoScrollProperties.currentLocation;
@@ -103,7 +108,7 @@ class AutoScrollActivator {
     }
     ActionListener actionListener = new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        JViewport viewport = scrollPane.getViewport();
+        JViewport viewport = autoScrollProperties.scrollPane.getViewport();
         Component view = viewport.getView();
         if(view == null) {
           return;
@@ -139,7 +144,7 @@ class AutoScrollActivator {
         switch(eventID) {
           case MouseEvent.MOUSE_MOVED:
           case MouseEvent.MOUSE_DRAGGED:
-            JViewport viewport = scrollPane.getViewport();
+            JViewport viewport = autoScrollProperties.scrollPane.getViewport();
             autoScrollProperties.currentLocation = MouseInfo.getPointerInfo().getLocation();
             SwingUtilities.convertPointFromScreen(autoScrollProperties.currentLocation, viewport);
             if(!autoScrollProperties.isDragMode && eventID == MouseEvent.MOUSE_DRAGGED) {
@@ -170,43 +175,20 @@ class AutoScrollActivator {
     }
   }
 
-  private static class AutoScrollMouseListener extends MouseAdapter {
-    protected AutoScrollActivator autoScrollActivator;
-    public AutoScrollMouseListener(AutoScrollActivator autoScrollActivator) {
-      this.autoScrollActivator = autoScrollActivator;
-    }
-    @Override
-    public void mousePressed(MouseEvent e) {
-      if(e.getButton() != 2) {
-        return;
-      }
-      autoScrollActivator.activateAutoScroll(e);
-    }
-  }
-
-  private void configureScrollPane() {
-    for(MouseListener mouseListener: scrollPane.getMouseListeners()) {
-      if(mouseListener instanceof AutoScrollMouseListener) {
-        return;
-      }
-    }
-    scrollPane.addMouseListener(new AutoScrollMouseListener(this));
-  }
-
   private static final ImageIcon H_IMAGE_ICON = new ImageIcon(AutoScrollActivator.class.getResource("resource/autoscroll_h.png"));
   private static final ImageIcon V_IMAGE_ICON = new ImageIcon(AutoScrollActivator.class.getResource("resource/autoscroll_v.png"));
   private static final ImageIcon HV_IMAGE_ICON = new ImageIcon(AutoScrollActivator.class.getResource("resource/autoscroll_all.png"));
 
   private ImageIcon getAutoScrollIcon() {
     ImageIcon icon;
-    if(scrollPane.getHorizontalScrollBar().isVisible()) {
-      if(scrollPane.getVerticalScrollBar().isVisible()) {
+    if(autoScrollProperties.scrollPane.getHorizontalScrollBar().isVisible()) {
+      if(autoScrollProperties.scrollPane.getVerticalScrollBar().isVisible()) {
         icon = HV_IMAGE_ICON;
       } else {
         icon = H_IMAGE_ICON;
       }
     } else {
-      if(scrollPane.getVerticalScrollBar().isVisible()) {
+      if(autoScrollProperties.scrollPane.getVerticalScrollBar().isVisible()) {
         icon = V_IMAGE_ICON;
       } else {
         icon = HV_IMAGE_ICON;
@@ -215,20 +197,32 @@ class AutoScrollActivator {
     return icon;
   }
 
-  public static void setAutoScrollEnabled(final JScrollPane scrollPane, boolean isEnabled) {
-    for(MouseListener mouseListener: scrollPane.getMouseListeners()) {
+  private static class AutoScrollMouseListener extends MouseAdapter {
+    @Override
+    public void mousePressed(MouseEvent e) {
+      if(e.getButton() != MouseEvent.BUTTON2) {
+        return;
+      }
+      new AutoScrollActivator().activateAutoScroll(e);
+    }
+  }
+
+  private static AutoScrollMouseListener autoScrollMouseListener = new AutoScrollMouseListener();
+
+  public static void setAutoScrollEnabled(final JComponent component, boolean isEnabled) {
+    for(MouseListener mouseListener: component.getMouseListeners()) {
       if(mouseListener instanceof AutoScrollMouseListener) {
         if(isEnabled) {
           // Already registered.
           return;
         }
         // Not registered, but we want to unregister.
-        scrollPane.removeMouseListener(mouseListener);
+        component.removeMouseListener(mouseListener);
         return;
       }
     }
     if(isEnabled) {
-      new AutoScrollActivator(scrollPane);
+      component.addMouseListener(autoScrollMouseListener);
     }
   }
 
