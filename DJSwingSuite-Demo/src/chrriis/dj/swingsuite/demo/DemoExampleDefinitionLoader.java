@@ -13,14 +13,14 @@ import java.util.List;
 import chrriis.dj.swingsuite.demo.examples.entryfields.TextAndNumberFieldsExample;
 import chrriis.dj.swingsuite.demo.examples.entryfields.ValidatorsFormattersAndMasksExample;
 import chrriis.dj.swingsuite.demo.examples.introduction.SwingSuite;
-import chrriis.dj.swingsuite.demo.toolbox.AutoScrollExample;
-import chrriis.dj.swingsuite.demo.toolbox.ComboButtonExample;
-import chrriis.dj.swingsuite.demo.toolbox.LayeredIconExample;
-import chrriis.dj.swingsuite.demo.toolbox.LinkExample;
-import chrriis.dj.swingsuite.demo.toolbox.SelectableTreeExample;
-import chrriis.dj.swingsuite.demo.toolbox.TitledSeparatorExample;
-import chrriis.dj.swingsuite.demo.toolbox.TriStateCheckBoxExample;
-import chrriis.dj.swingsuite.demo.toolbox.WidePopupComboBoxExample;
+import chrriis.dj.swingsuite.demo.examples.toolbox.AutoScrollExample;
+import chrriis.dj.swingsuite.demo.examples.toolbox.ComboButtonExample;
+import chrriis.dj.swingsuite.demo.examples.toolbox.LayeredIconExample;
+import chrriis.dj.swingsuite.demo.examples.toolbox.LinkExample;
+import chrriis.dj.swingsuite.demo.examples.toolbox.SelectableTreeExample;
+import chrriis.dj.swingsuite.demo.examples.toolbox.TitledSeparatorExample;
+import chrriis.dj.swingsuite.demo.examples.toolbox.TriStateCheckBoxExample;
+import chrriis.dj.swingsuite.demo.examples.toolbox.WidePopupComboBoxExample;
 
 /**
  * @author Christopher Deckers
