@@ -8,6 +8,7 @@
 package chrriis.dj.swingsuite;
 
 import java.awt.AWTEvent;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -23,6 +24,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.WindowEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -89,6 +91,8 @@ class AutoScrollActivator {
     };
     iconPopupMenu.setFocusable(false);
     iconPopupMenu.setOpaque(false);
+    iconPopupMenu.setBorder(BorderFactory.createEmptyBorder());
+    iconPopupMenu.setBackground(new Color(0, 0, 0, 0));
     JLabel iconLabel = new JLabel(getAutoScrollIcon());
     iconPopupMenu.add(iconLabel);
     iconPopupMenu.addMouseListener(new MouseAdapter() {

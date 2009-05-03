@@ -9,6 +9,7 @@ package chrriis.dj.swingsuite.demo.examples.entryfields;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -17,13 +18,16 @@ import java.text.NumberFormat;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
+import chrriis.dj.swingsuite.JLink;
 import chrriis.dj.swingsuite.JNumberEntryField;
 import chrriis.dj.swingsuite.JTextEntryField;
 import chrriis.dj.swingsuite.JTitledSeparator;
+import chrriis.dj.swingsuite.LinkListener;
 import chrriis.dj.swingsuite.SwingSuiteUtilities;
 import chrriis.dj.swingsuite.TextEntryFieldAdapter;
 import chrriis.dj.swingsuite.TextEntryFormatter;
@@ -68,7 +72,18 @@ public class ValidatorsFormattersAndMasksExample extends JPanel {
     centerPane.add(new JTitledSeparator("Masks"), new GridBagConstraints(0, y++, 3, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, sectionInsets, 0, 0));
     // A String field with a mask.
     updateLabel = new JLabel();
-    centerPane.add(new JLabel("Pattern-based mask (#A-UL-?* '# H):"), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+    JLink<String> patternLink = new JLink<String>("#A-UL-?* '# H", null, "Show the definition of pattern tokens");
+    patternLink.addLinkListener(new LinkListener<String>() {
+      public boolean linkActivated(JLink<String> link, String target) {
+        JOptionPane.showMessageDialog(ValidatorsFormattersAndMasksExample.this, "Here is the list of the supported tokens:\n# = Character.isDigit.\nU = Character.isLetter mapped to uppercase.\nL = Character.isLetter mapped to lowercase.\nA = Character.isLetter  or Character.isDigit.\n? = Character.isLetter.\n* = Any character.\nH = Any hex character (0-9, a-f or A-F).\n' = Escape any of the special formatting tokens.");
+        return false;
+      }
+    });
+    JPanel linkPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+    linkPanel.add(new JLabel("Pattern-based mask ("));
+    linkPanel.add(patternLink);
+    linkPanel.add(new JLabel("):"));
+    centerPane.add(linkPanel, new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(connectUpdateLabel(createTextEntryFieldWithMask(), updateLabel), new GridBagConstraints(1, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     centerPane.add(updateLabel, new GridBagConstraints(2, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.BOTH, insets, 0, 0));
     // A String field with a mask, and custom validator.

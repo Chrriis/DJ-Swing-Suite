@@ -191,13 +191,13 @@ public class JTextEntryField extends JTextField {
   /**
    * Construct a text entry field with input restricted by a pattern-based mask. The pattern uses these special tokens:<br>
    * # = Character.isDigit.<br>
-   * ' = Escape any of the special formatting tokens.<br>
    * U = Character.isLetter mapped to uppercase.<br>
    * L = Character.isLetter mapped to lowercase.<br>
    * A = Character.isLetter  or Character.isDigit.<br>
    * ? = Character.isLetter.<br>
    * * = Any character.<br>
-   * H = Any hex character (0-9, a-f or A-F).
+   * H = Any hex character (0-9, a-f or A-F).<br>
+   * ' = Escape any of the special formatting tokens.
    * @param text the default text.
    * @param columns The number of columns used to calculate the preferred width, or zero for the default size calculation.
    * @param pattern the pattern of the mask to apply when entering the text.
