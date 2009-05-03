@@ -30,7 +30,7 @@ import javax.swing.tree.TreeSelectionModel;
  * A tree that allows a user to start a mouse drag in an empty area to make a rectangular selection. Note that the shift and control modifiers modify the selection behavior.
  * @author Christopher Deckers
  */
-public class JSelectableTree extends JTree {
+public class JDragSelectTree extends JTree {
 
   private static class SelectionData {
 
@@ -78,36 +78,36 @@ public class JSelectableTree extends JTree {
 
   }
 
-  public JSelectableTree() {
+  public JDragSelectTree() {
     init();
   }
 
-  public JSelectableTree(Hashtable<?, ?> value) {
+  public JDragSelectTree(Hashtable<?, ?> value) {
     super(value);
     init();
   }
 
-  public JSelectableTree(Object[] value) {
+  public JDragSelectTree(Object[] value) {
     super(value);
     init();
   }
 
-  public JSelectableTree(TreeModel newModel) {
+  public JDragSelectTree(TreeModel newModel) {
     super(newModel);
     init();
   }
 
-  public JSelectableTree(TreeNode root) {
+  public JDragSelectTree(TreeNode root) {
     super(root);
     init();
   }
 
-  public JSelectableTree(TreeNode root, boolean asksAllowsChildren) {
+  public JDragSelectTree(TreeNode root, boolean asksAllowsChildren) {
     super(root, asksAllowsChildren);
     init();
   }
 
-  public JSelectableTree(Vector<?> value)  {
+  public JDragSelectTree(Vector<?> value)  {
     super(value);
     init();
   }

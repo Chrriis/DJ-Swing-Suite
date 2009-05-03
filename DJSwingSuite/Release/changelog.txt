@@ -18,3 +18,4 @@ Licence terms: LGPL (see licence.txt)
 - Selectable label is added.
 - Layered icon is added.
 - Auto-scroll feature is added.
+- Table column auto fit is added.
