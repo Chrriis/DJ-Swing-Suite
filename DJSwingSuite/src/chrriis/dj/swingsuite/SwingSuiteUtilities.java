@@ -15,6 +15,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.MessageFormat;
 
 import javax.swing.AbstractButton;
@@ -188,6 +191,81 @@ public class SwingSuiteUtilities {
         break;
       }
     }
+  }
+
+  /**
+   * Decode some text that was URL encoded.
+   * @param s the string to decode.
+   * @return the string once decoded.
+   */
+  public static String decodeURL(String s) {
+    try {
+      return URLDecoder.decode(s, "UTF-8");
+    } catch(UnsupportedEncodingException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  /**
+   * Encode some text to be used in a URL.
+   * @param s the string to encode.
+   * @return the string once encoded.
+   */
+  @SuppressWarnings("deprecation")
+  public static String encodeURL(String s) {
+    String encodedString;
+    try {
+      encodedString = URLEncoder.encode(s, "UTF-8");
+    } catch(Exception e) {
+      encodedString = URLEncoder.encode(s);
+    }
+    return encodedString.replaceAll("\\+", "%20");
+  }
+
+  /**
+   * Escape a string to be used in XML.
+   * @param s the string to escape.
+   * @return the string after having been escaped.
+   */
+  public static String escapeXML(String s) {
+    if(s == null || s.length() == 0) {
+      return s;
+    }
+    StringBuffer sb = new StringBuffer((int)(s.length() * 1.1));
+    for(int i=0; i<s.length(); i++) {
+      char c = s.charAt(i);
+      switch(c) {
+        case '<':
+          sb.append("&lt;");
+          break;
+        case '>':
+          sb.append("&gt;");
+          break;
+        case '&':
+          sb.append("&amp;");
+          break;
+        case '\'':
+          sb.append("&apos;");
+          break;
+        case '\"':
+          sb.append("&quot;");
+          break;
+        default:
+          sb.append(c);
+        break;
+      }
+    }
+    return sb.toString();
+  }
+
+  /**
+   * Replace a string that contains wildcards (* and ?) to its regular expression equivalent.
+   * @param wildcardString the string to convert.
+   * @return the regular expression equivalent to the wildcard string.
+   */
+  public static String convertWildcardsToRegExp(String wildcardString) {
+    return "\\Q" + wildcardString.replace("\\E", "\\\\E").replace("\\Q", "\\\\Q").replace("?", "\\E.\\Q").replace("*", "\\E.*\\Q");
   }
 
   /**
