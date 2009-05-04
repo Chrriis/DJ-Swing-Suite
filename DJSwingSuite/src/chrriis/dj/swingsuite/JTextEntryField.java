@@ -832,7 +832,7 @@ public class JTextEntryField extends JTextField {
    */
   public void setSelectingAllOnFocus(boolean isSelectingAllOnFocus) {
     this.isSelectingAllOnFocus = isSelectingAllOnFocus;
-    SwingSuiteUtilities.setSelectingAllOnFocus(this, isSelectingAllOnFocus);
+    SwingSuiteUtilities.setSelectAllOnFocus(this, isSelectingAllOnFocus);
   }
 
   /**

@@ -35,7 +35,7 @@ public class SelectAllOnFocusExample extends JPanel {
     // Selecting text field.
     contentPane.add(new JLabel("A selecting text field: "), new GridBagConstraints(0, 1, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
     JTextField selectingTextField = new JTextField("Some text", 14);
-    SwingSuiteUtilities.setSelectingAllOnFocus(selectingTextField, true);
+    SwingSuiteUtilities.setSelectAllOnFocus(selectingTextField, true);
     contentPane.add(selectingTextField, new GridBagConstraints(1, 1, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
     add(contentPane);
   }

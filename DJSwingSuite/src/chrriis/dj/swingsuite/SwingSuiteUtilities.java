@@ -90,7 +90,7 @@ public class SwingSuiteUtilities {
    * @param component The component to set the select all status to.
    * @param isSelectingAllOnFocus true if the text should be selected when focus is acquired, false otherwise.
    */
-  public static void setSelectingAllOnFocus(JTextComponent component, boolean isSelectingAllOnFocus) {
+  public static void setSelectAllOnFocus(JTextComponent component, boolean isSelectingAllOnFocus) {
     component.removeFocusListener(SELECT_ALL_ON_FOCUS_LISTENER);
     component.removeMouseListener(SELECT_ALL_ON_FOCUS_LISTENER);
     component.removeMouseMotionListener(SELECT_ALL_ON_FOCUS_LISTENER);

@@ -32,7 +32,7 @@ public class WildcardsConversionExample extends JPanel {
     super(new GridBagLayout());
     JPanel contentPane = new JPanel(new BorderLayout());
     final JTextField filterTextField = new JTextField("*.*", 14);
-    SwingSuiteUtilities.setSelectingAllOnFocus(filterTextField, true);
+    SwingSuiteUtilities.setSelectAllOnFocus(filterTextField, true);
     contentPane.add(filterTextField, BorderLayout.NORTH);
     final String[] fileJListItems = new String[] {
         "designpatternscard.pdf",
