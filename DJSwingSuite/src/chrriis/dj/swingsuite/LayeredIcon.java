@@ -21,7 +21,7 @@ import javax.swing.ImageIcon;
 public class LayeredIcon extends ImageIcon {
 
   private List<Icon> iconList = new ArrayList<Icon>(3);
-  private List<Point> locationList = new ArrayList<Point>(3);
+  private List<Point> iconLocationList = new ArrayList<Point>(3);
 
   private int width;
   private int height;
@@ -47,7 +47,7 @@ public class LayeredIcon extends ImageIcon {
   public void paintIcon(Component component, Graphics g, int x, int y) {
     this.component = component;
     for(int i=0; i<iconList.size(); i++) {
-      Point location = locationList.get(i);
+      Point location = iconLocationList.get(i);
       iconList.get(i).paintIcon(component, g, x + location.x, y + location.y);
     }
   }
@@ -65,7 +65,7 @@ public class LayeredIcon extends ImageIcon {
    * @return the locations of all the icons.
    */
   public Point[] getIconLocations() {
-    return locationList.toArray(new Point[0]);
+    return iconLocationList.toArray(new Point[0]);
   }
 
   /**
@@ -84,8 +84,16 @@ public class LayeredIcon extends ImageIcon {
     int index = iconList.indexOf(icon);
     if(index >= 0) {
       iconList.remove(index);
-      locationList.remove(index);
+      iconLocationList.remove(index);
     }
+  }
+
+  /**
+   * Remove all icons.
+   */
+  public void removeAllIcons() {
+    iconList.clear();
+    iconLocationList.clear();
   }
 
   /**
@@ -126,7 +134,7 @@ public class LayeredIcon extends ImageIcon {
    */
   public void addIcon(Icon icon, Point location, int zOrder) {
     iconList.add(zOrder, icon);
-    locationList.add(zOrder, location);
+    iconLocationList.add(zOrder, location);
     if(icon instanceof ImageIcon) {
       if(observer == null) {
         observer = new ImageObserver() {
