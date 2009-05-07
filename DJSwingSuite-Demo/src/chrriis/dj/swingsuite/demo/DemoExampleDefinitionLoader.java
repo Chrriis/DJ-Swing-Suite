@@ -10,16 +10,16 @@ package chrriis.dj.swingsuite.demo;
 import java.util.ArrayList;
 import java.util.List;
 
+import chrriis.dj.swingsuite.demo.examples.basiccomponents.ComboButtonExample;
+import chrriis.dj.swingsuite.demo.examples.basiccomponents.DragSelectTreeExample;
+import chrriis.dj.swingsuite.demo.examples.basiccomponents.ExtendedLabelExample;
+import chrriis.dj.swingsuite.demo.examples.basiccomponents.LinkExample;
+import chrriis.dj.swingsuite.demo.examples.basiccomponents.TitledSeparatorExample;
+import chrriis.dj.swingsuite.demo.examples.basiccomponents.TriStateCheckBoxExample;
+import chrriis.dj.swingsuite.demo.examples.basiccomponents.WidePopupComboBoxExample;
 import chrriis.dj.swingsuite.demo.examples.entryfields.TextAndNumberFieldsExample;
 import chrriis.dj.swingsuite.demo.examples.entryfields.ValidatorsFormattersAndMasksExample;
 import chrriis.dj.swingsuite.demo.examples.introduction.SwingSuite;
-import chrriis.dj.swingsuite.demo.examples.toolbox.ComboButtonExample;
-import chrriis.dj.swingsuite.demo.examples.toolbox.DragSelectTreeExample;
-import chrriis.dj.swingsuite.demo.examples.toolbox.LinkExample;
-import chrriis.dj.swingsuite.demo.examples.toolbox.SelectableLabelExample;
-import chrriis.dj.swingsuite.demo.examples.toolbox.TitledSeparatorExample;
-import chrriis.dj.swingsuite.demo.examples.toolbox.TriStateCheckBoxExample;
-import chrriis.dj.swingsuite.demo.examples.toolbox.WidePopupComboBoxExample;
 import chrriis.dj.swingsuite.demo.examples.utilities.AutoScrollExample;
 import chrriis.dj.swingsuite.demo.examples.utilities.LayeredIconExample;
 import chrriis.dj.swingsuite.demo.examples.utilities.SelectAllOnFocusExample;
@@ -36,11 +36,11 @@ public class DemoExampleDefinitionLoader {
     exampleGroupList.add(new ExampleGroup("Introduction", new Example[] {
         new Example("Swing Suite", SwingSuite.class, "The motivations behind this project.", false),
     }));
-    exampleGroupList.add(new ExampleGroup("Toolbox", new Example[] {
+    exampleGroupList.add(new ExampleGroup("Basic Components", new Example[] {
         new Example("Combo button", ComboButtonExample.class, "Combo buttons are generally found in tool bars, often to offer a list of choices and optionally a default action.", true),
         new Example("Tri-state check box", TriStateCheckBoxExample.class, "Tri-state check boxes, with advanced capabilities like rolling cycle definition.", true),
         new Example("Link", LinkExample.class, "Users are generally familiar with links: they are simple, intuitive and generally provide some information through tool tips.", true),
-        new Example("Selectable label", SelectableLabelExample.class, "A label that allows text selection.", true),
+        new Example("Extended label", ExtendedLabelExample.class, "A label that allows text selection and is multiline.", true),
         new Example("Wide popup combo box", WidePopupComboBoxExample.class, "Wide popup combo boxes are a solution to the problem of having content that is too long. Such content generally messes up the user interface layout.", true),
         new Example("Drag-select tree", DragSelectTreeExample.class, "A tree where the user can click in the empty area, and drag the mouse over some nodes to select them. Modifiers (control and shift) can add or exclude to the current selection.", true),
         new Example("Titled separator", TitledSeparatorExample.class, "Titled separators are generally more elegant than titled borders and do not require nesting panels.", true),
