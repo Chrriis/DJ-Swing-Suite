@@ -160,4 +160,17 @@ public class JExtendedLabel extends JComponent implements SwingConstants {
     adjustLook();
   }
 
+  @Override
+  public void setEnabled(boolean enabled) {
+    textComponent.setEnabled(enabled);
+    JLabel label = new JLabel();
+    label.setEnabled(isEnabled());
+    textComponent.setForeground(label.getForeground());
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return textComponent.isEnabled();
+  }
+
 }
