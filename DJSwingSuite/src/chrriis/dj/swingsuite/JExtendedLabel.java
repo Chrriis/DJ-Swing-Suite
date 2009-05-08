@@ -53,10 +53,18 @@ public class JExtendedLabel extends JComponent implements SwingConstants {
   private TextComponentX textComponent;
 
   public JExtendedLabel(String text) {
-    this(text, LEADING);
+    this(text, LEADING, true);
+  }
+
+  public JExtendedLabel(String text, boolean isSelectable) {
+    this(text, LEADING, isSelectable);
   }
 
   public JExtendedLabel(String text, int horizontalAlignment) {
+    this(text, horizontalAlignment, true);
+  }
+
+  public JExtendedLabel(String text, int horizontalAlignment, boolean isSelectable) {
     setLayout(new BorderLayout());
     textComponent = new TextComponentX(text);
     scrollPane = new JScrollPane(textComponent) {
@@ -64,11 +72,16 @@ public class JExtendedLabel extends JComponent implements SwingConstants {
       public void paint(Graphics g) {
         paintComponents(g);
       }
+      @Override
+      public boolean isShowing() {
+        return true;
+      }
     };
     scrollPane.setViewportView(textComponent);
     add(scrollPane, BorderLayout.CENTER);
     setHorizontalAlignment(horizontalAlignment);
     adjustLook();
+    setSelectable(isSelectable);
   }
 
   private void adjustLook() {
@@ -82,7 +95,6 @@ public class JExtendedLabel extends JComponent implements SwingConstants {
       return;
     }
     textComponent.setEditable(false);
-    textComponent.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
     textComponent.setAlignmentX(label.getAlignmentX());
     textComponent.setAlignmentY(label.getAlignmentY());
     textComponent.setOpaque(false);
@@ -98,6 +110,9 @@ public class JExtendedLabel extends JComponent implements SwingConstants {
     } else {
       textComponent.setBackground(new Color(0, 0, 0, 0));
     }
+    label.setEnabled(false);
+    textComponent.setDisabledTextColor(label.getForeground());
+    textComponent.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
   }
 
   public void setText(String text) {
@@ -160,17 +175,27 @@ public class JExtendedLabel extends JComponent implements SwingConstants {
     adjustLook();
   }
 
+  public void setSelectable(boolean isSelectable) {
+    scrollPane.setVisible(isSelectable);
+  }
+
   @Override
-  public void setEnabled(boolean enabled) {
-    textComponent.setEnabled(enabled);
-    JLabel label = new JLabel();
-    label.setEnabled(isEnabled());
-    textComponent.setForeground(label.getForeground());
+  public void setEnabled(boolean isEnabled) {
+    textComponent.setEnabled(isEnabled);
   }
 
   @Override
   public boolean isEnabled() {
     return textComponent.isEnabled();
+  }
+
+  @Override
+  public void paint(Graphics g) {
+    super.paint(g);
+    if(!scrollPane.isVisible()) {
+      textComponent.setSize(getWidth(), getHeight());
+      textComponent.paint(g);
+    }
   }
 
 }

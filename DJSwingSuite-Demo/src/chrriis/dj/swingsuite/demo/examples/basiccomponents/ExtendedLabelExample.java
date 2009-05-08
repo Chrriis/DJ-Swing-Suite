@@ -41,7 +41,10 @@ public class ExtendedLabelExample extends JPanel {
     centerPane.add(veryLongLabel, new GridBagConstraints(0, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
     // Multiline label.
     centerPane.add(new JExtendedLabel("This is a multiline\nselectable label."), new GridBagConstraints(0, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+    // Multiline right-aligned label.
     centerPane.add(new JExtendedLabel("This is a multiline\nright-aligned selectable label.", JExtendedLabel.RIGHT), new GridBagConstraints(0, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+    // Multiline non-selectable label.
+    centerPane.add(new JExtendedLabel("This is a multiline\nnon-selectable label.", false), new GridBagConstraints(0, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
     add(centerPane, BorderLayout.CENTER);
   }
 
