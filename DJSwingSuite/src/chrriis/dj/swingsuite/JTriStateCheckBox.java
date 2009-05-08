@@ -183,12 +183,8 @@ public class JTriStateCheckBox extends JCheckBox {
   }
 
   @Override
-  public void setSelected(boolean b) {
-    if (b) {
-      setState(CheckState.SELECTED);
-    } else {
-      setState(CheckState.NOT_SELECTED);
-    }
+  public void setSelected(boolean isSelected) {
+    setState(isSelected? CheckState.SELECTED: CheckState.NOT_SELECTED);
   }
 
   private boolean isUIAdjustement;
@@ -237,6 +233,7 @@ public class JTriStateCheckBox extends JCheckBox {
       boolean isSynthPainted = false;
       int width = icon.getIconWidth();
       int height = icon.getIconHeight();
+      Color indeterminateColor_ = c.isEnabled()? indeterminateColor: indeterminateDisabledColor;
       try {
         Class<?> synthIconClass = Class.forName("sun.swing.plaf.synth.SynthIcon");
         if(synthIconClass.isAssignableFrom(icon.getClass())) {
@@ -261,7 +258,7 @@ public class JTriStateCheckBox extends JCheckBox {
             for(int i=0; i<width; i++) {
               for(int j=0; j<height; j++) {
                 int alpha = (image.getRGB(i, j) >> 24 & 0xff) / 2;
-                g2d.setColor(new Color(indeterminateColor.getRed(), indeterminateColor.getGreen(), indeterminateColor.getBlue(), alpha));
+                g2d.setColor(new Color(indeterminateColor_.getRed(), indeterminateColor_.getGreen(), indeterminateColor_.getBlue(), alpha));
                 g2d.drawLine(i, j, i, j);
               }
             }
@@ -282,7 +279,7 @@ public class JTriStateCheckBox extends JCheckBox {
         icon.paintIcon(c, g, x, y);
       }
       if(!isSynthPainted && checkBox.getState() == CheckState.INDETERMINATE) {
-        g.setColor(indeterminateColor);
+        g.setColor(indeterminateColor_);
         int gap = checkBox.gap;
         g.fillRect(x + gap, y + gap, width - 2 * gap, height - 2 * gap);
       }
@@ -291,6 +288,7 @@ public class JTriStateCheckBox extends JCheckBox {
   }
 
   private static Color indeterminateColor;
+  private static Color indeterminateDisabledColor;
   private String lafClassName;
   private int gap;
 
@@ -301,35 +299,9 @@ public class JTriStateCheckBox extends JCheckBox {
     if(indeterminateColor == null || !currentLafClassName.equals(lafClassName)) {
       lafClassName = currentLafClassName;
       JCheckBox checkBox = new JCheckBox();
-      checkBox.setSize(checkBox.getPreferredSize());
-      int imgWidth = checkBox.getWidth() - 4;
-      int imgHeight = checkBox.getHeight() - 4;
-      BufferedImage img1 = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
-      Graphics graphics = img1.getGraphics();
-      graphics.translate(-2, -2);
-      checkBox.print(graphics);
-      graphics.dispose();
-      checkBox.setSelected(true);
-      BufferedImage img2 = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
-      graphics = img2.getGraphics();
-      graphics.translate(-2, -2);
-      checkBox.print(graphics);
-      graphics.dispose();
-      int diff = 0;
-      int rgb = 0;
-      // Try to find a color in the selected box that has the highest difference with the color at the same position before selection.
-      for(int i=0; i<imgWidth; i++) {
-        for(int j=0; j<imgHeight; j++) {
-          int rgb1 = img1.getRGB(i, j);
-          int rgb2 = img2.getRGB(i, j);
-          int rDiff = Math.abs(rgb1 & 0xff - rgb2 & 0xff) + Math.abs(rgb1 >> 8 & 0xff - rgb2 >> 8 & 0xff) + Math.abs(rgb1 >> 16 & 0xff - rgb2 >> 16 & 0xff);
-          if(rDiff > diff) {
-            diff = rDiff;
-            rgb = rgb2;
-          }
-        }
-      }
-      indeterminateColor = new Color(rgb);
+      indeterminateColor = findIndeterminateColor(checkBox);
+      checkBox.setEnabled(false);
+      indeterminateDisabledColor = findIndeterminateColor(checkBox);
     }
     ButtonUI ui = getUI();
     Icon icon;
@@ -343,6 +315,39 @@ public class JTriStateCheckBox extends JCheckBox {
     }
     gap = Math.round(icon.getIconWidth() / 4f);
     setIcon(new IndeterminateIcon(icon));
+  }
+
+  private Color findIndeterminateColor(JCheckBox checkBox) {
+    checkBox.setSelected(false);
+    checkBox.setSize(checkBox.getPreferredSize());
+    int imgWidth = checkBox.getWidth() - 4;
+    int imgHeight = checkBox.getHeight() - 4;
+    BufferedImage img1 = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
+    Graphics graphics = img1.getGraphics();
+    graphics.translate(-2, -2);
+    checkBox.print(graphics);
+    graphics.dispose();
+    checkBox.setSelected(true);
+    BufferedImage img2 = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
+    graphics = img2.getGraphics();
+    graphics.translate(-2, -2);
+    checkBox.print(graphics);
+    graphics.dispose();
+    int diff = 0;
+    int rgb = 0;
+    // Try to find a color in the selected box that has the highest difference with the color at the same position before selection.
+    for(int i=0; i<imgWidth; i++) {
+      for(int j=0; j<imgHeight; j++) {
+        int rgb1 = img1.getRGB(i, j);
+        int rgb2 = img2.getRGB(i, j);
+        int rDiff = Math.abs(rgb1 & 0xff - rgb2 & 0xff) + Math.abs(rgb1 >> 8 & 0xff - rgb2 >> 8 & 0xff) + Math.abs(rgb1 >> 16 & 0xff - rgb2 >> 16 & 0xff);
+        if(rDiff > diff) {
+          diff = rDiff;
+          rgb = rgb2;
+        }
+      }
+    }
+    return new Color(rgb);
   }
 
   public void setRollingStates(CheckState... states) {

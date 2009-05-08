@@ -72,6 +72,31 @@ public class TriStateCheckBoxExample extends JPanel {
       }
     });
     centerPane.add(eventTriState, new GridBagConstraints(0, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+    // A tri-state check box that can only be set to the third state from code.
+    JPanel disabledTriStatePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+    final JTriStateCheckBox disabledTriState = new JTriStateCheckBox("Disabled");
+    disabledTriState.setEnabled(false);
+    disabledTriState.setState(CheckState.INDETERMINATE);
+    disabledTriStatePanel.add(disabledTriState);
+    disabledTriStatePanel.add(Box.createHorizontalStrut(5));
+    JButton disabledTriStateButton = new JButton("Cycle");
+    disabledTriStatePanel.add(disabledTriStateButton);
+    disabledTriStateButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        switch(disabledTriState.getState()) {
+          case NOT_SELECTED:
+            disabledTriState.setState(CheckState.SELECTED);
+            break;
+          case SELECTED:
+            disabledTriState.setState(CheckState.INDETERMINATE);
+            break;
+          case INDETERMINATE:
+            disabledTriState.setState(CheckState.NOT_SELECTED);
+            break;
+        }
+      }
+    });
+    centerPane.add(disabledTriStatePanel, new GridBagConstraints(0, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     // Rest of the initialisation
     add(new JScrollPane(centerPane), BorderLayout.CENTER);
   }
