@@ -175,7 +175,7 @@ public class SwingSuiteUtilities {
     int rowCount = table.getRowCount();
     for (int i=columnIndex>=0? columnIndex: model.getColumnCount()-1; i>=0; i--) {
       TableColumn column = table.getColumnModel().getColumn(i);
-      int headerWidth = headerRenderer.getTableCellRendererComponent(null, column.getHeaderValue(), false, false, 0, 0).getPreferredSize().width;
+      int headerWidth = headerRenderer.getTableCellRendererComponent(table, column.getHeaderValue(), false, false, 0, 0).getPreferredSize().width;
       int cellWidth = 0;
       for(int j=0; j<rowCount; j++) {
         Component comp = table.getDefaultRenderer(model.getColumnClass(i)).getTableCellRendererComponent(table, table.getValueAt(j, i), false, false, 0, i);
