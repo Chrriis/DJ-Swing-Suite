@@ -146,7 +146,7 @@ public class TextAndNumberFieldsExample extends JPanel {
 
   private JTextEntryField createTextEntryFieldWithNoSelectionOnFocus() {
     JTextEntryField textEntryField = new JTextEntryField("ab", 14);
-    textEntryField.setSelectingAllOnFocus(false);
+    textEntryField.setSelectAllOnFocus(false);
     return textEntryField;
   }
 

@@ -337,7 +337,7 @@ public class JTextEntryField extends JTextField {
         exit();
       }
     });
-    setSelectingAllOnFocus(true);
+    setSelectAllOnFocus(true);
   }
 
   private boolean isFocusTrappedOnInvalidText;
@@ -830,7 +830,7 @@ public class JTextEntryField extends JTextField {
    * Set whether this field selects all of its text when it acquires the focus.
    * @param isSelectingAllOnFocus true if the text should be selected when focus is acquired, false otherwise.
    */
-  public void setSelectingAllOnFocus(boolean isSelectingAllOnFocus) {
+  public void setSelectAllOnFocus(boolean isSelectingAllOnFocus) {
     this.isSelectingAllOnFocus = isSelectingAllOnFocus;
     SwingSuiteUtilities.setSelectAllOnFocus(this, isSelectingAllOnFocus);
   }
