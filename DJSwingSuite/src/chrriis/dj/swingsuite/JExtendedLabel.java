@@ -179,6 +179,10 @@ public class JExtendedLabel extends JComponent implements SwingConstants {
     scrollPane.setVisible(isSelectable);
   }
 
+  public boolean isSelectable() {
+    return scrollPane.isVisible();
+  }
+
   @Override
   public void setEnabled(boolean isEnabled) {
     textComponent.setEnabled(isEnabled);
