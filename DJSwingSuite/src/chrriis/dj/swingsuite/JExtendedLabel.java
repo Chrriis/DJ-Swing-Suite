@@ -9,7 +9,6 @@ package chrriis.dj.swingsuite;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.ComponentOrientation;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -22,6 +21,9 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
 /**
  * A label that allows text selection and multi line. In practice, this is in fact a non editable text component that looks like a label.
@@ -44,7 +46,9 @@ public class JExtendedLabel extends JComponent implements SwingConstants {
     @Override
     public boolean getScrollableTracksViewportWidth() {
       // Should prevent the text to wrap.
-      return false;
+      Dimension size1 = textComponent.getSize();
+      Dimension size2 = JExtendedLabel.this.getSize();
+      return size1.width <= size2.width && size1.height <= size2.height;
     }
 
   }
@@ -138,17 +142,30 @@ public class JExtendedLabel extends JComponent implements SwingConstants {
    * @param horizontalAlignment One of the following constants defined in SwingConstants: LEFT, RIGHT, LEADING or TRAILING.
    */
   public void setHorizontalAlignment(int horizontalAlignment) {
+    int alignment = StyleConstants.ALIGN_LEFT;
     switch(horizontalAlignment) {
-      case LEFT:
-        applyComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        break;
       case RIGHT:
-        applyComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        alignment = StyleConstants.ALIGN_RIGHT;
+        break;
+      case CENTER:
+        alignment = StyleConstants.ALIGN_CENTER;
         break;
       case TRAILING:
-        applyComponentOrientation(getComponentOrientation().isLeftToRight()? ComponentOrientation.RIGHT_TO_LEFT: ComponentOrientation.LEFT_TO_RIGHT);
+        alignment = getComponentOrientation().isLeftToRight()? StyleConstants.ALIGN_RIGHT: StyleConstants.ALIGN_LEFT;
         break;
     }
+    AttributeSet paragraphAttributes = textComponent.getParagraphAttributes();
+    if(StyleConstants.getAlignment(paragraphAttributes) == alignment) {
+      return;
+    }
+    int selectionStart = textComponent.getSelectionStart();
+    int selectionEnd = textComponent.getSelectionEnd();
+    textComponent.selectAll();
+    SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+    attributeSet.addAttributes(paragraphAttributes);
+    StyleConstants.setAlignment(attributeSet, alignment);
+    textComponent.setParagraphAttributes(attributeSet, false);
+    textComponent.select(selectionStart, selectionEnd);
   }
 
   @Override
