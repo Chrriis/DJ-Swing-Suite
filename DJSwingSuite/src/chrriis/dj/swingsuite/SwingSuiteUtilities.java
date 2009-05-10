@@ -148,7 +148,7 @@ public class SwingSuiteUtilities {
 
   /**
    * Set whether the auto-scroll feature is enabled. Auto-scoll is triggered when the user clicks with the middle mouse button and the component is a scroll pane or has a scroll pane ancestor.<br>
-   * Note that clicking on a descendant component activates the auto-scroll feature only if it has not register a mouse listener. Otherwise, you need to activate the auto scroll on these components as well.
+   * Note that clicking on a descendant component activates the auto-scroll feature only if it has not registered a mouse listener. Otherwise, you need to activate auto scroll on these components as well.
    * @param component The component for which to enable or disable the feature.
    * @param isEnabled true if the feature is to be enabled, false otherwise.
    */
