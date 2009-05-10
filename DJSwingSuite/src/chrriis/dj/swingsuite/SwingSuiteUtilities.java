@@ -23,6 +23,7 @@ import java.text.MessageFormat;
 import javax.swing.AbstractButton;
 import javax.swing.JComponent;
 import javax.swing.JTable;
+import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -139,7 +140,8 @@ public class SwingSuiteUtilities {
    * @param toolBarButton the tool bar button for which to adjust the focus state.
    */
   public static void adjustToolbarButtonFocus(AbstractButton toolBarButton) {
-    if(UIManager.getLookAndFeel().isNativeLookAndFeel() && System.getProperty("os.name").startsWith("Windows") && !Boolean.parseBoolean(System.getProperty("swing.noxp"))) {
+    LookAndFeel lookAndFeel = UIManager.getLookAndFeel();
+    if(lookAndFeel.isNativeLookAndFeel() && System.getProperty("os.name").startsWith("Windows") && !Boolean.parseBoolean(System.getProperty("swing.noxp")) && !lookAndFeel.getClass().getName().endsWith("WindowsClassicLookAndFeel")) {
       toolBarButton.setFocusPainted(false);
     }
   }
