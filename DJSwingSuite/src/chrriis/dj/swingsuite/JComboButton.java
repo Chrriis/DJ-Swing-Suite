@@ -25,6 +25,7 @@ import javax.swing.JButton;
 import javax.swing.JPopupMenu;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
+import javax.swing.plaf.ButtonUI;
 
 /**
  * A button primarily targeted for toolbars which features a sub-section containing an arrow.
@@ -143,20 +144,7 @@ public class JComboButton extends JButton {
         long changeFlags = e.getChangeFlags();
         if((changeFlags & HierarchyEvent.PARENT_CHANGED) != 0) {
           if(e.getChanged() == JComboButton.this) {
-            Container parent = getParent();
-            if(parent != null) {
-              if(originalBorder == null) {
-                originalBorder = getBorder();
-                if(getComponentOrientation().isLeftToRight()) {
-                  setBorder(BorderFactory.createCompoundBorder(originalBorder, BorderFactory.createEmptyBorder(0, 0, 0, arrowSpaceWidth + 1)));
-                } else {
-                  setBorder(BorderFactory.createCompoundBorder(originalBorder, BorderFactory.createEmptyBorder(0, arrowSpaceWidth + 1, 0, 0)));
-                }
-              }
-            } else {
-              setBorder(originalBorder);
-              originalBorder = null;
-            }
+            adjustLook();
           }
         }
       }
@@ -170,6 +158,32 @@ public class JComboButton extends JButton {
     addMouseListener(mouseHandler);
     addMouseMotionListener(mouseHandler);
     enableEvents(KeyEvent.KEY_EVENT_MASK);
+  }
+
+  private void adjustLook() {
+    Container parent = getParent();
+    if(parent != null) {
+      if(originalBorder == null) {
+        originalBorder = getBorder();
+        if(getComponentOrientation().isLeftToRight()) {
+          setBorder(BorderFactory.createCompoundBorder(originalBorder, BorderFactory.createEmptyBorder(0, 0, 0, arrowSpaceWidth + 1)));
+        } else {
+          setBorder(BorderFactory.createCompoundBorder(originalBorder, BorderFactory.createEmptyBorder(0, arrowSpaceWidth + 1, 0, 0)));
+        }
+      }
+    } else {
+      setBorder(originalBorder);
+      originalBorder = null;
+    }
+  }
+
+  @Override
+  public void setUI(ButtonUI ui) {
+    super.setUI(ui);
+    if(getParent() != null) {
+      originalBorder = null;
+      adjustLook();
+    }
   }
 
   private boolean showPopup(ActionEvent e) {
