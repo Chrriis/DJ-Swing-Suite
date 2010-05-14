@@ -22,6 +22,7 @@ import chrriis.dj.swingsuite.demo.examples.entryfields.ValidatorsFormattersAndMa
 import chrriis.dj.swingsuite.demo.examples.introduction.SwingSuite;
 import chrriis.dj.swingsuite.demo.examples.utilities.AutoScrollExample;
 import chrriis.dj.swingsuite.demo.examples.utilities.LayeredIconExample;
+import chrriis.dj.swingsuite.demo.examples.utilities.RichDragAndDrop;
 import chrriis.dj.swingsuite.demo.examples.utilities.SelectAllOnFocusExample;
 import chrriis.dj.swingsuite.demo.examples.utilities.TableColumnAutoFitExample;
 import chrriis.dj.swingsuite.demo.examples.utilities.WildcardsConversionExample;
@@ -50,6 +51,7 @@ public class DemoExampleDefinitionLoader {
         new Example("Validators, Formatters, Masks", ValidatorsFormattersAndMasksExample.class, "How to use validators, formatters and masks to control inputs and improve usability.", true),
     }));
     exampleGroupList.add(new ExampleGroup("Utilities", new Example[] {
+        new Example("Rich drag and drop", RichDragAndDrop.class, "The rich drag and drop manager allows to create an overlay image when performing a drag and drop operation (available with Java 6+ on systems supporting window alpha transparency).", true),
         new Example("Layered icon", LayeredIconExample.class, "A layered icon is an icon that aggregates icons, which can be at any location within their parent icon. Layered icons even support animated images in their composition.", true),
         new Example("Auto scroll", AutoScrollExample.class, "Enable the auto-scroll feature to simplify scrolling: a click with the middle mouse button then moving the mouse directs scrolling (as seen in web browsers).", true),
         new Example("Table column auto fit", TableColumnAutoFitExample.class, "Auto fit one or all the columns of a table.", true),
