@@ -45,10 +45,6 @@ public class JTriStateCheckBox extends JCheckBox {
 
     private boolean isIndeterminate;
 
-    public boolean isIndeterminate() {
-      return isIndeterminate;
-    }
-
     private void setIndeterminate(boolean isIndeterminate) {
       this.isIndeterminate = isIndeterminate;
     }

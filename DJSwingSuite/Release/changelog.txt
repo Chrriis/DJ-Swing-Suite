@@ -12,8 +12,8 @@ Licence terms: LGPL (see licence.txt)
 
 * Version 0.9.1 (May 10, 2009):
 
-- Text entry fields are implemented with validators, formatters and masks. 
-- Number entry fields are implemented using the text entry fields. 
+- Text entry fields are implemented with validators, formatters and masks.
+- Number entry fields are implemented using the text entry fields.
 - Combo buttons are implemented.
 - Links are implemented.
 - Tri-state check boxes are added.
