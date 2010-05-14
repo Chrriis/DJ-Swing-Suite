@@ -96,6 +96,8 @@ public class RichDnDManager {
         Object lastPathComponent = tree.getPathForRow(row).getLastPathComponent();
         Component rendererComponent = cellRenderer.getTreeCellRendererComponent(tree, lastPathComponent, true, tree.isExpanded(row), treeModel.isLeaf(lastPathComponent), row, leadIndex == row);
         rendererComponent.setSize(rowBounds.width, rowBounds.height);
+        rendererComponent.invalidate();
+        rendererComponent.validate();
         rendererComponent.paint(g);
         g.translate(-rowBounds.x, -rowBounds.y);
       }
@@ -123,6 +125,8 @@ public class RichDnDManager {
         g.translate(rowBounds.x, rowBounds.y);
         Component rendererComponent = cellRenderer.getListCellRendererComponent(list, list.getModel().getElementAt(index), index, true, leadIndex == index);
         rendererComponent.setSize(rowBounds.width, rowBounds.height);
+        rendererComponent.invalidate();
+        rendererComponent.validate();
         rendererComponent.paint(g);
         g.translate(-rowBounds.x, -rowBounds.y);
       }
