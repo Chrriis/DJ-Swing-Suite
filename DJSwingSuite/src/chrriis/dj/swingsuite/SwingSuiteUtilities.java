@@ -9,6 +9,7 @@ package chrriis.dj.swingsuite;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Point;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
@@ -41,30 +42,49 @@ public class SwingSuiteUtilities {
   public static final boolean IS_JAVA_6_OR_GREATER = System.getProperty("java.version").compareTo("1.6") >= 0;
 
   private static class SelectAllOnFocusListener extends MouseAdapter implements MouseMotionListener, FocusListener {
-    private boolean isSettingFocus = false;
+    private boolean isSettingFocus;
+    private Point mouseLocation = null;
     public void focusGained(FocusEvent e) {
       isSettingFocus = true;
       ((JTextComponent)e.getComponent()).selectAll();
     }
-    public void focusLost(FocusEvent e) {}
-    @Override
-    public void mousePressed(MouseEvent e) {
+    public void focusLost(FocusEvent e) {
       isSettingFocus = false;
     }
     @Override
-    public void mouseClicked(MouseEvent e) {
-      if(isSettingFocus) {
-        e.consume();
+    public void mousePressed(MouseEvent e) {
+      if(e.getButton() == MouseEvent.BUTTON1) {
+        mouseLocation = e.getPoint();
+        isSettingFocus = false;
       }
-      isSettingFocus = false;
+    }
+    @Override
+    public void mouseClicked(MouseEvent e) {
+      if(e.getButton() == MouseEvent.BUTTON1) {
+        if(isSettingFocus) {
+          e.consume();
+        }
+        isSettingFocus = false;
+      }
+    }
+    @Override
+    public void mouseReleased(MouseEvent e) {
+      if(e.getButton() == MouseEvent.BUTTON1) {
+        mouseLocation = null;
+      }
     }
     @Override
     public void mouseMoved(MouseEvent e) {
     }
     @Override
     public void mouseDragged(MouseEvent e) {
-      if(isSettingFocus) {
-        e.consume();
+      if((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0 && mouseLocation != null) {
+        if(isSettingFocus && Math.abs(mouseLocation.x - e.getX()) < 5) {
+          e.consume();
+        } else {
+          ((JTextComponent)e.getComponent()).setCaretPosition(((JTextComponent)e.getComponent()).viewToModel(mouseLocation));
+          mouseLocation = null;
+        }
       }
     }
   }
