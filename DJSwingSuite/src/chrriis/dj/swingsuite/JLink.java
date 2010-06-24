@@ -12,6 +12,7 @@ import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
@@ -80,10 +81,8 @@ public class JLink<T> extends JLabel {
       public void mouseReleased(MouseEvent e) {
         setForeground(Color.BLUE);
         repaint();
-      }
-      @Override
-      public void mouseClicked(MouseEvent e) {
-        if(e.getButton() == MouseEvent.BUTTON1) {
+        Point location = e.getPoint();
+        if(e.getButton() == MouseEvent.BUTTON1 && location.x >= 0 && location.x < getWidth() && location.y >= 0 && location.y < getHeight()) {
           fireLinkActivated();
         }
       }
@@ -182,6 +181,9 @@ public class JLink<T> extends JLabel {
       if(target != null) {
         text = target.toString();
       }
+    }
+    if(text != null && text.length() == 0) {
+      text = null;
     }
     super.setToolTipText(text);
   }

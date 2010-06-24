@@ -63,6 +63,7 @@ public class JTriStateCheckBox extends JCheckBox {
         setIndeterminate(true);
         setSelected(false);
       }
+      setArmed(false);
       repaint();
       for(TriStateCheckBoxListener listener: getTriStateCheckBoxListeners()) {
         listener.stateChanged(JTriStateCheckBox.this, state);
