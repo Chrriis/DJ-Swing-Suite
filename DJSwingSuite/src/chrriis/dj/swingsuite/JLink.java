@@ -73,6 +73,9 @@ public class JLink<T> extends JLabel {
     MouseInputAdapter mouseListener = new MouseInputAdapter() {
       @Override
       public void mousePressed(MouseEvent e) {
+        if(!isEnabled()) {
+          return;
+        }
         setForeground(Color.RED);
         requestFocus();
         repaint();
@@ -81,6 +84,9 @@ public class JLink<T> extends JLabel {
       public void mouseReleased(MouseEvent e) {
         setForeground(Color.BLUE);
         repaint();
+        if(!isEnabled()) {
+          return;
+        }
         Point location = e.getPoint();
         if(e.getButton() == MouseEvent.BUTTON1 && location.x >= 0 && location.x < getWidth() && location.y >= 0 && location.y < getHeight()) {
           fireLinkActivated();
