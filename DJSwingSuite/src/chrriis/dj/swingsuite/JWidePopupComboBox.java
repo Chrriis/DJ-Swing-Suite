@@ -63,7 +63,7 @@ public class JWidePopupComboBox extends JComboBox {
    */
   public void setPreferredWidth(Integer preferredWidth) {
     this.preferredWidth = preferredWidth;
-    preferredSize = null;
+    super.setPreferredSize(null);
   }
 
   /**
@@ -74,24 +74,59 @@ public class JWidePopupComboBox extends JComboBox {
     return preferredWidth;
   }
 
-  private Dimension preferredSize;
-
   @Override
   public void setPreferredSize(Dimension preferredSize) {
     preferredWidth = null;
-    this.preferredSize = preferredSize;
+    super.setPreferredSize(preferredSize);
+  }
+
+  private Integer maximumWidth;
+
+  /**
+   * Set the maximum width of the combo, which is taken into account in the maximum size computations.
+   * @param maximumWidth the maximum width to set, or null to clear it.
+   */
+  public void setMaximumWidth(Integer maximumWidth) {
+    this.maximumWidth = maximumWidth;
+    super.setMaximumSize(null);
+  }
+
+  /**
+   * Get the maximum width of the combo.
+   * @return the maximum width, or null if it is not set.
+   */
+  public Integer getMaximumWidth() {
+    return maximumWidth;
+  }
+
+  @Override
+  public void setMaximumSize(Dimension maximumSize) {
+    maximumWidth = null;
+    super.setMaximumSize(maximumSize);
   }
 
   @Override
   public Dimension getPreferredSize() {
-    if(preferredSize != null) {
+    Dimension preferredSize = super.getPreferredSize();
+    if(isPreferredSizeSet()) {
       return preferredSize;
     }
-    Dimension preferredSize = super.getPreferredSize();
     if(preferredWidth != null) {
       preferredSize.width = preferredWidth;
     }
     return preferredSize;
+  }
+
+  @Override
+  public Dimension getMaximumSize() {
+      Dimension maximumSize = super.getMaximumSize();
+      if(isMaximumSizeSet()) {
+          return maximumSize;
+      }
+      if(maximumWidth != null) {
+          maximumSize.width = maximumWidth;
+      }
+      return maximumSize;
   }
 
 }
