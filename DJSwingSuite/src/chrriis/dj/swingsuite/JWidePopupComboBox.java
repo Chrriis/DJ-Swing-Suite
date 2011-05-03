@@ -56,13 +56,16 @@ public class JWidePopupComboBox extends JComboBox {
   }
 
   private Integer preferredWidth;
+  private boolean isSmallerDefaultPreferredSizeAllowed;
 
   /**
    * Set the preferred width of the combo, which is taken into account in the preferred size computations.
    * @param preferredWidth the preferred width to set, or null to clear it.
+   * @param isSmallerDefaultPreferredSizeAllowed true to let getPreferredSize() return the default preferred size if it is smaller than this preferred width.
    */
-  public void setPreferredWidth(Integer preferredWidth) {
+  public void setPreferredWidth(Integer preferredWidth, boolean isSmallerDefaultPreferredSizeAllowed) {
     this.preferredWidth = preferredWidth;
+    this.isSmallerDefaultPreferredSizeAllowed = isSmallerDefaultPreferredSizeAllowed;
     super.setPreferredSize(null);
   }
 
@@ -72,6 +75,10 @@ public class JWidePopupComboBox extends JComboBox {
    */
   public Integer getPreferredWidth() {
     return preferredWidth;
+  }
+
+  public boolean isSmallerDefaultPreferredSizeAllowed() {
+    return isSmallerDefaultPreferredSizeAllowed;
   }
 
   @Override
@@ -111,7 +118,7 @@ public class JWidePopupComboBox extends JComboBox {
     if(isPreferredSizeSet()) {
       return preferredSize;
     }
-    if(preferredWidth != null) {
+    if(preferredWidth != null && (!isSmallerDefaultPreferredSizeAllowed || preferredSize.width > preferredWidth)) {
       preferredSize.width = preferredWidth;
     }
     return preferredSize;

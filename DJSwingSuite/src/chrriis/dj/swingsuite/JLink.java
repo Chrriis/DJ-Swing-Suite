@@ -99,8 +99,11 @@ public class JLink<T> extends JLabel {
     addKeyListener(new KeyAdapter() {
       @Override
       public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-          fireLinkActivated();
+        switch(e.getKeyCode()) {
+          case KeyEvent.VK_ENTER:
+          case KeyEvent.VK_SPACE:
+            fireLinkActivated();
+            break;
         }
       }
     });

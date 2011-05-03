@@ -39,7 +39,7 @@ public class WidePopupComboBoxExample extends JPanel {
     // A wide popup combo box with a width constraint.
     centerPane.add(new JLabel("With width constraint: "), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     JWidePopupComboBox constrainedWidthComboBox = new JWidePopupComboBox(comboItems);
-    constrainedWidthComboBox.setPreferredWidth(150);
+    constrainedWidthComboBox.setPreferredWidth(150, true);
     centerPane.add(constrainedWidthComboBox, new GridBagConstraints(1, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     // A wide popup combo box with a preferred size.
     centerPane.add(new JLabel("With preferred size: "), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
@@ -49,7 +49,7 @@ public class WidePopupComboBoxExample extends JPanel {
     // An editable wide popup combo box with a width constraint.
     centerPane.add(new JLabel("With width constraint, editable: "), new GridBagConstraints(0, y, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     JWidePopupComboBox constrainedWidthEditableComboBox = new JWidePopupComboBox(comboItems);
-    constrainedWidthEditableComboBox.setPreferredWidth(150);
+    constrainedWidthEditableComboBox.setPreferredWidth(150, true);
     constrainedWidthEditableComboBox.setEditable(true);
     centerPane.add(constrainedWidthEditableComboBox, new GridBagConstraints(1, y++, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
     // Rest of the initialisation
