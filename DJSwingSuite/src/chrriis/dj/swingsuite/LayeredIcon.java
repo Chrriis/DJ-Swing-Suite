@@ -11,6 +11,7 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 import java.util.List;
@@ -155,6 +156,12 @@ public class LayeredIcon extends ImageIcon {
 
   @Override
   public Image getImage() {
+    if(currentImage == null) {
+      // If an external API wants to get the image, we have to provide it on the fly.
+      BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+      paintIcon(component, img.getGraphics(), 0, 0);
+      return img;
+    }
     return currentImage;
   }
 
