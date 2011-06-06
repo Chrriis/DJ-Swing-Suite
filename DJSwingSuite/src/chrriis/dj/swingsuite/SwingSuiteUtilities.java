@@ -28,6 +28,7 @@ import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.text.JTextComponent;
 
@@ -188,27 +189,33 @@ public class SwingSuiteUtilities {
   /**
    * Auto fit the column of a table.
    * @param table the table for which to auto fit the columns.
-   * @param columnIndex the index of the column to auto fit.
+   * @param columnIndex the index of the column to auto fit, in view index.
    * @param maxWidth the maximum width that a column can take (like Integer.MAX_WIDTH).
    */
   public static void autoFitTableColumn(JTable table, int columnIndex, int maxWidth) {
     TableModel model = table.getModel();
     TableCellRenderer headerRenderer = table.getTableHeader().getDefaultRenderer();
     int rowCount = table.getRowCount();
-    for (int i=columnIndex>=0? columnIndex: model.getColumnCount()-1; i>=0; i--) {
-      TableColumn column = table.getColumnModel().getColumn(i);
-      int headerWidth = headerRenderer.getTableCellRendererComponent(table, column.getHeaderValue(), false, false, 0, 0).getPreferredSize().width;
+    int rowMargin = table.getRowMargin();
+    TableColumnModel columnModel = table.getColumnModel();
+    for (int viewCol=columnIndex>=0? columnIndex: model.getColumnCount()-1; viewCol>=0; viewCol--) {
+      TableColumn tableColumn = columnModel.getColumn(viewCol);
+      int headerWidth = headerRenderer.getTableCellRendererComponent(table, tableColumn.getHeaderValue(), false, false, 0, 0).getPreferredSize().width;
       int cellWidth = 0;
-      for(int j=0; j<rowCount; j++) {
-        Component comp = table.getDefaultRenderer(model.getColumnClass(i)).getTableCellRendererComponent(table, table.getValueAt(j, i), false, false, 0, i);
+      int col = table.convertColumnIndexToModel(viewCol);
+      for(int viewRow=0; viewRow<rowCount; viewRow++) {
+        Component comp = table.getDefaultRenderer(model.getColumnClass(col)).getTableCellRendererComponent(table, table.getValueAt(viewRow, viewCol), false, false, viewRow, viewCol);
         int preferredWidth = comp.getPreferredSize().width;
         // Artificial space to look nicer.
         preferredWidth += 10;
         cellWidth = Math.max(cellWidth, preferredWidth);
+        if(Math.max(headerWidth, cellWidth) + rowMargin >= maxWidth) {
+          break;
+        }
       }
       // Artificial space for the sort icon.
       headerWidth += 20;
-      column.setPreferredWidth(Math.min(Math.max(headerWidth, cellWidth) + table.getRowMargin(), maxWidth));
+      tableColumn.setPreferredWidth(Math.min(Math.max(headerWidth, cellWidth) + rowMargin, maxWidth));
       if(columnIndex >= 0) {
         break;
       }
