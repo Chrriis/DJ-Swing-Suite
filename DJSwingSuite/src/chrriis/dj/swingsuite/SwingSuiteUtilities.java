@@ -200,11 +200,10 @@ public class SwingSuiteUtilities {
     TableColumnModel columnModel = table.getColumnModel();
     for (int viewCol=columnIndex>=0? columnIndex: model.getColumnCount()-1; viewCol>=0; viewCol--) {
       TableColumn tableColumn = columnModel.getColumn(viewCol);
-      int headerWidth = headerRenderer.getTableCellRendererComponent(table, tableColumn.getHeaderValue(), false, false, 0, 0).getPreferredSize().width;
+      int headerWidth = headerRenderer.getTableCellRendererComponent(table, tableColumn.getHeaderValue(), false, false, 0, viewCol).getPreferredSize().width;
       int cellWidth = 0;
-      int col = table.convertColumnIndexToModel(viewCol);
       for(int viewRow=0; viewRow<rowCount; viewRow++) {
-        Component comp = table.getDefaultRenderer(model.getColumnClass(col)).getTableCellRendererComponent(table, table.getValueAt(viewRow, viewCol), false, false, viewRow, viewCol);
+        Component comp = table.getCellRenderer(viewRow, viewCol).getTableCellRendererComponent(table, table.getValueAt(viewRow, viewCol), false, false, viewRow, viewCol);
         int preferredWidth = comp.getPreferredSize().width;
         // Artificial space to look nicer.
         preferredWidth += 10;
