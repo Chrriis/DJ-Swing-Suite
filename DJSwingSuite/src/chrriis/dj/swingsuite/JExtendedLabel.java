@@ -211,8 +211,12 @@ public class JExtendedLabel extends JComponent implements SwingConstants {
   }
 
   @Override
-  public void paint(Graphics g) {
-    super.paint(g);
+  protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    if(isOpaque()) {
+      g.setColor(getBackground());
+      g.fillRect(0, 0, getWidth(), getHeight());
+    }
     if(!scrollPane.isVisible()) {
       textComponent.setSize(getWidth(), getHeight());
       textComponent.paint(g);
