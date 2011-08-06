@@ -13,6 +13,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Insets;
 
 import javax.swing.BorderFactory;
@@ -183,7 +184,11 @@ public class JExtendedLabel extends JComponent implements SwingConstants {
     if(isPreferredSizeSet()) {
       return super.getPreferredSize();
     }
-    return textComponent.getPreferredSize();
+    Dimension preferredSize = textComponent.getPreferredSize();
+    Insets insets = getInsets();
+    preferredSize.width += insets.left + insets.right;
+    preferredSize.height += insets.top + insets.bottom;
+    return preferredSize;
   }
 
   @Override
@@ -217,9 +222,12 @@ public class JExtendedLabel extends JComponent implements SwingConstants {
       g.setColor(getBackground());
       g.fillRect(0, 0, getWidth(), getHeight());
     }
+    Insets insets = getInsets();
     if(!scrollPane.isVisible()) {
+      ((Graphics2D)g).translate(insets.left, insets.right);
       textComponent.setSize(getWidth(), getHeight());
       textComponent.paint(g);
+      ((Graphics2D)g).translate(-insets.left, -insets.right);
     }
   }
 
