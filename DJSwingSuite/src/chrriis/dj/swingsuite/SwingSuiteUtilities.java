@@ -20,6 +20,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.MessageFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.AbstractButton;
 import javax.swing.JComponent;
@@ -286,6 +288,114 @@ public class SwingSuiteUtilities {
     }
     return sb.toString();
   }
+
+  /**
+   * A "sed -e" like reg exp, of the form:<br/>
+   * - /regexp/flags: find and output the matches.<br/>
+   * - /regexp/replacement/flags: replace the matches and output the resulting string.<br/>
+   * Flags can be left empty or any combinations of the characters 'gidmsux' (g perfoms a replace all instead of just the first match. For other flags, refer to the Javadoc of Pattern).
+   * It is also possible to chain the output using ';' to perform multiple replacements.<br/>
+   * If the regexp contains capturing groups, a find operation would only retain those; for a replace operation, the replacement string can refer to capturing groups with a syntax like '$1'.
+   */
+  public static String applyJSRegularExpression(String text, String regex) {
+      String originalRegEx = regex;
+      if(!regex.startsWith("/")) {
+          throw new IllegalArgumentException("Invalid expression format: " + originalRegEx);
+      }
+      regex = regex.substring(1);
+      StringBuilder sb = new StringBuilder();
+      char[] chars = regex.toCharArray();
+      int index1 = -1;
+      int index2 = -1;
+      for(int i=0; i<chars.length; i++) {
+          char c = chars[i];
+          switch(c) {
+              case ';':
+                  text = applyJSRegularExpression(sb.toString(), text, originalRegEx, index1, index2);
+                  index1 = -1;
+                  index2 = -1;
+                  sb = new StringBuilder();
+                  i++;
+                  if(i >= chars.length || chars[i] != '/') {
+                      throw new IllegalArgumentException("Invalid expression format: " + originalRegEx);
+                  }
+                  break;
+              case '\\':
+                  i++;
+                  if(i >= chars.length) {
+                      throw new IllegalArgumentException("Invalid expression format: " + originalRegEx);
+                  }
+                  switch(chars[i]) {
+                      case '/': sb.append('/'); break;
+                      case ';': sb.append(';'); break;
+                      default: sb.append('\\').append(chars[i]); break;
+                  }
+                  break;
+              case '/':
+                  if(index1 == -1) {
+                      index1 = sb.length();
+                  } else if(index2 == -1) {
+                      index2 = sb.length();
+                  } else {
+                      throw new IllegalArgumentException("Invalid expression format: " + originalRegEx);
+                  }
+                  break;
+              default: sb.append(c); break;
+          }
+      }
+      if(index1 == -1) {
+          throw new IllegalArgumentException("Invalid expression format: " + originalRegEx);
+      }
+      return applyJSRegularExpression(sb.toString(), text, originalRegEx, index1, index2);
+  }
+
+  private static String applyJSRegularExpression(String s, String text, String originalRegEx, int index1, int index2) {
+      StringBuilder sb;
+      String toFind = s.substring(0, index1);
+      String replacement = index2 == -1? null: s.substring(index1, index2);
+      String modifiers = index2 == -1? s.substring(index1): s.substring(index2);
+      boolean isGlobal = false;
+      int flags = 0;
+      for(int i=0; i<modifiers.length(); i++) {
+          char c = modifiers.charAt(i);
+          switch(c) {
+              case 'g': isGlobal = true; break;
+              case 'i': flags |= Pattern.CASE_INSENSITIVE; break;
+              case 'd': flags |= Pattern.UNIX_LINES; break;
+              case 'm': flags |= Pattern.MULTILINE; break;
+              case 's': flags |= Pattern.DOTALL; break;
+              case 'u': flags |= Pattern.UNICODE_CASE; break;
+              case 'x': flags |= Pattern.COMMENTS; break;
+              default:
+                  throw new IllegalArgumentException("Invalid expression format: " + originalRegEx);
+          }
+      }
+      Matcher matcher = Pattern.compile(toFind, flags).matcher(text);
+      if(replacement == null) {
+          // Just returning the matches, no replacement
+          int groupCount = matcher.groupCount();
+          sb = new StringBuilder();
+          while(matcher.find()) {
+              if(groupCount > 0) {
+                  for(int i=0; i<groupCount; i++) {
+                      sb.append(matcher.group(i + 1));
+                  }
+              } else {
+                  sb.append(matcher.group());
+              }
+              if(!isGlobal) {
+                  break;
+              }
+          }
+          return sb.toString();
+      }
+      if(isGlobal) {
+          return matcher.replaceAll(replacement);
+      } else {
+          return matcher.replaceFirst(replacement);
+      }
+  }
+
 
   /**
    * Replace a string that contains wildcards (* and ?) to its regular expression equivalent.
