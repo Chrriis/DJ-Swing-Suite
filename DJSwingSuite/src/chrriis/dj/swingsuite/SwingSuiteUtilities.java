@@ -391,9 +391,8 @@ public class SwingSuiteUtilities {
       }
       if(isGlobal) {
           return matcher.replaceAll(replacement);
-      } else {
-          return matcher.replaceFirst(replacement);
       }
+      return matcher.replaceFirst(replacement);
   }
 
 
