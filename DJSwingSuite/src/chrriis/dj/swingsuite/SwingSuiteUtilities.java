@@ -297,7 +297,7 @@ public class SwingSuiteUtilities {
    * It is also possible to chain the output using ';' to perform multiple replacements.<br/>
    * If the regexp contains capturing groups, a find operation would only retain those; for a replace operation, the replacement string can refer to capturing groups with a syntax like '$1'.
    */
-  public static String applyJSRegularExpression(String text, String regex) {
+  public static String applySedRegularExpression(String text, String regex) {
       String originalRegEx = regex;
       if(!regex.startsWith("/")) {
           throw new IllegalArgumentException("Invalid expression format: " + originalRegEx);
@@ -311,7 +311,7 @@ public class SwingSuiteUtilities {
           char c = chars[i];
           switch(c) {
               case ';':
-                  text = applyJSRegularExpression(sb.toString(), text, originalRegEx, index1, index2);
+                  text = applySedRegularExpression(sb.toString(), text, originalRegEx, index1, index2);
                   index1 = -1;
                   index2 = -1;
                   sb = new StringBuilder();
@@ -346,10 +346,10 @@ public class SwingSuiteUtilities {
       if(index1 == -1) {
           throw new IllegalArgumentException("Invalid expression format: " + originalRegEx);
       }
-      return applyJSRegularExpression(sb.toString(), text, originalRegEx, index1, index2);
+      return applySedRegularExpression(sb.toString(), text, originalRegEx, index1, index2);
   }
 
-  private static String applyJSRegularExpression(String s, String text, String originalRegEx, int index1, int index2) {
+  private static String applySedRegularExpression(String s, String text, String originalRegEx, int index1, int index2) {
       StringBuilder sb;
       String toFind = s.substring(0, index1);
       String replacement = index2 == -1? null: s.substring(index1, index2);
