@@ -378,10 +378,16 @@ public class SwingSuiteUtilities {
       while(matcher.find()) {
         if(groupCount > 0) {
           for(int i=0; i<groupCount; i++) {
-            sb.append(matcher.group(i + 1));
+            String group = matcher.group(i + 1);
+            if(group != null) {
+              sb.append(group);
+            }
           }
         } else {
-          sb.append(matcher.group());
+          String group = matcher.group();
+          if(group != null) {
+            sb.append(group);
+          }
         }
         if(!isGlobal) {
           break;
