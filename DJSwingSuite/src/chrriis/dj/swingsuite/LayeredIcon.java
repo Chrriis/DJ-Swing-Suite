@@ -46,7 +46,9 @@ public class LayeredIcon extends ImageIcon {
 
   @Override
   public void paintIcon(Component component, Graphics g, int x, int y) {
-    this.component = component;
+    if(component != null) {
+      this.component = component;
+    }
     for(int i=0; i<iconList.size(); i++) {
       Point location = iconLocationList.get(i);
       iconList.get(i).paintIcon(component, g, x + location.x, y + location.y);
@@ -163,6 +165,18 @@ public class LayeredIcon extends ImageIcon {
       return img;
     }
     return currentImage;
+  }
+
+  public Component getComponent() {
+    return component;
+  }
+
+  /**
+   * Set the component to which this icon is attached.
+   * It is automatically set when paintComponent is called, but if that did not happen, it sometimes is needed to set it explicitely.
+   */
+  public void setComponent(Component component) {
+    this.component = component;
   }
 
 }
