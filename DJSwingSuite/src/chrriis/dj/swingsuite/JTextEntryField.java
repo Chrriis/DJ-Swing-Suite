@@ -315,7 +315,7 @@ public class JTextEntryField extends JTextField {
           adjustValueForDisplay();
         } else {
           isSelecting = false;
-          requestFocus();
+//          requestFocus();
         }
       }
     });
