@@ -40,6 +40,9 @@ import javax.swing.ListCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
 
+import com.sun.jna.Native;
+import com.sun.jna.examples.WindowUtils;
+
 /**
  * A class that provides overlay image during drag and drop operations.
  * @author Christopher Deckers
@@ -179,7 +182,9 @@ public class RichDnDManager {
       if(!isValid) {
         return;
       }
-      if(!isStarted) {
+      if(isStarted) {
+        adjusteWindowLocation(dsde);
+      } else {
         isStarted = true;
         DragGestureEvent trigger = dsde.getDragSourceContext().getTrigger();
         Component c = trigger.getComponent();
@@ -196,6 +201,10 @@ public class RichDnDManager {
         if(icon != null) {
           dragWindow = new JWindow() {
             @Override
+            public boolean contains(int x, int y) {
+              return false;
+            }
+            @Override
             public void paint(Graphics g) {
               if(!(g instanceof Graphics2D)) {
                 dispose();
@@ -206,6 +215,7 @@ public class RichDnDManager {
               g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
               int x = dragOrigin.x - clip.x;
               int y = dragOrigin.y - clip.y;
+              // Not needed when we have click through using JNA (Windows only).
               g.drawLine(x, y, x, y);
             }
           };
@@ -223,15 +233,21 @@ public class RichDnDManager {
             dispose();
             return;
           }
+          if(System.getProperty("os.name").startsWith("Windows")) {
+            try {
+              Class.forName("com.sun.jna.Native");
+              Class.forName("com.sun.jna.examples.WindowUtils");
+              WindowUtils.setWindowClickThrough(dragWindow, true);
+            } catch (ClassNotFoundException e) {
+            }
+          }
           dragWindow.setVisible(true);
         } else {
           dispose();
         }
-      } else {
-        adjusteWindowLocation(dsde);
       }
     }
-
+    
     private void stopDnD() {
       if(isStarted) {
         isStarted = false;
