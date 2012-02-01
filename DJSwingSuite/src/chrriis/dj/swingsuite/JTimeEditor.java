@@ -8,6 +8,7 @@
 package chrriis.dj.swingsuite;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -21,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -48,32 +50,35 @@ public class JTimeEditor extends JPanel {
     JPanel editorPane = new JPanel(new GridBagLayout());
     // Hours
     hourEntryField = createTimeEntryField(2, "00", 24);
-    //    setBorder(hourEntryField.getBorder());
     hourEntryField.setBorder(BorderFactory.createEmptyBorder());
     editorPane.setBackground(hourEntryField.getBackground());
     int x = 0;
-    editorPane.add(hourEntryField, new GridBagConstraints(x++, 0, 1, 1, 0, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 1, 1));
+    editorPane.add(hourEntryField, new GridBagConstraints(x++, 0, 1, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 1, 1));
     // Minutes
-    editorPane.add(new JLabel(":"), new GridBagConstraints(x++, 0, 1, 1, 0, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 1, 1));
+    editorPane.add(new JLabel(":"), new GridBagConstraints(x++, 0, 1, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 1, 1));
     minuteEntryField = createTimeEntryField(2, "00", 60);
     minuteEntryField.setBorder(BorderFactory.createEmptyBorder());
-    editorPane.add(minuteEntryField, new GridBagConstraints(x++, 0, 1, 1, 0, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 1, 1));
+    editorPane.add(minuteEntryField, new GridBagConstraints(x++, 0, 1, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 1, 1));
     if(precision > MINUTE_PRECISION) {
       // Seconds
-      editorPane.add(new JLabel(":"), new GridBagConstraints(x++, 0, 1, 1, 0, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 1, 1));
+      editorPane.add(new JLabel(":"), new GridBagConstraints(x++, 0, 1, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 1, 1));
       secondEntryField = createTimeEntryField(2, "00", 60);
       secondEntryField.setBorder(BorderFactory.createEmptyBorder());
-      editorPane.add(secondEntryField, new GridBagConstraints(x++, 0, 1, 1, 0, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 1, 1));
+      editorPane.add(secondEntryField, new GridBagConstraints(x++, 0, 1, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 1, 1));
       if(precision > SECOND_PRECISION) {
         // Milliseconds
-        editorPane.add(new JLabel("."), new GridBagConstraints(x++, 0, 1, 1, 0, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 1, 1));
+        editorPane.add(new JLabel("."), new GridBagConstraints(x++, 0, 1, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 1, 1));
         millisecondEntryField = createTimeEntryField(3, "000", 1000);
         millisecondEntryField.setBorder(BorderFactory.createEmptyBorder());
-        editorPane.add(millisecondEntryField, new GridBagConstraints(x++, 0, 1, 1, 0, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 1, 1));
+        editorPane.add(millisecondEntryField, new GridBagConstraints(x++, 0, 1, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 1, 1));
       }
     }
+    editorPane.setMinimumSize(editorPane.getPreferredSize());
+    editorPane.setPreferredSize(editorPane.getPreferredSize());
     // Spinner
     final JSpinner spinner = new JSpinner();
+    // Spinner border is very big. Text field border seems more appropriate but we need to add a small insets.
+    spinner.setBorder(BorderFactory.createCompoundBorder(UIManager.getBorder("TextField.border"), BorderFactory.createEmptyBorder(1, 0, 1, 1)));
     spinner.setEditor(editorPane);
     spinner.getModel().addChangeListener(new ChangeListener() {
       private int startValue = (Integer)spinner.getModel().getValue();
