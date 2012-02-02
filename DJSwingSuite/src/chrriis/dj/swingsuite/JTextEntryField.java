@@ -130,7 +130,7 @@ public class JTextEntryField extends JTextField {
       if(!isInserting) {
         String oldText = getText_();
         if(length > 0) {
-          String newText = oldText.substring(0, offset) + text + oldText.substring(Math.min(oldText.length(), offset + text.length()));
+          String newText = oldText.substring(0, offset) + text + oldText.substring(Math.min(oldText.length(), offset + length));
           if(!isTextAllowed(newText)) {
             return;
           }

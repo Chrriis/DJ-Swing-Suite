@@ -134,9 +134,16 @@ public class JTimeEditor extends JPanel {
       }
       int keyChar = e.getKeyChar();
       if(keyChar >= '0' && keyChar <= '9') {
-        int timeValue = mainField.getTimeValue();
-        if(timeValue * 10 >= mainField.getMaxBound()) {
-          nextField.requestFocus();
+        int length = mainField.getText().length();
+        if(mainField.getCaretPosition() == length) {
+          if(mainField.getColumns() == length) {
+            nextField.requestFocus();
+          } else {
+            int timeValue = mainField.getTimeValue();
+            if(timeValue * 10 >= mainField.getMaxBound()) {
+              nextField.requestFocus();
+            }
+          }
         }
       }
     }
