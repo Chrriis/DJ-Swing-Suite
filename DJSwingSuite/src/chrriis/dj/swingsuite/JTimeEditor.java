@@ -14,6 +14,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.Calendar;
 
@@ -22,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -59,18 +63,21 @@ public class JTimeEditor extends JPanel {
     minuteEntryField = createTimeEntryField(2, "00", 60);
     minuteEntryField.setBorder(BorderFactory.createEmptyBorder());
     editorPane.add(minuteEntryField, new GridBagConstraints(x++, 0, 1, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 1, 1));
+    addNavigationListener(hourEntryField, minuteEntryField);
     if(precision > MINUTE_PRECISION) {
       // Seconds
       editorPane.add(new JLabel(":"), new GridBagConstraints(x++, 0, 1, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 1, 1));
       secondEntryField = createTimeEntryField(2, "00", 60);
       secondEntryField.setBorder(BorderFactory.createEmptyBorder());
       editorPane.add(secondEntryField, new GridBagConstraints(x++, 0, 1, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 1, 1));
+      addNavigationListener(minuteEntryField, secondEntryField);
       if(precision > SECOND_PRECISION) {
         // Milliseconds
         editorPane.add(new JLabel("."), new GridBagConstraints(x++, 0, 1, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 1, 1));
         millisecondEntryField = createTimeEntryField(3, "000", 1000);
         millisecondEntryField.setBorder(BorderFactory.createEmptyBorder());
         editorPane.add(millisecondEntryField, new GridBagConstraints(x++, 0, 1, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 1, 1));
+        addNavigationListener(secondEntryField, millisecondEntryField);
       }
     }
     editorPane.setMinimumSize(editorPane.getPreferredSize());
@@ -98,7 +105,68 @@ public class JTimeEditor extends JPanel {
     add(spinner, BorderLayout.CENTER);
     setTime(calendar);
   }
+  
+  private class FieldListener extends KeyAdapter implements FocusListener {
+    private TimeEntryField mainField;
+    private TimeEntryField nextField;
+    public FieldListener(TimeEntryField mainField, TimeEntryField nextField) {
+      this.mainField = mainField;
+      this.nextField = nextField;
+    }
+    private int downCount = 0;
+    @Override
+    public void keyPressed(KeyEvent e) {
+      downCount++;
+      switch(e.getKeyCode()) {
+        case KeyEvent.VK_RIGHT:
+        case KeyEvent.VK_KP_RIGHT:
+          if(mainField.getCaretPosition() == mainField.getText().length()) {
+            nextField.requestFocus();
+          }
+          break;
+      }
+    }
+    @Override
+    public void keyReleased(KeyEvent e) {
+      downCount = Math.max(0, downCount - 1);
+      if(e.getModifiers() != 0 || downCount > 0) {
+        return;
+      }
+      int keyChar = e.getKeyChar();
+      if(keyChar >= '0' && keyChar <= '9') {
+        int timeValue = mainField.getTimeValue();
+        if(timeValue * 10 >= mainField.getMaxBound()) {
+          nextField.requestFocus();
+        }
+      }
+    }
+    public void focusGained(FocusEvent e) {
+      downCount = 0;
+    }
+    public void focusLost(FocusEvent e) {
+      downCount = 0;
+    }
+  }
 
+  private void addNavigationListener(final TimeEntryField mainField, final TimeEntryField nextField) {
+    FieldListener fieldListener = new FieldListener(mainField, nextField);
+    mainField.addFocusListener(fieldListener);
+    mainField.addKeyListener(fieldListener);
+    nextField.addKeyListener(new KeyAdapter() {
+      @Override
+      public void keyPressed(KeyEvent e) {
+        switch(e.getKeyCode()) {
+          case KeyEvent.VK_LEFT:
+          case KeyEvent.VK_KP_LEFT:
+            if(nextField.getSelectionStart() == 0) {
+              mainField.requestFocus();
+            }
+            break;
+        }
+      }
+    });
+  }
+  
   private Calendar calendar;
 
   /**
@@ -165,6 +233,10 @@ public class JTimeEditor extends JPanel {
       });
     }
 
+    public int getMaxBound() {
+      return maxBound;
+    }
+    
     public void adjust(int count) {
       int value;
       try {
