@@ -800,6 +800,9 @@ public class JTextEntryField extends JTextField {
    */
   @Override
   public void setText(String text) {
+    if(text == null) {
+      text = "";
+    }
     String validText;
     if(isTextValid(text)) {
       validText = text;
