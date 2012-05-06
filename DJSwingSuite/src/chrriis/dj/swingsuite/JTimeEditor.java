@@ -7,14 +7,19 @@
  */
 package chrriis.dj.swingsuite;
 
+import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
@@ -29,6 +34,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.EventListenerList;
 
 /**
  * A simple time editor.
@@ -53,8 +59,14 @@ public class JTimeEditor extends JPanel {
     super(new BorderLayout());
     JPanel editorPane = new JPanel(new GridBagLayout());
     // Hours
+    ActionListener actionListener = new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        fireActionPerformed();
+      }
+    };
     hourEntryField = createTimeEntryField(2, "00", 24);
     hourEntryField.setBorder(BorderFactory.createEmptyBorder());
+    hourEntryField.addActionListener(actionListener);
     editorPane.setBackground(hourEntryField.getBackground());
     int x = 0;
     editorPane.add(hourEntryField, new GridBagConstraints(x++, 0, 1, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 1, 1));
@@ -62,6 +74,7 @@ public class JTimeEditor extends JPanel {
     editorPane.add(new JLabel(":"), new GridBagConstraints(x++, 0, 1, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 1, 1));
     minuteEntryField = createTimeEntryField(2, "00", 60);
     minuteEntryField.setBorder(BorderFactory.createEmptyBorder());
+    minuteEntryField.addActionListener(actionListener);
     editorPane.add(minuteEntryField, new GridBagConstraints(x++, 0, 1, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 1, 1));
     addNavigationListener(hourEntryField, minuteEntryField);
     if(precision > MINUTE_PRECISION) {
@@ -69,6 +82,7 @@ public class JTimeEditor extends JPanel {
       editorPane.add(new JLabel(":"), new GridBagConstraints(x++, 0, 1, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 1, 1));
       secondEntryField = createTimeEntryField(2, "00", 60);
       secondEntryField.setBorder(BorderFactory.createEmptyBorder());
+      secondEntryField.addActionListener(actionListener);
       editorPane.add(secondEntryField, new GridBagConstraints(x++, 0, 1, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 1, 1));
       addNavigationListener(minuteEntryField, secondEntryField);
       if(precision > SECOND_PRECISION) {
@@ -76,6 +90,7 @@ public class JTimeEditor extends JPanel {
         editorPane.add(new JLabel("."), new GridBagConstraints(x++, 0, 1, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 1, 1));
         millisecondEntryField = createTimeEntryField(3, "000", 1000);
         millisecondEntryField.setBorder(BorderFactory.createEmptyBorder());
+        millisecondEntryField.addActionListener(actionListener);
         editorPane.add(millisecondEntryField, new GridBagConstraints(x++, 0, 1, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 1, 1));
         addNavigationListener(secondEntryField, millisecondEntryField);
       }
@@ -291,6 +306,35 @@ public class JTimeEditor extends JPanel {
       }
     });
     return timeEntryField;
+  }
+
+  public synchronized void addActionListener(ActionListener l) {
+    listenerList.add(ActionListener.class, l);
+  }
+
+  public synchronized void removeActionListener(ActionListener l) {
+    listenerList.remove(ActionListener.class, l);
+  }
+
+  public synchronized ActionListener[] getActionListeners() {
+    return listenerList.getListeners(ActionListener.class);
+  }
+
+  private void fireActionPerformed() {
+    int modifiers = 0;
+    AWTEvent currentEvent = EventQueue.getCurrentEvent();
+    if (currentEvent instanceof InputEvent) {
+      modifiers = ((InputEvent)currentEvent).getModifiers();
+    } else if (currentEvent instanceof ActionEvent) {
+      modifiers = ((ActionEvent)currentEvent).getModifiers();
+    }
+    ActionEvent e = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "action", EventQueue.getMostRecentEventTime(), modifiers);
+    Object[] listeners = listenerList.getListenerList();
+    for (int i = listeners.length-2; i>=0; i-=2) {
+      if (listeners[i]==ActionListener.class) {
+        ((ActionListener)listeners[i+1]).actionPerformed(e);
+      }          
+    }
   }
 
 }
