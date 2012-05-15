@@ -192,7 +192,16 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
   private NumberEntryFieldType numberEntryFieldType;
   private int decimalCount = -1;
 
-  private static char DECIMAL_SEPARATOR = new DecimalFormatSymbols(Locale.getDefault()).getDecimalSeparator();
+  private static final char DECIMAL_SEPARATOR;
+  
+  static {
+    String s = System.getProperty("swingsuite.decimalSeparator");
+    if(s != null && s.length() == 1) {
+      DECIMAL_SEPARATOR = s.charAt(0);
+    } else {
+      DECIMAL_SEPARATOR = new DecimalFormatSymbols(Locale.getDefault()).getDecimalSeparator();
+    }
+  }
 
   /**
    * Check that the number is OK and returns the number.
