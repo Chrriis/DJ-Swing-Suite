@@ -268,20 +268,26 @@ public class JTextEntryField extends JTextField {
     addKeyListener(new KeyAdapter() {
       @Override
       public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-          boolean isPopupVisible = isPopupVisible();
-          boolean isConsuming = isPopupVisible || !getText_().equals(lastValidText);
-          hidePopup();
-          boolean isTextValid = isTextValid(getText_());
-          if(!isPopupVisible || !isTextValid) {
-            setText(lastValidText);
-          }
-          if(isConsuming) {
-            e.consume();
-          }
-          selectAll();
-          if(!isPopupVisible && isTextValid) {
+        switch(e.getKeyCode()) {
+          case KeyEvent.VK_ENTER: {
             exit();
+            break;
+          }
+          case KeyEvent.VK_ESCAPE: {
+            boolean isPopupVisible = isPopupVisible();
+            boolean isConsuming = isPopupVisible || !getText_().equals(lastValidText);
+            hidePopup();
+            boolean isTextValid = isTextValid(getText_());
+            if(!isPopupVisible || !isTextValid) {
+              setText(lastValidText);
+            }
+            if(isConsuming) {
+              e.consume();
+            }
+            selectAll();
+            if(!isPopupVisible && isTextValid) {
+              exit();
+            }
           }
         }
       }
@@ -332,14 +338,9 @@ public class JTextEntryField extends JTextField {
         adjustPopupVisibility();
       }
     });
-    addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        exit();
-      }
-    });
     setSelectAllOnFocus(true);
   }
-
+  
   private boolean isFocusTrappedOnInvalidText;
 
   /**
