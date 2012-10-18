@@ -25,6 +25,9 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
 
     @Override
     public boolean isTextAllowed(JTextEntryField validationField, String text) {
+      if(isNullAllowed && (text == null || "".equals(text))) {
+        return true;
+      }
       for(int i=text.length()-1; i>=0; i--) {
         int codePoint = text.codePointAt(i);
         if((codePoint != DECIMAL_SEPARATOR && codePoint != '.' || !numberEntryFieldType.hasDecimals()) && !Character.isDigit(codePoint) && (codePoint != '-' || i > 0)) {
@@ -36,11 +39,17 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
 
     @Override
     public boolean isTextValid(JTextEntryField validationField, String text) {
+      if(isNullAllowed && (text == null || "".equals(text))) {
+        return true;
+      }
       return getNumber(text) != null;
     }
 
     @Override
     public String getInvalidTextErrorMessage(JTextEntryField validationField, String invalidText) {
+      if(isNullAllowed && (invalidText == null || "".equals(invalidText))) {
+        return null;
+      }
       T number = parseNumber(invalidText);
       if(number == null) {
         int decimalCount = 0;
@@ -138,6 +147,9 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
     }
 
     public Number parseNumber(String text) {
+      if(text == null || "".equals(text)) {
+        return null;
+      }
       try {
         switch(this) {
           case BYTE: return Byte.valueOf(text);
@@ -187,6 +199,7 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
 
   }
 
+  private boolean isNullAllowed;
   private T rangeMin;
   private T rangeMax;
   private NumberEntryFieldType numberEntryFieldType;
@@ -206,7 +219,7 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
   /**
    * Check that the number is OK and returns the number.
    * @param text  the current text
-   * @return The number corresponding to the text, or null if not valid
+   * @return The number corresponding to the text, or null if not valid or if null is allowed.
    */
   private T getNumber(String text) {
     T number = parseNumber(text);
@@ -259,7 +272,18 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
    * @param rangeMax the maximum number authorized by the range.
    */
   public JNumberEntryField(T number, T rangeMin, T rangeMax) {
-    this(number, 0, rangeMin, rangeMax);
+    this(number, rangeMin, rangeMax, false);
+  }
+  
+  /**
+   * Construct a number entry field.
+   * @param number the default number.
+   * @param rangeMin the minimum number authorized by the range.
+   * @param rangeMax the maximum number authorized by the range.
+   * @param isNullAllowed true if null is allowed, false otherwise.
+   */
+  public JNumberEntryField(T number, T rangeMin, T rangeMax, boolean isNullAllowed) {
+    this(number, 0, rangeMin, rangeMax, isNullAllowed);
   }
 
   /**
@@ -289,7 +313,19 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
    * @param rangeMax the maximum number authorized by the range.
    */
   public JNumberEntryField(T number, int columns, T rangeMin, T rangeMax) {
-    this(number, columns, -1, rangeMin, rangeMax);
+    this(number, columns, rangeMin, rangeMax, false);
+  }
+  
+  /**
+   * Construct a number entry field.
+   * @param number the default number.
+   * @param columns The number of columns used to calculate the preferred width, or zero for the default size calculation.
+   * @param rangeMin the minimum number authorized by the range.
+   * @param rangeMax the maximum number authorized by the range.
+   * @param isNullAllowed true if null is allowed, false otherwise.
+   */
+  public JNumberEntryField(T number, int columns, T rangeMin, T rangeMax, boolean isNullAllowed) {
+    this(number, columns, -1, rangeMin, rangeMax, isNullAllowed);
   }
 
   /**
@@ -301,6 +337,19 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
    * @param rangeMax the maximum number authorized by the range.
    */
   public JNumberEntryField(T number, int columns, int decimalCount, T rangeMin, T rangeMax) {
+    this(number, columns, decimalCount, rangeMin, rangeMax, false);
+  }
+  
+  /**
+   * Construct a number entry field.
+   * @param number the default number.
+   * @param columns The number of columns used to calculate the preferred width, or zero for the default size calculation.
+   * @param decimalCount the number of decimals allowed.
+   * @param rangeMin the minimum number authorized by the range.
+   * @param rangeMax the maximum number authorized by the range.
+   * @param isNullAllowed true if null is allowed, false otherwise.
+   */
+  public JNumberEntryField(T number, int columns, int decimalCount, T rangeMin, T rangeMax, boolean isNullAllowed) {
     super(columns);
     setHorizontalAlignment(JTextField.TRAILING);
     setFieldType(number);
@@ -308,6 +357,7 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
     setValidator(null);
     setDecimalCount(decimalCount);
     setRange(rangeMin, rangeMax);
+    setNullAllowed(isNullAllowed);
     setNumber(number);
   }
 
@@ -353,6 +403,20 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
   }
 
   /**
+   * Set whether this range accepts null.
+   * @param isNullAllowed true if null is allowed, false otherwise.
+   */
+  @SuppressWarnings("unchecked")
+  public void setNullAllowed(boolean isNullAllowed) {
+    this.isNullAllowed = isNullAllowed;
+    revalidateText();
+  }
+  
+  public boolean isNullAllowed() {
+    return isNullAllowed;
+  }
+  
+  /**
    * Set the number of decimals, which has an effect only if the number type accepts decimals.
    * @param decimalCount the number of decimals allowed, or a negative value to remove any limitation.
    */
@@ -382,7 +446,11 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
    * @param number The number to set.
    */
   public void setNumber(T number) {
-    setText(numberEntryFieldType.formatNumber(number));
+    if(isNullAllowed && number == null) {
+      setText("");
+    } else {
+      setText(numberEntryFieldType.formatNumber(number));
+    }
   }
 
 }
