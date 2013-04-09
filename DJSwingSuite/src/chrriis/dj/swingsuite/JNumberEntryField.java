@@ -240,6 +240,12 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
     return (T)numberEntryFieldType.parseNumber(text.replace(DECIMAL_SEPARATOR, '.'));
   }
 
+  public void replaceSelection(String content) {
+    // This method is invoked from clipboard paste, and clipboard data may contain trailing spaces or new lines which we have to ignore to permit pasting. 
+    content = content.trim();
+    super.replaceSelection(content);
+  }
+  
   private boolean isRangeValid(T number) {
     return (rangeMin == null || number.compareTo(rangeMin) >= 0) && (rangeMax == null || number.compareTo(rangeMax) <= 0);
   }
