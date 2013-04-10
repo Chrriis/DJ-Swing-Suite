@@ -241,8 +241,10 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
   }
 
   public void replaceSelection(String content) {
-    // This method is invoked from clipboard paste, and clipboard data may contain trailing spaces or new lines which we have to ignore to permit pasting. 
-    content = content.trim();
+    // This method is invoked from clipboard paste, and clipboard data may contain trailing spaces or new lines which we have to ignore to permit pasting.
+    if(content != null) {
+      content = content.trim();
+    }
     super.replaceSelection(content);
   }
   
