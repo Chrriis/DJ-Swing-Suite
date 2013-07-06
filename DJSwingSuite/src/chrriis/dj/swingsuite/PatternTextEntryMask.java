@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author Christopher Deckers
  */
-class PatternTextEntryMask extends TextEntryMask {
+public class PatternTextEntryMask extends TextEntryMask {
 
   private enum CharType {
     DIGIT,
@@ -29,12 +29,17 @@ class PatternTextEntryMask extends TextEntryMask {
 
   private CharType[] charTypes;
   private int[] chars;
-  private int defaultChar = '_';
+  private int defaultChar;
 
   public PatternTextEntryMask(String pattern) {
+    this(pattern, '_');
+  }
+  
+  public PatternTextEntryMask(String pattern, int defaultChar) {
     if(pattern == null || pattern.length() == 0) {
       throw new IllegalArgumentException("The mask cannot be empty!");
     }
+    this.defaultChar = defaultChar;
     List<CharType> charTypeList = new ArrayList<CharType>();
     List<Integer> charList = new ArrayList<Integer>();
     boolean isLastQuote = false;
