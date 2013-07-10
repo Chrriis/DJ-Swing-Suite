@@ -136,4 +136,16 @@ public class JWidePopupComboBox extends JComboBox {
       return maximumSize;
   }
 
+  @Override
+  public Dimension getMinimumSize() {
+    Dimension minimumSize = super.getMinimumSize();
+    if(isMinimumSizeSet()) {
+      return minimumSize;
+    }
+    if(preferredWidth != null && preferredWidth < minimumSize.width) {
+      minimumSize.width = preferredWidth;
+    }
+    return minimumSize;
+  }
+
 }
