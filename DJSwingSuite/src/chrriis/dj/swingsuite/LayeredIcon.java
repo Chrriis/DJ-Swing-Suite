@@ -11,6 +11,8 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
@@ -47,7 +49,7 @@ public class LayeredIcon extends ImageIcon {
   @Override
   public void paintIcon(Component component, Graphics g, int x, int y) {
     if(component != null) {
-      this.component = component;
+      setComponent(component);
     }
     for(int i=0; i<iconList.size(); i++) {
       Point location = iconLocationList.get(i);
@@ -171,11 +173,28 @@ public class LayeredIcon extends ImageIcon {
     return component;
   }
 
+  private HierarchyListener hierarchyListener = new HierarchyListener() {
+    public void hierarchyChanged(HierarchyEvent e) {
+      if(!component.isDisplayable()) {
+        setComponent(null);
+      }
+    }
+  };
+  
   /**
    * Set the component to which this icon is attached.
    * It is automatically set when paintComponent is called, but if that did not happen, it sometimes is needed to set it explicitely.
    */
   public void setComponent(Component component) {
+    if(component == this.component) {
+      return;
+    }
+    if(this.component != null) {
+      this.component.removeHierarchyListener(hierarchyListener);
+    }
+    if(component != null) {
+      component.addHierarchyListener(hierarchyListener);
+    }
     this.component = component;
   }
 

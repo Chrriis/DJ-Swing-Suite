@@ -11,6 +11,7 @@ Licence terms: LGPL (see licence.txt)
 - Simple time editor.
 - Wide popup combo boxes allow maximum size to be used instead.
 - JLink fires on mouse release (within the bounds) rather than click.
+- Layered icon tracks component life cycle to release internal reference.
 - JTriStateCheckBox issue fixed under Windows Vista/Seven.
 - setSelectAllOnFocus now allows dragging to adjust selection.
 - Rich drag and drop using image overlay (on systems supporting it, Java 6+).
