@@ -10,7 +10,13 @@ package chrriis.dj.swingsuite;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
@@ -23,6 +29,7 @@ import javax.swing.DefaultButtonModel;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.plaf.ButtonUI;
@@ -194,11 +201,61 @@ public class JComboButton extends JButton {
     if(isArrowEvent(e)) {
       requestFocus();
       if(arrowPopupMenu != null) {
-        arrowPopupMenu.show(JComboButton.this, getComponentOrientation().isLeftToRight()? 0: getWidth() - arrowPopupMenu.getPreferredSize().width, getHeight());
+        // Show menu, Java will determine its position if it does not fit
+        int x = getComponentOrientation().isLeftToRight()? 0: getWidth() - arrowPopupMenu.getPreferredSize().width;
+        int y = getHeight();
+        arrowPopupMenu.show(this, x, y);
+        // We check whether Java non-adjusted position was outside the screen bounds.
+        // In such case, we want to place the menu above the button if it fits in that area.
+        int popupMenuHeight = arrowPopupMenu.getHeight();
+        Point popupLocation = new Point(x, y);
+        SwingUtilities.convertPointToScreen(popupLocation, this);
+        Rectangle scrBounds;
+        GraphicsConfiguration gc = getCurrentGraphicsConfiguration(popupLocation);
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        if (gc != null) {
+          // If we have GraphicsConfiguration use it to get screen bounds
+          scrBounds = gc.getBounds();
+        } else {
+          // If we don't have GraphicsConfiguration use primary screen
+          scrBounds = new Rectangle(toolkit.getScreenSize());
+        }
+        // Check that popup fits in screen, otherwise leave Java adjusted version.
+        if (popupLocation.y + popupMenuHeight > scrBounds.y + scrBounds.height) {
+          int y2 = -popupMenuHeight;
+          Point candidateLocation = new Point(x, y2);
+          SwingUtilities.convertPointToScreen(candidateLocation, this);
+          if (candidateLocation.y >= scrBounds.y) {
+            arrowPopupMenu.show(this, x, y2);
+          }
+        }
         return true;
       }
     }
     return false;
+  }
+
+  /**
+   * Tries to find GraphicsConfiguration that contains a location.
+   * @return null if it could not be found.
+   */
+  private GraphicsConfiguration getCurrentGraphicsConfiguration(Point location) {
+    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsConfiguration gc = null;
+    for (GraphicsDevice gd: ge.getScreenDevices()) {
+      if (gd.getType() == GraphicsDevice.TYPE_RASTER_SCREEN) {
+        GraphicsConfiguration dgc = gd.getDefaultConfiguration();
+        if (dgc.getBounds().contains(location)) {
+          gc = dgc;
+          break;
+        }
+      }
+    }
+    // If not found, let's ask the component.
+    if (gc == null) {
+      gc = getGraphicsConfiguration();
+    }
+    return gc;
   }
 
   private boolean isKeyEvent;
