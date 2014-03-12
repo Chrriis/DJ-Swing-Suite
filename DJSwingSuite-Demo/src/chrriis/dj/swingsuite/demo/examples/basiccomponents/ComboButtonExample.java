@@ -42,8 +42,20 @@ public class ComboButtonExample extends JPanel {
     ImageIcon icon = new ImageIcon(getClass().getResource("resource/package16.png"));
     // A sample popup menu used by combo buttons
     JPopupMenu popupMenu = new JPopupMenu();
-    popupMenu.add(new JMenuItem("Item 1"));
-    popupMenu.add(new JMenuItem("Item 2"));
+    JMenuItem menuItem1 = new JMenuItem("Item 1");
+    menuItem1.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        System.out.println("Item 1 selected.");
+      }
+    });
+    popupMenu.add(menuItem1);
+    JMenuItem menuItem2 = new JMenuItem("Item 2");
+    menuItem2.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        System.out.println("Item 2 selected.");
+      }
+    });
+    popupMenu.add(menuItem2);
     // Create a toolbar for the first row.
     toolBar = new JToolBar();
     toolBar.setFloatable(false);
@@ -83,23 +95,32 @@ public class ComboButtonExample extends JPanel {
     toolBar = new JToolBar();
     toolBar.setFloatable(false);
     toolBar.setRollover(true);
+    ActionListener buttonListener = new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        System.out.println("Button selected.");
+      }
+    };
     // A divided combo button with an icon.
     JComboButton comboButtonIconDivided = new JComboButton(icon, true);
+    comboButtonIconDivided.addActionListener(buttonListener);
     comboButtonIconDivided.setArrowPopupMenu(popupMenu);
     SwingSuiteUtilities.adjustToolbarButtonFocus(comboButtonIconDivided);
     toolBar.add(comboButtonIconDivided);
     // A combo button with an icon and some text.
     JComboButton comboButtonIconAndTextDivided = new JComboButton("Text", icon, true);
+    comboButtonIconAndTextDivided.addActionListener(buttonListener);
     comboButtonIconAndTextDivided.setArrowPopupMenu(popupMenu);
     SwingSuiteUtilities.adjustToolbarButtonFocus(comboButtonIconAndTextDivided);
     toolBar.add(comboButtonIconAndTextDivided);
     // A combo button with some text.
     JComboButton comboButtonTextDivided = new JComboButton("Text", true);
+    comboButtonTextDivided.addActionListener(buttonListener);
     comboButtonTextDivided.setArrowPopupMenu(popupMenu);
     SwingSuiteUtilities.adjustToolbarButtonFocus(comboButtonTextDivided);
     toolBar.add(comboButtonTextDivided);
     // A combo button with an icon and some text, disabled.
     JComboButton comboButtonIconAndTextDividedDisabled = new JComboButton("Text", icon, true);
+    comboButtonIconAndTextDividedDisabled.addActionListener(buttonListener);
     comboButtonIconAndTextDividedDisabled.setEnabled(false);
     SwingSuiteUtilities.adjustToolbarButtonFocus(comboButtonIconAndTextDividedDisabled);
     toolBar.add(comboButtonIconAndTextDividedDisabled);

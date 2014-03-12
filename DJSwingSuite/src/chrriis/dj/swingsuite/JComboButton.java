@@ -67,6 +67,9 @@ public class JComboButton extends JButton {
       processMouseEvent(e);
     }
     protected void processMouseEvent(MouseEvent e) {
+      if(!isMouseOver) {
+        return;
+      }
       if(getComponentOrientation().isLeftToRight()) {
         int right = originalBorder.getBorderInsets(e.getComponent()).right + arrowSpaceWidth;
         isArrowMouseOver = e.getX() > getWidth() - right;
