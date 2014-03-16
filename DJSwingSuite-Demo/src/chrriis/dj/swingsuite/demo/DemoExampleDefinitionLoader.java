@@ -13,6 +13,7 @@ import java.util.List;
 import chrriis.dj.swingsuite.demo.examples.basiccomponents.ComboButtonExample;
 import chrriis.dj.swingsuite.demo.examples.basiccomponents.DragSelectTreeExample;
 import chrriis.dj.swingsuite.demo.examples.basiccomponents.ExtendedLabelExample;
+import chrriis.dj.swingsuite.demo.examples.basiccomponents.JumpListMenuItemExample;
 import chrriis.dj.swingsuite.demo.examples.basiccomponents.LinkExample;
 import chrriis.dj.swingsuite.demo.examples.basiccomponents.TimeEditorExample;
 import chrriis.dj.swingsuite.demo.examples.basiccomponents.TitledSeparatorExample;
@@ -43,6 +44,7 @@ public class DemoExampleDefinitionLoader {
         new Example("Tri-state check box", TriStateCheckBoxExample.class, "Tri-state check boxes, with advanced capabilities like rolling cycle definition.", true),
         new Example("Link", LinkExample.class, "Users are generally familiar with links: they are simple, intuitive and generally provide some information through tool tips.", true),
         new Example("Extended label", ExtendedLabelExample.class, "A label that allows text selection and is multiline.", true),
+        new Example("Jump list menus", JumpListMenuItemExample.class, "Jump list menus allow a menu item with a default behavior to offer additional actions.", true),
         new Example("Wide popup combo box", WidePopupComboBoxExample.class, "Wide popup combo boxes are a solution to the problem of having content that is too long. Such content generally messes up the user interface layout.", true),
         new Example("Drag-select tree", DragSelectTreeExample.class, "A tree where the user can click in the empty area, and drag the mouse over some nodes to select them. Modifiers (control and shift) can add or exclude to the current selection.", true),
         new Example("Titled separator", TitledSeparatorExample.class, "Titled separators are generally more elegant than titled borders and do not require nesting panels.", true),
