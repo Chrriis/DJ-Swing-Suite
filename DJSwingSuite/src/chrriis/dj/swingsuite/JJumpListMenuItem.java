@@ -184,12 +184,30 @@ public class JJumpListMenuItem extends JMenuItem {
     return preferredSize;
   }
 
+  private boolean isMenuIndicationAlwaysVisible = true;
+  
+  /**
+   * Set whether the menu is always shown or only on hover.
+   * @param isMenuIndicationAlwaysVisible true if always visible, false if only visible on hover.
+   */
+  public void setMenuIndicationAlwaysVisible(boolean isMenuIndicationAlwaysVisible) {
+    this.isMenuIndicationAlwaysVisible = isMenuIndicationAlwaysVisible;
+  }
+  
+  /**
+   * @return true if the menu indication is always visible or false if only shown on hover.
+   */
+  public boolean isMenuIndicationAlwaysVisible() {
+    return isMenuIndicationAlwaysVisible;
+  }
+  
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
-    if(jumpListMenu == null || !isArmed() || !isEnabled()) {
+    if(jumpListMenu == null || !isMenuIndicationAlwaysVisible && !isArmed()) {
       return;
     }
+    boolean isEnabled = isEnabled();
     int w = getWidth();
     int h = getHeight();
     int size = (arrowWidth + 1) / 2;
@@ -199,22 +217,25 @@ public class JJumpListMenuItem extends JMenuItem {
     boolean isLeftToRight = getComponentOrientation().isLeftToRight();
     if(isLeftToRight) {
       x = w - borderInsets.right - arrowWidth - arrowSpaceWidth;
-      paintTriangle(g, x + arrowSpaceWidth / 2 + 1, y, size, isArrowMouseOver, isLeftToRight);
+      paintTriangle(g, x + arrowSpaceWidth / 2 + 1, y, size, isEnabled, isLeftToRight);
     } else {
       x = borderInsets.left + arrowWidth + arrowSpaceWidth - 1;
-      paintTriangle(g, x - arrowSpaceWidth / 2 - 1, y, size, isArrowMouseOver, isLeftToRight);
+      paintTriangle(g, x - arrowSpaceWidth / 2 - 1, y, size, isEnabled, isLeftToRight);
+    }
+    if(!isArmed()) {
+      return;
     }
     int y1 = borderInsets.top;
     int y2 = h - borderInsets.bottom;
     int gradientHeight = Math.max((y2 - y1 + 1) / 5, 1);
-    float gradientIncrement = (isArrowMouseOver? 100f: 50f) / gradientHeight;
+    float gradientIncrement = (isEnabled? 100f: 50f) / gradientHeight;
     Color foregroundColor = getForeground();
     for(int i=0; i<gradientHeight; i++) {
       g.setColor(new Color(foregroundColor.getRed(), foregroundColor.getGreen(), foregroundColor.getBlue(), (int)(gradientIncrement * (i + 1))));
       g.drawLine(x, y1 + i, x, y1 + i);
       g.drawLine(x, y2 - i, x, y2 - i);
     }
-    Color dividerColor = new Color(foregroundColor.getRed(), foregroundColor.getGreen(), foregroundColor.getBlue(), isArrowMouseOver? 100: 50);
+    Color dividerColor = new Color(foregroundColor.getRed(), foregroundColor.getGreen(), foregroundColor.getBlue(), isEnabled? 100: 50);
     g.setColor(dividerColor);
     g.drawLine(x, y1 + gradientHeight, x, y2 - gradientHeight);
   }
