@@ -27,9 +27,12 @@ import javax.swing.Icon;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.LookAndFeel;
 import javax.swing.MenuElement;
 import javax.swing.MenuSelectionManager;
 import javax.swing.UIManager;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.MenuItemUI;
 
 /**
  * A menu item that can present sub-items (a.k.a jump list) in addition to having a default action.
@@ -200,11 +203,21 @@ public class JJumpListMenuItem extends JMenuItem {
   public boolean isMenuIndicationAlwaysVisible() {
     return isMenuIndicationAlwaysVisible;
   }
+
+  private boolean isModernWindowsLaF;
+  
+  @Override
+  public void setUI(MenuItemUI ui) {
+    LookAndFeel lookAndFeel = UIManager.getLookAndFeel();
+    isModernWindowsLaF = lookAndFeel.isNativeLookAndFeel() && System.getProperty("os.name").startsWith("Windows") && !Boolean.parseBoolean(System.getProperty("swing.noxp")) && !lookAndFeel.getClass().getName().endsWith("WindowsClassicLookAndFeel");
+    super.setUI(ui);
+  }
   
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
-    if(jumpListMenu == null || !isMenuIndicationAlwaysVisible && !isArmed()) {
+    boolean isArmed = isArmed();
+    if(jumpListMenu == null || !isMenuIndicationAlwaysVisible && !isArmed) {
       return;
     }
     boolean isEnabled = isEnabled();
@@ -215,21 +228,28 @@ public class JJumpListMenuItem extends JMenuItem {
     int y = h / 2;
     int x;
     boolean isLeftToRight = getComponentOrientation().isLeftToRight();
+    Color foregroundColor = null;
+    if(isArmed && !isModernWindowsLaF) {
+      // With certain look and feels, namely windows with XP style, we must use the foreground and not the selectionForeground.
+      foregroundColor = UIManager.getColor("Menu.selectionForeground");
+    }
+    if(foregroundColor == null) {
+      foregroundColor = getForeground();
+    }
     if(isLeftToRight) {
       x = w - borderInsets.right - arrowWidth - arrowSpaceWidth;
-      paintTriangle(g, x + arrowSpaceWidth / 2 + 1, y, size, isEnabled, isLeftToRight);
+      paintTriangle(g, x + arrowSpaceWidth / 2 + 1, y, size, isEnabled, isLeftToRight, foregroundColor);
     } else {
       x = borderInsets.left + arrowWidth + arrowSpaceWidth - 1;
-      paintTriangle(g, x - arrowSpaceWidth / 2 - 1, y, size, isEnabled, isLeftToRight);
+      paintTriangle(g, x - arrowSpaceWidth / 2 - 1, y, size, isEnabled, isLeftToRight, foregroundColor);
     }
-    if(!isArmed()) {
+    if(!isArmed) {
       return;
     }
     int y1 = borderInsets.top;
     int y2 = h - borderInsets.bottom;
     int gradientHeight = Math.max((y2 - y1 + 1) / 5, 1);
     float gradientIncrement = (isEnabled? 100f: 50f) / gradientHeight;
-    Color foregroundColor = getForeground();
     for(int i=0; i<gradientHeight; i++) {
       g.setColor(new Color(foregroundColor.getRed(), foregroundColor.getGreen(), foregroundColor.getBlue(), (int)(gradientIncrement * (i + 1))));
       g.drawLine(x, y1 + i, x, y1 + i);
@@ -240,12 +260,11 @@ public class JJumpListMenuItem extends JMenuItem {
     g.drawLine(x, y1 + gradientHeight, x, y2 - gradientHeight);
   }
 
-  private void paintTriangle(java.awt.Graphics g, int x, int y, int size, boolean isEnabled, boolean isLeftToRight) {
+  private void paintTriangle(java.awt.Graphics g, int x, int y, int size, boolean isEnabled, boolean isLeftToRight, Color foregroundColor) {
     java.awt.Color oldColor = g.getColor();
     size = Math.max(size, 2);
     int mid = (size / 2) - 1;
     g.translate(x, y);
-    Color foregroundColor = getForeground();
     if (isEnabled) {
       g.setColor(foregroundColor);
     } else if (!isEnabled) {
