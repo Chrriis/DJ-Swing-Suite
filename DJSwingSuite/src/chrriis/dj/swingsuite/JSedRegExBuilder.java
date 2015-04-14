@@ -44,7 +44,7 @@ public class JSedRegExBuilder extends JPanel {
       }
       private void update() {
         try {
-          outputTextArea.setText(SwingSuiteUtilities.applySedRegularExpression(sampleTextTextArea.getText(), summaryTextField.getText()));
+          outputTextArea.setText(new SedRegExpPattern(summaryTextField.getText()).apply(sampleTextTextArea.getText()));
         } catch(Exception e) {
           outputTextArea.setText(e.getMessage());
           outputTextArea.setCaretPosition(0);
