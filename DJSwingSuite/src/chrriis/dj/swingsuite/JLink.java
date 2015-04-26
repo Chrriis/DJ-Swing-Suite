@@ -71,18 +71,25 @@ public class JLink<T> extends JLabel {
       }
     });
     MouseInputAdapter mouseListener = new MouseInputAdapter() {
+      private Color originalColor;
       @Override
       public void mousePressed(MouseEvent e) {
         if(!isEnabled()) {
           return;
         }
-        setForeground(Color.RED);
+        if(e.getButton() == MouseEvent.BUTTON1) {
+          originalColor = getForeground();
+          setForeground(Color.RED);
+        }
         requestFocus();
         repaint();
       }
       @Override
       public void mouseReleased(MouseEvent e) {
-        setForeground(Color.BLUE);
+        if(e.getButton() == MouseEvent.BUTTON1) {
+          setForeground(originalColor);
+          originalColor = null;
+        }
         repaint();
         if(!isEnabled()) {
           return;
