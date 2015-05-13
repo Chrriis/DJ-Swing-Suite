@@ -363,7 +363,7 @@ public class JTriStateCheckBox extends JCheckBox {
    * Remove a listener from the list of listeners that are invoked when the state changes.
    * @param listener the listener to unregister.
    */
-  public void removeLinkListener(TriStateCheckBoxListener listener) {
+  public void removeTriStateCheckBoxListener(TriStateCheckBoxListener listener) {
     listenerList.remove(TriStateCheckBoxListener.class, listener);
   }
 
