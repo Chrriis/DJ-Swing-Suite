@@ -23,6 +23,7 @@ import chrriis.dj.swingsuite.demo.examples.entryfields.TextAndNumberFieldsExampl
 import chrriis.dj.swingsuite.demo.examples.entryfields.ValidatorsFormattersAndMasksExample;
 import chrriis.dj.swingsuite.demo.examples.introduction.SwingSuite;
 import chrriis.dj.swingsuite.demo.examples.utilities.AutoScrollExample;
+import chrriis.dj.swingsuite.demo.examples.utilities.FilterableTableHeaderExample;
 import chrriis.dj.swingsuite.demo.examples.utilities.LayeredIconExample;
 import chrriis.dj.swingsuite.demo.examples.utilities.RichDragAndDrop;
 import chrriis.dj.swingsuite.demo.examples.utilities.SelectAllOnFocusExample;
@@ -59,6 +60,7 @@ public class DemoExampleDefinitionLoader {
         new Example("Layered icon", LayeredIconExample.class, "A layered icon is an icon that aggregates icons, which can be at any location within their parent icon. Layered icons even support animated images in their composition.", true),
         new Example("Auto scroll", AutoScrollExample.class, "Enable the auto-scroll feature to simplify scrolling: a click with the middle mouse button then moving the mouse directs scrolling (as seen in web browsers).", true),
         new Example("Table column auto fit", TableColumnAutoFitExample.class, "Auto fit one or all the columns of a table.", true),
+        new Example("Table header filters", FilterableTableHeaderExample.class, "Filter content of a table from the column headers.", true),
         new Example("Select all on focus", SelectAllOnFocusExample.class, "Make a text component select its entire text when it receives the focus. This utility takes care of proper selection in certain cases such as inaccurate click (mouse moves during the click).", true),
         new Example("Wildcards conversion", WildcardsConversionExample.class, "Convert a simple text with wildcards ('*' and '?', generally entered by the user) to a regular expression that can be used to filter/search.", true),
     }));
