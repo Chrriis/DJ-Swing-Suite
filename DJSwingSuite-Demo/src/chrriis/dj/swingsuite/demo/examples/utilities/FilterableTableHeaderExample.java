@@ -8,8 +8,8 @@
 package chrriis.dj.swingsuite.demo.examples.utilities;
 
 import java.awt.BorderLayout;
+import java.util.Date;
 
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -32,14 +32,14 @@ public class FilterableTableHeaderExample extends JPanel {
   public FilterableTableHeaderExample() {
     super(new BorderLayout());
     final Object[][] rowData = new Object[][] {
-        {"Bruce", "Pink", 48},
-        {"John", "Blue", 12},
-        {"Adam", "Yellow", 56},
-        {"John", "Black", 18},
-        {"Alfred", "Black", 52},
-        {"Adam", "Green", 40},
-        {"Michel", "Red", 48},
-        {"Aline", "Blue", 10},
+        {"Bruce", "Pink", 48, getDate(16, 10, 2001)},
+        {"John", "Blue", 12, getDate(28, 3, 2012)},
+        {"Adam", "Yellow", 56, getDate(14, 11, 1995)},
+        {"John", "Black", 18, getDate(1, 1, 1998)},
+        {"Alfred", "Black", 52, getDate(17, 2, 2001)},
+        {"Adam", "Green", 40, getDate(6, 3, 2012)},
+        {"Michel", "Red", 48, getDate(14, 9, 2012)},
+        {"Aline", "Blue", 10, getDate(25, 12, 2004)},
     };
     final JTable table = new JTable(new AbstractTableModel() {
       @Override
@@ -47,7 +47,8 @@ public class FilterableTableHeaderExample extends JPanel {
         switch(column) {
           case 0: return "Name";
           case 1: return "Color";
-          case 2: return "Age";
+          case 2: return "Number";
+          case 3: return "Date";
         }
         return null;
       }
@@ -55,7 +56,7 @@ public class FilterableTableHeaderExample extends JPanel {
         return rowData.length;
       }
       public int getColumnCount() {
-        return 3;
+        return 4;
       }
       public Object getValueAt(int row, int col) {
         return rowData[row][col];
@@ -64,7 +65,8 @@ public class FilterableTableHeaderExample extends JPanel {
       public Class<?> getColumnClass(int columnIndex) {
         switch(columnIndex) {
           case 2: return Integer.class;
-          default:return String.class;
+          case 3: return Date.class;
+          default: return String.class;
         }
       }
     });
@@ -85,6 +87,10 @@ public class FilterableTableHeaderExample extends JPanel {
     table.setTableHeader(filterableTableHeader);
     add(new JScrollPane(table), BorderLayout.CENTER);
   }
+
+  private static Date getDate(int day, int month, int year) {
+    return new Date(year - 1900, month - 1, day);
+}
 
   /* Standard main method to try that test as a standalone application. */
   public static void main(String[] args) {
