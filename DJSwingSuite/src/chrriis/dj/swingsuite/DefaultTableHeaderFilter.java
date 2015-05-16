@@ -438,5 +438,9 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
     Set<Object> acceptedValueSet = getAcceptedValueSet(column);
     return acceptedValueSet == null || acceptedValueSet.contains(entry.getValue(column));
   }
+  
+  public void clearFilter(int column) {
+    setAcceptedValueSet(column, null);
+  }
 
 }

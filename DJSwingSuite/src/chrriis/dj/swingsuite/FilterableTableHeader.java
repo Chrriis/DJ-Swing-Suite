@@ -12,13 +12,19 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EventListener;
 import java.util.List;
 
 import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
@@ -38,6 +44,7 @@ public class FilterableTableHeader extends JTableHeader {
     public JPopupMenu getFilterEditor(FilterableTableHeader filterableTableHeader, TableModel tableModel, int column, int[] rows, Comparator<Object> valueComparator);
     public boolean isFilterActive(int column);
     public boolean include(RowFilter.Entry<? extends TableModel, ? extends Integer> entry, int column);
+    public void clearFilter(int column);
   }
 
   private static final ImageIcon FILTER_ICON = new ImageIcon(FilterableTableHeader.class.getResource("resource/TableColumnFilter16x12.png"));
@@ -137,12 +144,25 @@ public class FilterableTableHeader extends JTableHeader {
     switch(e.getID()) {
       case MouseEvent.MOUSE_PRESSED:
         if(isOnHitZone) {
-          showFilter(e);
+          if(e.getButton() == MouseEvent.BUTTON1) {
+            showFilterPopup(e);
+          } else if(e.isPopupTrigger()) {
+            showPopup(e);
+          }
+          return;
+        }
+        break;
+      case MouseEvent.MOUSE_RELEASED:
+        if(isOnHitZone && e.isPopupTrigger()) {
+          showPopup(e);
           return;
         }
         break;
       case MouseEvent.MOUSE_CLICKED:
         if(isOnHitZone) {
+          if(e.isPopupTrigger()) {
+            showPopup(e);
+          }
           return;
         }
         break;
@@ -150,7 +170,70 @@ public class FilterableTableHeader extends JTableHeader {
     super.processMouseEvent(e);
     processMouseEvent_(e);
   }
+  
+  private void showPopup(MouseEvent e) {
+    columnWithPopupVisible = hoveredColumn;
+    repaint();
+    final int modelColumn = table.convertColumnIndexToModel(hoveredColumn);
+    final TableHeaderFilter headerFilter = headerFilters[modelColumn];
+    boolean hasOtherFilters = false;
+    for(int i=0; i<activeFilterIndexes.length; i++) {
+      if(activeFilterIndexes[i] != modelColumn) {
+        hasOtherFilters = true;
+        break;
+      }
+    }
+    JPopupMenu popupMenu = new JPopupMenu();
+    JMenuItem clearFilterMenuItem = new JMenuItem(getClearFilterLabelText());
+    clearFilterMenuItem.setEnabled(headerFilter.isFilterActive(modelColumn));
+    clearFilterMenuItem.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        headerFilter.clearFilter(modelColumn);
+        adjustFilterActiveIndexes(modelColumn, headerFilter);
+        notifyFilterChanged(modelColumn, headerFilter);
+        repaint();
+      }
+    });
+    popupMenu.add(clearFilterMenuItem);
+    JMenuItem clearAllFiltersMenuItem = new JMenuItem(getClearAllFiltersLabelText());
+    clearAllFiltersMenuItem.setEnabled(hasOtherFilters);
+    clearAllFiltersMenuItem.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Arrays.sort(activeFilterIndexes);
+        for(int i=activeFilterIndexes.length-1; i>=0; i--) {
+          int column = activeFilterIndexes[i];
+          TableHeaderFilter headerFilter = headerFilters[activeFilterIndexes[i]];
+          headerFilter.clearFilter(column);
+          adjustFilterActiveIndexes(column, headerFilter);
+          notifyFilterChanged(column, headerFilter);
+        }
+        repaint();
+      }
+    });
+    popupMenu.add(clearAllFiltersMenuItem);
+    popupMenu.show(e.getComponent(), e.getX(), e.getY());
+    popupMenu.addPopupMenuListener(new PopupMenuListener() {
+      public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+      }
+      public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+        columnWithPopupVisible = -1;
+        location = null;
+        adjustZones();
+        repaint();
+      }
+      public void popupMenuCanceled(PopupMenuEvent e) {
+      }
+    });
+  }
+  
+  protected String getClearFilterLabelText() {
+    return "Clear filter";
+  }
 
+  protected String getClearAllFiltersLabelText() {
+    return "Clear all filters";
+  }
+  
   @Override
   protected void processMouseMotionEvent(MouseEvent e) {
     super.processMouseMotionEvent(e);
@@ -201,7 +284,7 @@ public class FilterableTableHeader extends JTableHeader {
     }
   }
 
-  private void showFilter(MouseEvent e) {
+  private void showFilterPopup(MouseEvent e) {
     int modelColumn = table.convertColumnIndexToModel(hoveredColumn);
     TableHeaderFilter headerFilter = headerFilters[modelColumn];
     TableRowSorter<TableModel> rowSorter = (TableRowSorter<TableModel>)table.getRowSorter();
