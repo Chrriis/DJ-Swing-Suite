@@ -59,6 +59,19 @@ import chrriis.dj.swingsuite.JTriStateCheckBox.CheckState;
  */
 public class DefaultTableHeaderFilter implements TableHeaderFilter {
 
+  private static class FilterData {
+    private Set<Object> acceptedValueSet;
+    public void setAcceptedValueSet(Set<Object> acceptedValueSet) {
+      this.acceptedValueSet = acceptedValueSet;
+    }
+    public Set<Object> getAcceptedValueSet() {
+      return acceptedValueSet;
+    }
+    public boolean include(RowFilter.Entry<? extends TableModel, ? extends Integer> entry, int column) {
+      return acceptedValueSet.contains(entry.getValue(column));
+    }
+  }
+  
   private static class ScrollablePanel extends JPanel implements Scrollable {
 
     private int unit;
@@ -99,14 +112,17 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
     private Set<Object> newAcceptedValueSet;
     private JButton okButton;
     private JPanel contentPane;
-    private Set<Object> acceptedValueSet;
+    private FilterData filterData;
     private Object[] values;
     private Map<Object, String> valueToTextMap;
     private boolean isAddingToCurrentFilter;
     public FilterEditor(final int column, final FilterableTableHeader filterableTableHeader, final DefaultTableHeaderFilter headerFilter, final JPopupMenu popupMenu, Object[] values, Map<Object, String> valueToTextMap) {
       super(new BorderLayout());
       setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-      acceptedValueSet = getAcceptedValueSet(column);
+      filterData = getFilterData(column);
+      if(filterData == null) {
+        filterData = new FilterData();
+      }
       this.values = values;
       this.valueToTextMap = valueToTextMap;
       okButton = new JButton("OK");
@@ -172,24 +188,27 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
           switch(selectAllCheckBox.getState()) {
             case SELECTED:
               if(filter == null) {
-                setAcceptedValueSet(column, null);
+                setFilterData(column, null);
               } else {
                 if(isAddingToCurrentFilter) {
-                  newAcceptedValueSet.addAll(acceptedValueSet);
+                  newAcceptedValueSet.addAll(filterData.getAcceptedValueSet());
                 }
-                setAcceptedValueSet(column, newAcceptedValueSet);
+                filterData.setAcceptedValueSet(newAcceptedValueSet);
+                setFilterData(column, filterData);
               }
               break;
             case NOT_SELECTED:
               if(!isAddingToCurrentFilter) {
-                setAcceptedValueSet(column, new HashSet<Object>());
+                filterData.setAcceptedValueSet(new HashSet<Object>());
+                setFilterData(column, filterData);
               }
               break;
             case INDETERMINATE:
               if(isAddingToCurrentFilter) {
-                newAcceptedValueSet.addAll(acceptedValueSet);
+                newAcceptedValueSet.addAll(filterData.getAcceptedValueSet());
               }
-              setAcceptedValueSet(column, newAcceptedValueSet);
+              filterData.setAcceptedValueSet(newAcceptedValueSet);
+              setFilterData(column, filterData);
               break;
           }
           popupMenu.setVisible(false);
@@ -242,6 +261,7 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
         if(filterLC != null) {
           isRetained = text.toLowerCase().contains(filterLC);
         }
+        Set<Object> acceptedValueSet = filterData.getAcceptedValueSet();
         if(isRetained) {
           if(itemCount == 0) {
             selectAllCheckBox = new JTriStateCheckBox("(Select all)");
@@ -358,20 +378,20 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
   }
 
   public boolean isFilterActive(int column) {
-    return columnToAcceptedValueSetMap.containsKey(column);
+    return columnToFilterDataMap.containsKey(column);
   }
 
-  private Map<Integer, Set<Object>> columnToAcceptedValueSetMap = new HashMap<Integer, Set<Object>>();
+  private Map<Integer, FilterData> columnToFilterDataMap = new HashMap<Integer, FilterData>();
 
-  private Set<Object> getAcceptedValueSet(int column) {
-    return columnToAcceptedValueSetMap.get(column);
+  private FilterData getFilterData(int column) {
+    return columnToFilterDataMap.get(column);
   }
 
-  private void setAcceptedValueSet(int column, Set<Object> acceptedValueSet) {
-    if(acceptedValueSet == null) {
-      columnToAcceptedValueSetMap.remove(column);
+  private void setFilterData(int column, FilterData filterData) {
+    if(filterData == null) {
+      columnToFilterDataMap.remove(column);
     } else {
-      columnToAcceptedValueSetMap.put(column, acceptedValueSet);
+      columnToFilterDataMap.put(column, filterData);
     }
   }
 
@@ -435,12 +455,12 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
   }
 
   public boolean include(RowFilter.Entry<? extends TableModel, ? extends Integer> entry, int column) {
-    Set<Object> acceptedValueSet = getAcceptedValueSet(column);
-    return acceptedValueSet == null || acceptedValueSet.contains(entry.getValue(column));
+    FilterData filterData = getFilterData(column);
+    return filterData == null || filterData.include(entry, column);
   }
   
   public void clearFilter(int column) {
-    setAcceptedValueSet(column, null);
+    setFilterData(column, null);
   }
 
 }
