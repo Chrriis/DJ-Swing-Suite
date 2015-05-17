@@ -187,7 +187,6 @@ public class FilterableTableHeader extends JTableHeader {
       public void actionPerformed(ActionEvent e) {
         headerFilter.clearFilter(modelColumn);
         notifyFilterChanged(new int[] {modelColumn}, new TableHeaderFilter[] {headerFilter});
-        repaint();
       }
     });
     popupMenu.add(clearFilterMenuItem);
@@ -205,7 +204,6 @@ public class FilterableTableHeader extends JTableHeader {
         }
         activeFilterIndexes = new int[0];
         notifyFilterChanged(columns, clearedHeaderFilters);
-        repaint();
       }
     });
     popupMenu.add(clearAllFiltersMenuItem);
@@ -358,6 +356,7 @@ public class FilterableTableHeader extends JTableHeader {
     for(int i=0; i<columns.length; i++) {
       adjustFilterActiveIndexes(columns[i], headerFilters[i]);
     }
+    repaint();
     for(TableHeaderFilterChangeListener listener: getFilterChangeListeners()) {
       listener.processFilterModification(columns);
     }
