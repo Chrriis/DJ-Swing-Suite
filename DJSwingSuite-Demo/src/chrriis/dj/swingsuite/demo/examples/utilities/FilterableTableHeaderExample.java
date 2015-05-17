@@ -80,7 +80,7 @@ public class FilterableTableHeaderExample extends JPanel {
     filterableTableHeader.setHeaderFilter(2, headerFilter);
     filterableTableHeader.setHeaderFilter(3, headerFilter);
     filterableTableHeader.addFilterChangeListener(new TableHeaderFilterChangeListener() {
-      public void processFilterModification(int column) {
+      public void processFilterModification(int[] columns) {
         // Set the row filter, which triggers recomputation.
         ((TableRowSorter<? extends TableModel>)table.getRowSorter()).setRowFilter(filterableTableHeader.getRowFilter());
       }

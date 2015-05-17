@@ -193,7 +193,7 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
               break;
           }
           popupMenu.setVisible(false);
-          filterableTableHeader.notifyFilterChanged(column, headerFilter);
+          filterableTableHeader.notifyFilterChanged(new int[] {column}, new TableHeaderFilter[] {headerFilter});
         }
       });
       buttonPane.add(okButton);

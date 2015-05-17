@@ -14,11 +14,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EventListener;
 import java.util.List;
@@ -189,8 +186,7 @@ public class FilterableTableHeader extends JTableHeader {
     clearFilterMenuItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         headerFilter.clearFilter(modelColumn);
-        adjustFilterActiveIndexes(modelColumn, headerFilter);
-        notifyFilterChanged(modelColumn, headerFilter);
+        notifyFilterChanged(new int[] {modelColumn}, new TableHeaderFilter[] {headerFilter});
         repaint();
       }
     });
@@ -199,14 +195,16 @@ public class FilterableTableHeader extends JTableHeader {
     clearAllFiltersMenuItem.setEnabled(hasOtherFilters);
     clearAllFiltersMenuItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        Arrays.sort(activeFilterIndexes);
+        int[] columns = activeFilterIndexes;
+        TableHeaderFilter[] clearedHeaderFilters = new TableHeaderFilter[activeFilterIndexes.length];
         for(int i=activeFilterIndexes.length-1; i>=0; i--) {
           int column = activeFilterIndexes[i];
-          TableHeaderFilter headerFilter = headerFilters[activeFilterIndexes[i]];
+          TableHeaderFilter headerFilter = headerFilters[column];
           headerFilter.clearFilter(column);
-          adjustFilterActiveIndexes(column, headerFilter);
-          notifyFilterChanged(column, headerFilter);
+          clearedHeaderFilters[i] = headerFilter;
         }
+        activeFilterIndexes = new int[0];
+        notifyFilterChanged(columns, clearedHeaderFilters);
         repaint();
       }
     });
@@ -356,10 +354,12 @@ public class FilterableTableHeader extends JTableHeader {
     });
   }
 
-  public void notifyFilterChanged(int column, TableHeaderFilter headerFilter) {
-    adjustFilterActiveIndexes(column, headerFilter);
+  public void notifyFilterChanged(int[] columns, TableHeaderFilter[] headerFilters) {
+    for(int i=0; i<columns.length; i++) {
+      adjustFilterActiveIndexes(columns[i], headerFilters[i]);
+    }
     for(TableHeaderFilterChangeListener listener: getFilterChangeListeners()) {
-      listener.processFilterModification(column);
+      listener.processFilterModification(columns);
     }
   }
 
@@ -435,7 +435,7 @@ public class FilterableTableHeader extends JTableHeader {
   }
 
   public static interface TableHeaderFilterChangeListener extends EventListener {
-    public void processFilterModification(int column);
+    public void processFilterModification(int[] columns);
   }
 
   public void addFilterChangeListener(TableHeaderFilterChangeListener listener) {
