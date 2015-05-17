@@ -228,8 +228,10 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
     private FilterableTableHeader filterableTableHeader;
     private DefaultTableHeaderFilter headerFilter;
     private boolean isCustomFilterActive;
+    private JPopupMenu popupMenu;
     public FilterEditor(final int column, final FilterableTableHeader filterableTableHeader, final DefaultTableHeaderFilter headerFilter, final JPopupMenu popupMenu, Object[] values, Map<Object, String> valueToTextMap) {
       super(new BorderLayout());
+      this.popupMenu = popupMenu;
       setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
       this.column = column;
       this.filterableTableHeader = filterableTableHeader;
@@ -519,6 +521,7 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
             buttonPane.add(cancelButton);
             southPane.add(buttonPane, BorderLayout.EAST);
             contentPane.add(southPane, BorderLayout.SOUTH);
+            popupMenu.setVisible(false);
             final FilterDialog dialog = getModalDialog(filterableTableHeader.getTable(), contentPane, "Number filter");
             okButton.addActionListener(new ActionListener() {
               public void actionPerformed(ActionEvent e) {
@@ -630,6 +633,7 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
     dialog.setTitle(title);
     dialog.getContentPane().add(content, BorderLayout.CENTER);
     dialog.pack();
+    dialog.setMinimumSize(dialog.getPreferredSize());
     dialog.setLocationRelativeTo(SwingUtilities.getWindowAncestor(table));
     return dialog;
   }
