@@ -482,7 +482,7 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
             JPanel numberFilterContentPane = new JPanel(new GridBagLayout());
             final JComboBox operator1ComboBox = new JComboBox(Operator.values());
             numberFilterContentPane.add(operator1ComboBox, new GridBagConstraints(1, 0, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 2, 0, 0), 0, 0));
-            final JNumberEntryField<Double> value1NumberField = new JNumberEntryField<Double>(0.0, 14, Double.MIN_VALUE, Double.MAX_VALUE, true);
+            final JNumberEntryField<Double> value1NumberField = new JNumberEntryField<Double>(0.0, 14, null, null, true);
             value1NumberField.setNumber(null);
             numberFilterContentPane.add(value1NumberField, new GridBagConstraints(2, 0, 1, 1, 1, 0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 2, 0, 0), 0, 0));
             final JComboBox andComboBox = new JComboBox(new String[] {" ", "and", "or"});
@@ -490,7 +490,7 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
             final JComboBox operator2ComboBox = new JComboBox(Operator.values());
             operator2ComboBox.setEnabled(false);
             numberFilterContentPane.add(operator2ComboBox, new GridBagConstraints(1, 1, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 0, 0), 0, 0));
-            final JNumberEntryField<Double> value2NumberField = new JNumberEntryField<Double>(0.0, 14, Double.MIN_VALUE, Double.MAX_VALUE, true);
+            final JNumberEntryField<Double> value2NumberField = new JNumberEntryField<Double>(0.0, 14, null, null, true);
             value2NumberField.setNumber(null);
             value2NumberField.setEnabled(false);
             andComboBox.addItemListener(new ItemListener() {
