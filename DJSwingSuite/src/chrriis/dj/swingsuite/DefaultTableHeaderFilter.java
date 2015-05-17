@@ -553,7 +553,7 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
           }
         };
         numberFilterPane.add(numberFilterCheckBox, new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, emptyInsets, 0, 0));
-        final JLink<Void> configureLink = new JLink<Void>("(configure)", null);
+        final JLink<Void> configureLink = new JLink<Void>("(edit)", null);
         configureLink.setVisible(false);
         configureLink.addLinkListener(new LinkListener<Void>() {
           public boolean linkActivated(JLink<Void> link, Void target) {
