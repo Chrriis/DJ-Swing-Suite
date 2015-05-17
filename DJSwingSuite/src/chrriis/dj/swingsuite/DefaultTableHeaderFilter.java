@@ -240,6 +240,7 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
       if(filterData == null) {
         filterData = new FilterData();
       }
+      isCustomFilterActive = filterData.getNumberFilter() != null;
       this.values = values;
       this.valueToTextMap = valueToTextMap;
       okButton = new JButton("OK");
@@ -575,7 +576,7 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
             isCustomFilterActive = isWithFilter;
           }
         });
-        numberFilterCheckBox.setSelected(numberFilter != null);
+        numberFilterCheckBox.setSelected(isCustomFilterActive);
         numberFilterPane.add(Box.createHorizontalGlue(), new GridBagConstraints(2, 0, 1, 1, 1, 0, GridBagConstraints.WEST, GridBagConstraints.NONE, emptyInsets, 0, 0));
         centerPane.add(numberFilterPane, BorderLayout.SOUTH);
       }
