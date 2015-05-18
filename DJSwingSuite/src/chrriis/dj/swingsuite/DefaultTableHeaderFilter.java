@@ -668,7 +668,7 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
     Object[] values = valueToTextMap.keySet().toArray();
     Arrays.sort(values, new Comparator<Object>() {
       public int compare(Object o1, Object o2) {
-        return o1 == null? o2 == null? 0: -1: o2 == null? -1: valueComparator.compare(o1, o2);
+        return o1 == null? o2 == null? 0: -1: o2 == null? 1: valueComparator.compare(o1, o2);
       }
     });
     JPopupMenu popupMenu = new JPopupMenu();
