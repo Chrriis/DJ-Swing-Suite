@@ -285,6 +285,7 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
                     filter = null;
                   }
                   setFilter(filter);
+                  thread = null;
                 }
               });
             }
@@ -657,7 +658,7 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
     }
   }
 
-  public JPopupMenu getFilterEditor(FilterableTableHeader filterableTableHeader, TableModel tableModel, int column, int[] rows, Comparator<Object> valueComparator) {
+  public JPopupMenu getFilterEditor(FilterableTableHeader filterableTableHeader, TableModel tableModel, int column, int[] rows, final Comparator<Object> valueComparator) {
     Map<Object, String> valueToTextMap = new HashMap<Object, String>();
     for(int i=0; i<rows.length; i++) {
       int row = rows[i];
@@ -665,7 +666,11 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
       valueToTextMap.put(o, convertToString(o, tableModel, row, column));
     }
     Object[] values = valueToTextMap.keySet().toArray();
-    Arrays.sort(values, valueComparator);
+    Arrays.sort(values, new Comparator<Object>() {
+      public int compare(Object o1, Object o2) {
+        return o1 == null? o2 == null? 0: -1: o2 == null? -1: valueComparator.compare(o1, o2);
+      }
+    });
     JPopupMenu popupMenu = new JPopupMenu();
     popupMenu.setLayout(new BorderLayout());
     FilterEditor filterEditor = new FilterEditor(column, filterableTableHeader, this, popupMenu, values, valueToTextMap);
