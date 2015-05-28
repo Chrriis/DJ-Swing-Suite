@@ -8,6 +8,7 @@
 package chrriis.dj.swingsuite.demo.examples.utilities;
 
 import java.awt.BorderLayout;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.swing.JFrame;
@@ -37,7 +38,7 @@ public class FilterableTableHeaderExample extends JPanel {
         {"Adam", "Yellow", 56, getDate(14, 11, 1995)},
         {"John", "Black", 18, getDate(1, 1, 1998)},
         {"Alfred", "Black", 52, getDate(17, 2, 2001)},
-        {"Adam", "Green", 40, getDate(6, 3, 2012)},
+        {"Adam", "Green", 40, null},
         {"Michel", "Red", 48, getDate(14, 9, 2012)},
         {"Aline", "Blue", 10, getDate(25, 12, 2004)},
     };
@@ -90,7 +91,7 @@ public class FilterableTableHeaderExample extends JPanel {
   }
 
   private static Date getDate(int day, int month, int year) {
-    return new Date(year - 1900, month - 1, day);
+    return new Timestamp(year - 1900, month - 1, day, 1, 1, 1, 1);
 }
 
   /* Standard main method to try that test as a standalone application. */

@@ -20,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.text.Collator;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -668,7 +669,25 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
     Object[] values = valueToTextMap.keySet().toArray();
     Arrays.sort(values, new Comparator<Object>() {
       public int compare(Object o1, Object o2) {
-        return o1 == null? o2 == null? 0: -1: o2 == null? 1: valueComparator.compare(o1, o2);
+        if(o1 == null) {
+          if(o2 == null) {
+            return 0;
+          }
+          return -1;
+        }
+        if(o2 == null) {
+          return 1;
+        }
+        // TODO: I am not sure how to get the string representation used by the collator.
+        if(valueComparator instanceof Collator) {
+          if(!(o1 instanceof String)) {
+            o1 = o1.toString();
+          }
+          if(!(o2 instanceof String)) {
+            o2 = o2.toString();
+          }
+        }
+        return valueComparator.compare(o1, o2);
       }
     });
     JPopupMenu popupMenu = new JPopupMenu();
