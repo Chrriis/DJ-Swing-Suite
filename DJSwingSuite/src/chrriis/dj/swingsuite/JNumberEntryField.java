@@ -173,14 +173,16 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
         int exponent = Integer.parseInt(s.substring(index + 1));
         String root = s.substring(0, 1) + s.substring(2, index);
         // Adjust dot position
-        if(exponent > 0) {
+        if(exponent >= 0) {
           int length = root.length();
-          if(exponent < length - 2) {
+          if(exponent < length - 1) {
             s = root.substring(0, exponent + 1) + '.' + root.substring(exponent + 1);
           } else if(exponent >= length) {
             char[] zeros = new char[exponent + 1 - length];
             Arrays.fill(zeros, '0');
             s = root + new String(zeros);
+          } else {
+            s = root;
           }
         } else {
           char[] zeros = new char[-exponent - 1];
