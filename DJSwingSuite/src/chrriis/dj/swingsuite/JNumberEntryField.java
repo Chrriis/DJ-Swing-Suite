@@ -168,6 +168,10 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
 
     public String formatNumber(Number number) {
       String s = number.toString();
+      boolean isNegative = s.startsWith("-");
+      if(isNegative) {
+        s = s.substring(1);
+      }
       int index = s.indexOf('E');
       if(index >= 0) {
         int exponent = Integer.parseInt(s.substring(index + 1));
@@ -196,7 +200,11 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
       if(s.endsWith(".0")) {
         s = s.substring(0, s.length() - 2);
       }
-      return s.replace('.', DECIMAL_SEPARATOR);
+      String value = s.replace('.', DECIMAL_SEPARATOR);
+      if(isNegative) {
+        value = "-" + value;
+      }
+      return value;
     }
 
   }
