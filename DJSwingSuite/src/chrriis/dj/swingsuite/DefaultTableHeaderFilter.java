@@ -377,17 +377,36 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
       Set<Object> acceptedValueSet = filterData.getAcceptedValueSet();
       final NumberCustomFilter numberFilter = filterData.getNumberFilter();
       boolean hasNumbers = false;
+      String groupingSeparator = null;
+      String filterLCNoGroupingSeparator = null;
       for (int i = 0; i < values.length; i++) {
         final Object value = values[i];
         if(itemCount >= maxItemCount) {
           isLimiting = true;
         }
-        hasNumbers = value instanceof Number;
+        boolean isNumber = value instanceof Number;
+        hasNumbers |= isNumber;
         if(!isLimiting) {
           String text = valueToTextMap.get(value);
           boolean isRetained = true;
           if(filterLC != null) {
             isRetained = text.toLowerCase().contains(filterLC);
+            if(!isRetained && isNumber) {
+              // For numbers, we want to perform a comparison without grouping separators.
+              if(groupingSeparator == null) {
+                char groupingSeparatorChar = ((DecimalFormat)DecimalFormat.getInstance()).getDecimalFormatSymbols().getGroupingSeparator();
+                if(groupingSeparatorChar == '\u00A0') {
+                  groupingSeparatorChar = ' ';
+                }
+                groupingSeparator = String.valueOf(groupingSeparatorChar);
+                filterLCNoGroupingSeparator = filterLC.replace(groupingSeparator, "");
+              }
+              String newText = text.replace(groupingSeparator, "");
+              // Do not compare if there was no grouping separator.
+              if(newText.length() < text.length()) {
+                isRetained = newText.contains(filterLCNoGroupingSeparator);
+              }
+            }
           }
           if(isRetained) {
             if(itemCount == 0) {
@@ -701,11 +720,31 @@ public class DefaultTableHeaderFilter implements TableHeaderFilter {
     if(value == null) {
       return "(empty)";
     }
-    if(value instanceof Integer || value instanceof Long) {
-      return getIntegerFormat().format(value);
-    }
     if(value instanceof Number) {
-      return getDoubleFormat().format(value);
+      String text;
+      if(value instanceof Integer || value instanceof Long) {
+        text = getIntegerFormat().format(value);
+      } else {
+        text = getDoubleFormat().format(value);
+      }
+      // Replace non-breakable spaces by regular spaces.
+      // Replace special negative sign by regular negative sign.
+      boolean isWithUntypableChars = false;
+      for(int i=text.length()-1; i>=0; i--) {
+        switch(text.charAt(i)) {
+          case '\u00A0':
+          case '\u2212':
+            isWithUntypableChars = true;
+            break;
+        }
+      }
+      if(isWithUntypableChars) {
+        text = text.replace('\u00A0', ' ');
+        if(text.startsWith("\u2212")) {
+          text = '-' + text.substring(1);
+        }
+      }
+      return text;
     }
     if(value instanceof Date) {
       return getDateFormat().format(value);

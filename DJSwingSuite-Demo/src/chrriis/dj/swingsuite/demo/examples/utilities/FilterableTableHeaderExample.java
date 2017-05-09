@@ -8,7 +8,9 @@
 package chrriis.dj.swingsuite.demo.examples.utilities;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 import javax.swing.JFrame;
@@ -17,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -34,12 +37,12 @@ public class FilterableTableHeaderExample extends JPanel {
     super(new BorderLayout());
     final Object[][] rowData = new Object[][] {
         {"Bruce", "Pink", 48, getDate(16, 10, 2001)},
-        {"John", "Blue", 12, getDate(28, 3, 2012)},
-        {"Adam", "Yellow", 56, getDate(14, 11, 1995)},
+        {"John", "Blue", -87112, getDate(28, 3, 2012)},
+        {"Adam", "Yellow", 56871, getDate(14, 11, 1995)},
         {"John", "Black", 18, getDate(1, 1, 1998)},
         {"Alfred", "Black", 52, getDate(17, 2, 2001)},
-        {"Adam", "Green", 40, null},
-        {"Michel", "Red", 48, getDate(14, 9, 2012)},
+        {"Adam", "Green", 4004, null},
+        {"Michel", "Red", 48810, getDate(14, 9, 2012)},
         {"Aline", "Blue", 10, getDate(25, 12, 2004)},
     };
     final JTable table = new JTable(new AbstractTableModel() {
@@ -87,6 +90,16 @@ public class FilterableTableHeaderExample extends JPanel {
       }
     });
     table.setTableHeader(filterableTableHeader);
+    table.setDefaultRenderer(Integer.class, new DefaultTableCellRenderer() {
+      @Override
+      public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        if(value != null) {
+          DecimalFormat format = new DecimalFormat("#,##0");
+          value = format.format(value);
+        }
+        return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+      }
+    });
     add(new JScrollPane(table), BorderLayout.CENTER);
   }
 
