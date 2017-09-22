@@ -9,7 +9,6 @@ package chrriis.dj.swingsuite;
 
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -30,11 +29,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.EventListenerList;
 
 /**
  * A simple time editor.
@@ -50,14 +47,16 @@ public class JTimeEditor extends JPanel {
     this(null, precision);
   }
 
+  private JPanel editorPane;
   private TimeEntryField hourEntryField;
   private TimeEntryField minuteEntryField;
   private TimeEntryField secondEntryField;
   private TimeEntryField millisecondEntryField;
-
+  private JSpinner spinner;
+  
   public JTimeEditor(Calendar calendar, int precision) {
     super(new BorderLayout());
-    JPanel editorPane = new JPanel(new GridBagLayout());
+    editorPane = new JPanel(new GridBagLayout());
     // Hours
     ActionListener actionListener = new ActionListener() {
       public void actionPerformed(ActionEvent e) {
@@ -98,7 +97,7 @@ public class JTimeEditor extends JPanel {
     editorPane.setMinimumSize(editorPane.getPreferredSize());
     editorPane.setPreferredSize(editorPane.getPreferredSize());
     // Spinner
-    final JSpinner spinner = new JSpinner();
+    spinner = new JSpinner();
     // Spinner border is very big. Text field border seems more appropriate but we need to add a small insets.
     spinner.setBorder(BorderFactory.createCompoundBorder(UIManager.getBorder("TextField.border"), BorderFactory.createEmptyBorder(1, 0, 1, 1)));
     spinner.setEditor(editorPane);
@@ -337,4 +336,19 @@ public class JTimeEditor extends JPanel {
     }
   }
 
+  @Override
+  public void setEnabled(boolean isEnabled) {
+    super.setEnabled(isEnabled);
+    hourEntryField.setEnabled(isEnabled);
+    minuteEntryField.setEnabled(isEnabled);
+    if(secondEntryField != null) {
+      secondEntryField.setEnabled(isEnabled);
+    }
+    if(millisecondEntryField != null) {
+      millisecondEntryField.setEnabled(isEnabled);
+    }
+    spinner.setEnabled(isEnabled);
+    editorPane.setBackground(hourEntryField.getBackground());
+  }
+  
 }
