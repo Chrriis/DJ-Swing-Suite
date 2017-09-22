@@ -8,6 +8,7 @@ Licence terms: LGPL (see licence.txt)
 * Version 0.9.2 (xxxxxxxxxxxx):
 
 - Fix certain number parsing bugs in the number field.
+- Quick shortcut to multiply/divide by 10^3/10^6 in number fields (k/K/m/M).
 - Table column header filters.
 - Sed-like regular expression performance using dedicated class with state.
 - Jump list menu item.

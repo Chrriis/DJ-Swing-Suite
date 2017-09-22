@@ -7,6 +7,8 @@
  */
 package chrriis.dj.swingsuite;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormatSymbols;
@@ -377,6 +379,52 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
     setRange(rangeMin, rangeMax);
     setNullAllowed(isNullAllowed);
     setNumber(number);
+    addKeyListener(new KeyAdapter() {
+      @Override
+      public void keyPressed(KeyEvent e) {
+        processKey(e);
+      }
+      @Override
+      public void keyReleased(KeyEvent e) {
+        processKey(e);
+      }
+      @Override
+      public void keyTyped(KeyEvent e) {
+        processKey(e);
+      }
+      private void processKey(KeyEvent e) {
+        if(!isEditable() || !isEnabled()) {
+          return;
+        }
+        Integer factor = null;
+        boolean isDivision = false;
+        switch(e.getKeyChar()) {
+          case 'k': factor = 1000; break;
+          case 'K': factor = 1000; isDivision = true; break;
+          case 'm': factor = 1000000; break;
+          case 'M': factor = 1000000; isDivision = true; break;
+        }
+        if(factor != null) {
+          if(e.getID() == KeyEvent.KEY_PRESSED) {
+            T number = parseNumber(getText());
+            if(number != null) {
+              double d = number.doubleValue();
+              if(!Double.isInfinite(d) && !Double.isNaN(d)) {
+                if(isDivision) {
+                  d = d / factor;
+                } else {
+                  d = d * factor;
+                }
+                String formattedNumber = numberEntryFieldType.formatNumber(d);
+                setText(formattedNumber);
+              }
+            }
+          }
+          e.consume();
+          setCaretPosition(getText().length());
+        }
+      }
+    });
   }
 
   /**
