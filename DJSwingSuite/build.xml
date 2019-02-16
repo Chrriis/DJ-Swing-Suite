@@ -4,7 +4,7 @@
   <target name="createJar" description="Create the Jar files">
     <delete file="DJSwingSuite.jar"/>
     <jar duplicate="preserve" destfile="DJSwingSuite.jar">
-	    <fileset dir="bin"/>
+	    <fileset dir="target/classes"/>
 		</jar>
   </target>
 

@@ -1,4 +1,7 @@
-/lib
+/bin/
+/target/
+/.classpath
+/.project
+/.settings/
 /DJSwingSuite.jar
 /DJSwingSuite-Demo.jar
-/bin

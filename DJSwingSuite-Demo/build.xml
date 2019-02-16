@@ -6,10 +6,10 @@
     <jar duplicate="preserve" destfile="../DJSwingSuite/DJSwingSuite-Demo.jar">
 		  <manifest>
 			  <attribute name="Class-Path" value="DJSwingSuite.jar"/>
-			  <attribute name="Main-Class" value="chrriis.dj.swingsuite.demo.DemoFrame"/>
+			  <attribute name="Main-Class" value="net.nextencia.dj.swingsuite.demo.DemoFrame"/>
 		  </manifest>
-	    <fileset dir="bin"/>
-      <zipfileset dir="src" prefix="src/" includes="chrriis/dj/swingsuite/demo/examples/**/*.java"/>
+	    <fileset dir="target/classes"/>
+      <zipfileset dir="src/main/java" prefix="src/" includes="net/nextencia/dj/swingsuite/demo/examples/**/*.java"/>
 		</jar>
   </target>
 
