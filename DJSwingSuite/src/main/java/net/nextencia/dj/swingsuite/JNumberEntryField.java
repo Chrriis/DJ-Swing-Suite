@@ -91,11 +91,7 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
       if((rangeMin == null || ((Comparable)rangeMin).compareTo(zero) <= 0) && (rangeMax == null || ((Comparable)rangeMax).compareTo(zero) >= 0)) {
         s = "0";
       } else {
-        if(rangeMin != null) {
-          s = ((Comparable)rangeMin).compareTo(zero) > 0? rangeMin.toString(): rangeMax.toString();
-        } else {
-          s = ((Comparable)rangeMax).compareTo(zero) < 0? rangeMax.toString(): rangeMin.toString();
-        }
+        s = rangeMin != null && ((Comparable)rangeMin).compareTo(zero) > 0? rangeMin.toString(): rangeMax.toString();
       }
       return s.replace('.', DECIMAL_SEPARATOR);
     }
