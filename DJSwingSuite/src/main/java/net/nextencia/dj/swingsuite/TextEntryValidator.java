@@ -15,6 +15,7 @@ public abstract class TextEntryValidator {
   /**
    * Indicate whether the text is allowed.
    * @param textEntryField The text entry field for which to test the value.
+   * @param text The text.
    * @return true if the text is allowed, false otherwise.
    */
   public boolean isTextAllowed(JTextEntryField textEntryField, String text) {
@@ -24,6 +25,7 @@ public abstract class TextEntryValidator {
   /**
    * Indicate whether the text is valid.
    * @param textEntryField The text entry field for which to test the value.
+   * @param text The text.
    * @return true if the text is valid, false otherwise.
    */
   public boolean isTextValid(JTextEntryField textEntryField, String text) {

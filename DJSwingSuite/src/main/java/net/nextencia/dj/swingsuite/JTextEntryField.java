@@ -12,8 +12,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -231,6 +229,7 @@ public class JTextEntryField extends JTextField {
   /**
    * Construct a text entry field with a mask.
    * @param columns The number of columns used to calculate the preferred width, or zero for the default size calculation.
+   * @param textMask The mask to use.
    */
   protected JTextEntryField(int columns, TextEntryMask textMask) {
     if(textMask != null) {

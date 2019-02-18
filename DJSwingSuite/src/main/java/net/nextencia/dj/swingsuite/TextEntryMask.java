@@ -39,6 +39,7 @@ public abstract class TextEntryMask {
   /**
    * Get the next valid input position that is the same or after the specified postion.
    * @param position the reference position to get the next valid one.
+   * @return the next valid input position.
    */
   protected abstract int getNextValidInputPosition(int position);
 

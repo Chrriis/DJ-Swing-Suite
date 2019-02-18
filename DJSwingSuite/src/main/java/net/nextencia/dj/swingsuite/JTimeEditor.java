@@ -192,6 +192,7 @@ public class JTimeEditor extends JPanel {
 
   /**
    * Set the time, using the appropriate fields from this calendar.
+   * @param calendar The calendar to use.
    */
   public void setTime(Calendar calendar) {
     if(calendar == null) {

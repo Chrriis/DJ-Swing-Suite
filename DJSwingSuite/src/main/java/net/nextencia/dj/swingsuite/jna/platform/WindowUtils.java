@@ -144,11 +144,11 @@ public class WindowUtils {
      * Ideally we'd have more control over {@link PopupFactory} but this
      * is a fairly simple, lightweight workaround.  Note that, at least as of
      * JDK 1.6, the following do not have the desired effect:<br>
-     * <code><pre>
+     * <code>
      * ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
      * JPopupMenu.setDefaultLightWeightPopupEnabled(false);
      * System.setProperty("JPopupMenu.defaultLWPopupEnabledKey", "false");
-     * </pre></code>
+     * </code>
      */
     private static class HeavyweightForcer extends Window {
         private final boolean packed;
@@ -1682,6 +1682,8 @@ public class WindowUtils {
      * Applies the given mask to the given window. Does nothing if the
      * operation is not supported.  The mask is treated as a bitmap and
      * ignores transparency.
+     * @param w The window.
+     * @param mask The mask.
      */
     public static void setWindowMask(Window w, Shape mask) {
         getInstance().setWindowMask(w, mask);
@@ -1691,6 +1693,8 @@ public class WindowUtils {
      * Applies the given mask to the given heavyweight component. Does nothing
      * if the operation is not supported.  The mask is treated as a bitmap and
      * ignores transparency.
+     * @param c The component.
+     * @param mask The mask.
      */
     public static void setComponentMask(Component c, Shape mask) {
         getInstance().setWindowMask(c, mask);
@@ -1700,18 +1704,24 @@ public class WindowUtils {
      * Applies the given mask to the given window. Does nothing if the
      * operation is not supported.  The mask is treated as a bitmap and
      * ignores transparency.
+     * @param w The window.
+     * @param mask The mask.
      */
     public static void setWindowMask(Window w, Icon mask) {
         getInstance().setWindowMask(w, mask);
     }
 
-    /** Indicate a window can have a global alpha setting. */
+    /**
+     * Indicate a window can have a global alpha setting.
+     * @return True if supported.
+     */
     public static boolean isWindowAlphaSupported() {
         return getInstance().isWindowAlphaSupported();
     }
 
     /**
-     * Returns a {@link GraphicsConfiguration} comptible with alpha
+     * Get a compatible graphics configuration.
+     * @return a {@link GraphicsConfiguration} compatible with alpha
      * compositing.
      */
     public static GraphicsConfiguration getAlphaCompatibleGraphicsConfiguration() {

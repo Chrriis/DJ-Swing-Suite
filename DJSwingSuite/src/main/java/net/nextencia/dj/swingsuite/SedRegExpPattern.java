@@ -58,12 +58,13 @@ public class SedRegExpPattern {
   private List<SedRegExp> sedRegExpList;
   
   /**
-   * A "sed -e" like reg exp, of the form:<br/>
-   * - /regexp/flags: find and output the matches.<br/>
-   * - /regexp/replacement/flags: replace the matches and output the resulting string.<br/>
+   * A "sed -e" like reg exp, of the form:<br>
+   * - /regexp/flags: find and output the matches.<br>
+   * - /regexp/replacement/flags: replace the matches and output the resulting string.<br>
    * Flags can be left empty or any combinations of the characters 'gidmsux' (g performs a replace all instead of just the first match. For other flags, refer to the Javadoc of Pattern).
-   * It is also possible to chain the output using ';' to perform multiple replacements.<br/>
+   * It is also possible to chain the output using ';' to perform multiple replacements.<br>
    * If the regexp contains capturing groups, a find operation would only retain those; for a replace operation, the replacement string can refer to capturing groups with a syntax like '$1'.
+   * @param regExp The regular expression.
    */
   public SedRegExpPattern(String regExp) {
     String originalRegExp = regExp;

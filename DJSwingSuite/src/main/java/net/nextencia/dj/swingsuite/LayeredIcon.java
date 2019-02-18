@@ -184,6 +184,7 @@ public class LayeredIcon extends ImageIcon {
   /**
    * Set the component to which this icon is attached.
    * It is automatically set when paintComponent is called, but if that did not happen, it sometimes is needed to set it explicitely.
+   * @param component The component to attach.
    */
   public void setComponent(Component component) {
     if(component == this.component) {
