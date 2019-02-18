@@ -95,10 +95,10 @@ public class JExtendedLabel extends JComponent implements SwingConstants {
     scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
     scrollPane.setBorder(BorderFactory.createEmptyBorder());
-    textComponent.setOpaque(false);
     if(textComponent == null) {
       return;
     }
+    textComponent.setOpaque(false);
     textComponent.setEditable(false);
     textComponent.setAlignmentX(label.getAlignmentX());
     textComponent.setAlignmentY(label.getAlignmentY());
