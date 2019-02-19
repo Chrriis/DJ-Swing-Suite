@@ -31,7 +31,6 @@ import javax.swing.LookAndFeel;
 import javax.swing.MenuElement;
 import javax.swing.MenuSelectionManager;
 import javax.swing.UIManager;
-import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.MenuItemUI;
 
 /**

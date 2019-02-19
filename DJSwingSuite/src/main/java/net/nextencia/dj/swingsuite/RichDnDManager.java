@@ -40,8 +40,6 @@ import javax.swing.ListCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
 
-import com.sun.jna.Native;
-
 import net.nextencia.dj.swingsuite.jna.platform.WindowUtils;
 
 /**
