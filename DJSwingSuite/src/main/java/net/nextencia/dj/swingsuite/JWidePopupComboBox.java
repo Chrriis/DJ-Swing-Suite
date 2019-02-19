@@ -17,20 +17,20 @@ import javax.swing.JComboBox;
  * A combo box which allows a wide popup when the combo size is smaller than long items it contains.
  * @author Christopher Deckers
  */
-public class JWidePopupComboBox extends JComboBox {
+public class JWidePopupComboBox<E> extends JComboBox<E> {
 
   public JWidePopupComboBox() {
   }
 
-  public JWidePopupComboBox(final Object items[]) {
+  public JWidePopupComboBox(final E items[]) {
     super(items);
   }
 
-  public JWidePopupComboBox(Vector<?> items) {
+  public JWidePopupComboBox(Vector<E> items) {
     super(items);
   }
 
-  public JWidePopupComboBox(ComboBoxModel aModel) {
+  public JWidePopupComboBox(ComboBoxModel<E> aModel) {
     super(aModel);
   }
 
