@@ -5,7 +5,7 @@
     
     <groupId>net.nextencia</groupId>
     <artifactId>djswingsuite-demo</artifactId>
-    <version>0.9.3</version>
+    <version>0.9.4</version>
     
     <name>DJSwingSuite</name>
     <description>
@@ -50,7 +50,7 @@
         <dependency>
             <groupId>net.nextencia</groupId>
             <artifactId>djswingsuite</artifactId>
-            <version>0.9.2</version>
+            <version>0.9.4</version>
         </dependency>
     </dependencies>
     

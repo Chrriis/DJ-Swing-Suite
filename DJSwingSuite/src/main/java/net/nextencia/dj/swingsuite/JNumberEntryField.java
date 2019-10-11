@@ -93,7 +93,10 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
       } else {
         s = rangeMin != null && ((Comparable)rangeMin).compareTo(zero) > 0? rangeMin.toString(): rangeMax.toString();
       }
-      return s.replace('.', DECIMAL_SEPARATOR);
+      if(GROUPING_SEPARATOR != '.') {
+        s = s.replace('.', DECIMAL_SEPARATOR);
+      }
+      return s;
     }
 
   }
@@ -214,13 +217,21 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
   private int decimalCount = -1;
 
   private static final char DECIMAL_SEPARATOR;
+  private static final char GROUPING_SEPARATOR;
   
   static {
-    String s = System.getProperty("swingsuite.decimalSeparator");
-    if(s != null && s.length() == 1) {
-      DECIMAL_SEPARATOR = s.charAt(0);
+    DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.getDefault());
+    String decimalSeparatorProperty = System.getProperty("swingsuite.decimalSeparator");
+    if(decimalSeparatorProperty != null && decimalSeparatorProperty.length() == 1) {
+      DECIMAL_SEPARATOR = decimalSeparatorProperty.charAt(0);
     } else {
-      DECIMAL_SEPARATOR = new DecimalFormatSymbols(Locale.getDefault()).getDecimalSeparator();
+      DECIMAL_SEPARATOR = decimalFormatSymbols.getDecimalSeparator();
+    }
+    String groupSeparatorProperty = System.getProperty("swingsuite.groupingSeparator");
+    if(groupSeparatorProperty != null && groupSeparatorProperty.length() == 1) {
+      GROUPING_SEPARATOR = groupSeparatorProperty.charAt(0);
+    } else {
+      GROUPING_SEPARATOR = decimalFormatSymbols.getGroupingSeparator();
     }
   }
 
@@ -245,13 +256,62 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
 
   @SuppressWarnings("unchecked")
   private T parseNumber(String text) {
-    return (T)numberEntryFieldType.parseNumber(text.replace(DECIMAL_SEPARATOR, '.'));
+    String newText = text.replace(DECIMAL_SEPARATOR, '.');
+    return (T)numberEntryFieldType.parseNumber(newText);
   }
 
   public void replaceSelection(String content) {
     // This method is invoked from clipboard paste, and clipboard data may contain trailing spaces or new lines which we have to ignore to permit pasting.
+    boolean hasDecimals = numberEntryFieldType.hasDecimals();
     if(content != null) {
+      int numberStart = -1;
+      int numberEnd = -1;
       content = content.trim();
+      int charCount = content.length();
+      mainLoop: for(int i=0; i<charCount; i++) {
+        char c = content.charAt(i);
+        switch(c) {
+          case '0':
+          case '1':
+          case '2':
+          case '3':
+          case '4':
+          case '5':
+          case '6':
+          case '7':
+          case '8':
+          case '9':
+            if(numberStart < 0) {
+              numberStart = i;
+            }
+            if(numberStart >= 0) {
+              numberEnd = i;
+            }
+            break;
+          default:
+            if(numberStart >= 0) {
+              // Single quote is a common thousand separator.
+              if((!hasDecimals || c != DECIMAL_SEPARATOR && (GROUPING_SEPARATOR != '.' && c != '.')) && c != GROUPING_SEPARATOR && c != ' ' && c != '\'') {
+                break mainLoop;
+              }
+              numberEnd = i;
+            }
+            break;
+        }
+      }
+      if(numberStart >= 0) {
+        if(numberStart > 0 && content.charAt(numberStart - 1) == DECIMAL_SEPARATOR) {
+          numberStart--;
+        }
+        if(numberStart > 0 && content.charAt(numberStart - 1) == '-') {
+          numberStart--;
+        }
+        content = content.substring(numberStart, numberEnd + 1);
+      }
+      content = content.replace(String.valueOf(GROUPING_SEPARATOR), "").replace("'", "").replace(" ", "");
+      if(GROUPING_SEPARATOR != '.') {
+        content = content.replace('.', DECIMAL_SEPARATOR);
+      }
     }
     super.replaceSelection(content);
   }
@@ -263,7 +323,7 @@ public class JNumberEntryField<T extends Number & Comparable<T>> extends JTextEn
   private boolean isDecimalCountValid(String text) {
     if(decimalCount >= 0) {
       int separatorPosition = text.indexOf(DECIMAL_SEPARATOR);
-      if(separatorPosition < 0) {
+      if(separatorPosition < 0 && GROUPING_SEPARATOR != '.') {
         separatorPosition = text.indexOf('.');
       }
       if(separatorPosition >= 0 && text.length() - separatorPosition - 1 > decimalCount) {

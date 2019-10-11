@@ -5,6 +5,12 @@ Licence terms: LGPL (see licence.txt)
 
 ---------------------------------- Change log ----------------------------------
 
+* Version 0.9.4 (October 11, 2019):
+
+- Number field is less restrictive about pasted data and tries to find potential numbers in text.
+- Fixed Maven dependency in demo.
+
+
 * Version 0.9.3 (February 19, 2019):
 
 - Generification of the wide-popup combo box.
