@@ -235,7 +235,8 @@ public class RichDnDManager {
           if(System.getProperty("os.name").startsWith("Windows")) {
             try {
               Class.forName("com.sun.jna.Native");
-              Class.forName("com.sun.jna.examples.WindowUtils");
+              Class.forName("net.nextencia.dj.swingsuite.jna.platform.WindowUtils");
+              Class.forName("com.sun.jna.platform.WindowUtils");
               WindowUtils.setWindowClickThrough(dragWindow, true);
             } catch (ClassNotFoundException e) {
             }
