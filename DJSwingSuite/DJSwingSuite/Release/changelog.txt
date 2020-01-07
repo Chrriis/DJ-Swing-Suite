@@ -5,8 +5,9 @@ Licence terms: LGPL (see licence.txt)
 
 ---------------------------------- Change log ----------------------------------
 
-* Version 0.9.4 (October 11, 2019):
+* Version 0.9.4 (xxxxxxxxxx):
 
+- Support FlatLaf look and feel for Tri-state check boxes.
 - Number field is less restrictive about pasted data and tries to find potential numbers in text.
 - Fixed Maven dependency in demo.
 
