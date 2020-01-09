@@ -39,6 +39,12 @@ import javax.swing.plaf.MenuItemUI;
  */
 public class JJumpListMenuItem extends JMenuItem {
 
+  private static final Icon arrowIcon;
+  
+  static {
+    arrowIcon = UIManager.getIcon("SwingSuiteJumpListMenuItem.arrowIcon");
+  }
+  
   /**
    * Construct a jump list menu item.
    */
@@ -99,8 +105,12 @@ public class JJumpListMenuItem extends JMenuItem {
 
   private void init() {
     enableEvents(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
-    arrowWidth = getPreferredSize().height / 4;
-    arrowWidth -= (arrowWidth + 1) % 2;
+    if(arrowIcon != null) {
+      arrowWidth = arrowIcon.getIconWidth();
+    } else {
+      arrowWidth = getPreferredSize().height / 4;
+      arrowWidth -= (arrowWidth + 1) % 2;
+    }
     arrowSpaceWidth = arrowWidth + 4;
     setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
   }
@@ -168,10 +178,10 @@ public class JJumpListMenuItem extends JMenuItem {
     }
     boolean isArrowMouseOver = false;
     if(getComponentOrientation().isLeftToRight()) {
-      int right = getBorder().getBorderInsets(e.getComponent()).right + arrowWidth + arrowSpaceWidth;
+      int right = getBorder().getBorderInsets(e.getComponent()).right + arrowSpaceWidth + 3;
       isArrowMouseOver = e.getX() > getWidth() - right;
     } else {
-      int left = getBorder().getBorderInsets(e.getComponent()).left + arrowWidth + arrowSpaceWidth;
+      int left = getBorder().getBorderInsets(e.getComponent()).left + arrowSpaceWidth + 3;
       isArrowMouseOver = e.getX() < left;
     }
     return isArrowMouseOver;
@@ -236,11 +246,24 @@ public class JJumpListMenuItem extends JMenuItem {
       foregroundColor = getForeground();
     }
     if(isLeftToRight) {
-      x = w - borderInsets.right - arrowWidth - arrowSpaceWidth;
-      paintTriangle(g, x + arrowSpaceWidth / 2 + 1, y, size, isEnabled, isLeftToRight, foregroundColor);
+      x = w - borderInsets.right - arrowSpaceWidth - 2;
+      if(arrowIcon != null) {
+        Graphics g2 = g.create();
+        arrowIcon.paintIcon(this, g2, x + ((arrowSpaceWidth - arrowIcon.getIconWidth()) / 2) + 1, (getHeight() - arrowIcon.getIconHeight()) / 2);
+        g2.dispose();
+      } else {
+//        x = w - borderInsets.right - arrowWidth - arrowSpaceWidth;
+        paintTriangle(g, x + arrowSpaceWidth / 2 + 1, y, size, isEnabled, isLeftToRight, foregroundColor);
+      }
     } else {
-      x = borderInsets.left + arrowWidth + arrowSpaceWidth - 1;
-      paintTriangle(g, x - arrowSpaceWidth / 2 - 1, y, size, isEnabled, isLeftToRight, foregroundColor);
+      x = borderInsets.left + arrowSpaceWidth - 2;
+      if(arrowIcon != null) {
+        Graphics g2 = g.create();
+        arrowIcon.paintIcon(this, g2, x - ((arrowSpaceWidth - arrowIcon.getIconWidth()) / 2) - 1, (getHeight() - arrowIcon.getIconHeight()) / 2);
+        g2.dispose();
+      } else {
+        paintTriangle(g, x - arrowSpaceWidth / 2 - 1, y, size, isEnabled, isLeftToRight, foregroundColor);
+      }
     }
     if(!isArmed) {
       return;
@@ -266,7 +289,7 @@ public class JJumpListMenuItem extends JMenuItem {
     g.translate(x, y);
     if (isEnabled) {
       g.setColor(foregroundColor);
-    } else if (!isEnabled) {
+    } else {
       g.setColor(new Color(foregroundColor.getRed(), foregroundColor.getGreen(), foregroundColor.getBlue(), 100));
     }
     int j=0;

@@ -30,6 +30,7 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.plaf.ButtonUI;
@@ -42,6 +43,12 @@ public class JComboButton extends JButton {
 
   private static final String ARROW_EVENT_SUFFIX = "[Arrow]";
 
+  private static final Icon arrowIcon;
+  
+  static {
+    arrowIcon = UIManager.getIcon("SwingSuiteComboButton.arrowIcon");
+  }
+  
   private MouseInputAdapter mouseHandler = new MouseInputAdapter() {
     @Override
     public void mouseExited(MouseEvent e) {
@@ -144,8 +151,12 @@ public class JComboButton extends JButton {
   }
 
   private void init(boolean isDivided) {
-    arrowWidth = getPreferredSize().height / 4;
-    arrowWidth -= (arrowWidth + 1) % 2;
+    if(arrowIcon != null) {
+      arrowWidth = arrowIcon.getIconWidth();
+    } else {
+      arrowWidth = getPreferredSize().height / 4;
+      arrowWidth -= (arrowWidth + 1) % 2;
+    }
     arrowSpaceWidth = arrowWidth + 7;
     setText(null);
     setDivided(isDivided);
@@ -336,12 +347,24 @@ public class JComboButton extends JButton {
     int y2 = h - borderInsets.bottom;
     if(getComponentOrientation().isLeftToRight()) {
       x = w - arrowSpaceWidth - borderInsets.right + 1;
-      int size = (arrowWidth + 1) / 2;
-      paintTriangle(g, x + arrowSpaceWidth / 2, (h - size) / 2, size, isEnabled);
+      if(arrowIcon != null) {
+        Graphics g2 = g.create();
+        arrowIcon.paintIcon(this, g2, x + ((arrowSpaceWidth - arrowIcon.getIconWidth()) / 2) + 1, (getHeight() - arrowIcon.getIconHeight()) / 2);
+        g2.dispose();
+      } else {
+        int size = (arrowWidth + 1) / 2;
+        paintTriangle(g, x + arrowSpaceWidth / 2, (h - size) / 2, size, isEnabled);
+      }
     } else {
       x = arrowSpaceWidth + borderInsets.left - 1;
-      int size = (arrowWidth + 1) / 2;
-      paintTriangle(g, x - 1 - arrowWidth, (h - size) / 2, size, isEnabled);
+      if(arrowIcon != null) {
+        Graphics g2 = g.create();
+        arrowIcon.paintIcon(this, g2, x - ((arrowSpaceWidth - arrowIcon.getIconWidth()) / 2), (getHeight() - arrowIcon.getIconHeight()) / 2);
+        g2.dispose();
+      } else {
+        int size = (arrowWidth + 1) / 2;
+        paintTriangle(g, x - 1 - arrowWidth, (h - size) / 2, size, isEnabled);
+      }
     }
     if(isDivided && (isMouseOver || hasFocus()) && isEnabled) {
       int gradientHeight = Math.max((y2 - y1 + 1) / 5, 1);

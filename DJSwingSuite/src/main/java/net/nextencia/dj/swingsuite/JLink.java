@@ -27,6 +27,7 @@ import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
 
@@ -36,6 +37,22 @@ import javax.swing.plaf.basic.BasicGraphicsUtils;
  */
 public class JLink<T> extends JLabel {
 
+  private static final Color foregroundColor;
+  private static final Color selectedForegroundColor;
+  
+  static {
+    Color foregroundColor_ = UIManager.getColor("SwingSuiteLink.foreground");
+    if(foregroundColor_ == null) {
+      foregroundColor_ = Color.BLUE;
+    }
+    foregroundColor = foregroundColor_;
+    Color selectedForegroundColor_ = UIManager.getColor("SwingSuiteLink.selectedForeground");
+    if(selectedForegroundColor_ == null) {
+      selectedForegroundColor_ = Color.RED;
+    }
+    selectedForegroundColor = selectedForegroundColor_;
+  }
+  
   /**
    * Construct a link, with a given text and a target.
    * @param text the text of the link.
@@ -56,7 +73,7 @@ public class JLink<T> extends JLabel {
     this.isDefaultToolTipShown = toolTip == null;
     setToolTipText(toolTip);
     setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    setForeground(Color.BLUE);
+    setForeground(foregroundColor);
     Map<TextAttribute, Object> attributeMap = new HashMap<TextAttribute, Object>();
     attributeMap.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);
     setFont(getFont().deriveFont(attributeMap));
@@ -79,7 +96,7 @@ public class JLink<T> extends JLabel {
         }
         if(e.getButton() == MouseEvent.BUTTON1) {
           originalColor = getForeground();
-          setForeground(Color.RED);
+          setForeground(selectedForegroundColor);
         }
         requestFocus();
         repaint();

@@ -7,6 +7,8 @@ Licence terms: LGPL (see licence.txt)
 
 * Version 0.9.4 (xxxxxxxxxx):
 
+- Combo button arrow can be overridden globally.
+- Link colors can be overridden globally.
 - Support FlatLaf look and feel for Tri-state check boxes.
 - Number field is less restrictive about pasted data and tries to find potential numbers in text.
 - Fixed Maven dependency in demo.
