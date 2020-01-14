@@ -37,10 +37,12 @@ import javax.swing.plaf.basic.BasicGraphicsUtils;
  */
 public class JLink<T> extends JLabel {
 
+  private static final boolean isUnderlineOnMouseOver;
   private static final Color foregroundColor;
   private static final Color selectedForegroundColor;
   
   static {
+    isUnderlineOnMouseOver = UIManager.getBoolean("SwingSuiteLink.underlineOnMouseOver");
     Color foregroundColor_ = UIManager.getColor("SwingSuiteLink.foreground");
     if(foregroundColor_ == null) {
       foregroundColor_ = Color.BLUE;
@@ -53,6 +55,8 @@ public class JLink<T> extends JLabel {
     selectedForegroundColor = selectedForegroundColor_;
   }
   
+  private boolean isMouseOver;
+
   /**
    * Construct a link, with a given text and a target.
    * @param text the text of the link.
@@ -74,9 +78,7 @@ public class JLink<T> extends JLabel {
     setToolTipText(toolTip);
     setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     setForeground(foregroundColor);
-    Map<TextAttribute, Object> attributeMap = new HashMap<TextAttribute, Object>();
-    attributeMap.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);
-    setFont(getFont().deriveFont(attributeMap));
+    setUnderlined(!isUnderlineOnMouseOver);
     setTarget(target);
     setFocusable(true);
     addFocusListener(new FocusListener() {
@@ -89,6 +91,22 @@ public class JLink<T> extends JLabel {
     });
     MouseInputAdapter mouseListener = new MouseInputAdapter() {
       private Color originalColor;
+      @Override
+      public void mouseEntered(MouseEvent e) {
+        isMouseOver = true;
+        if(isUnderlineOnMouseOver) {
+          setUnderlined(true);
+          repaint();
+        }
+      }
+      @Override
+      public void mouseExited(MouseEvent e) {
+        isMouseOver = false;
+        if(isUnderlineOnMouseOver) {
+          setUnderlined(false);
+          repaint();
+        }
+      }
       @Override
       public void mousePressed(MouseEvent e) {
         if(!isEnabled()) {
@@ -131,6 +149,16 @@ public class JLink<T> extends JLabel {
         }
       }
     });
+  }
+
+  private void setUnderlined(boolean isUnderlined) {
+    Map<TextAttribute, Object> attributeMap = new HashMap<TextAttribute, Object>();
+    if(isUnderlined) {
+      attributeMap.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);
+    } else {
+      attributeMap.put(TextAttribute.UNDERLINE, -1);
+    }
+    setFont(getFont().deriveFont(attributeMap));
   }
 
   @Override
