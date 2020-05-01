@@ -47,7 +47,7 @@ public class JTriStateCheckBox extends JCheckBox {
 
     private void setIndeterminate(boolean isIndeterminate) {
       this.isIndeterminate = isIndeterminate;
-      if(lafClassName.startsWith("com.formdev.flatlaf.Flat")) {
+      if(lafClassName.startsWith("com.formdev.flatlaf.")) {
         // The FlatLaf look and feel supports indeterminate icon using a client property.
         if(isIndeterminate) {
           putClientProperty("JButton.selectedState", "indeterminate");
@@ -301,7 +301,7 @@ public class JTriStateCheckBox extends JCheckBox {
   public void updateUI() {
     super.updateUI();
     String currentLafClassName = UIManager.getLookAndFeel().getClass().getName();
-    if(currentLafClassName.startsWith("com.formdev.flatlaf.Flat")) {
+    if(currentLafClassName.startsWith("com.formdev.flatlaf.")) {
       lafClassName = currentLafClassName;
       // The FlatLaf look and feel supports indeterminate icon using a client property.
       return;
