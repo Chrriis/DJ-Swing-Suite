@@ -33,6 +33,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.ButtonUI;
 
 /**
@@ -206,6 +208,8 @@ public class JComboButton extends JButton {
       adjustLook();
     }
   }
+  
+  private boolean isShowingBlocked;
 
   private boolean showPopup(ActionEvent e) {
     boolean oldIsArrowMouseOver = isArrowMouseOver;
@@ -213,6 +217,9 @@ public class JComboButton extends JButton {
     getModel().setPressed(false);
     isArrowMouseOver = oldIsArrowMouseOver;
     if(isArrowEvent(e)) {
+      if(isShowingBlocked) {
+        return true;
+      }
       requestFocus();
       if(arrowPopupMenu != null) {
         // Show menu, Java will determine its position if it does not fit
@@ -243,6 +250,20 @@ public class JComboButton extends JButton {
             arrowPopupMenu.show(this, x, y2);
           }
         }
+        arrowPopupMenu.addPopupMenuListener(new PopupMenuListener() {
+          @Override
+          public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+          }
+          @Override
+          public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+            arrowPopupMenu.removePopupMenuListener(this);
+            isShowingBlocked = true;
+            SwingUtilities.invokeLater(() -> isShowingBlocked = false);
+          }
+          @Override
+          public void popupMenuCanceled(PopupMenuEvent e) {
+          }
+        });
         return true;
       }
     }
