@@ -41,6 +41,8 @@ public class JExtendedLabel extends JComponent implements SwingConstants {
     @Override
     public void setText(String text) {
       super.setText(text);
+      Dimension preferredSize = getPreferredSize();
+      setSize(new Dimension(preferredSize.width, 100000));
       setCaretPosition(0);
     }
 

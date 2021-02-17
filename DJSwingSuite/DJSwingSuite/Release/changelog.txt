@@ -7,6 +7,7 @@ Licence terms: LGPL (see licence.txt)
 
 * Version 0.9.4 (xxxxxxxxxx):
 
+- Extended Label preferred height was incorrect with recent versions of Java.
 - Combo button arrow can be overridden globally.
 - Link colors can be overridden globally.
 - Support FlatLaf look and feel for Tri-state check boxes.
