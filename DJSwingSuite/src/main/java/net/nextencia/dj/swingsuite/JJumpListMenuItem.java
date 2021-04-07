@@ -214,13 +214,17 @@ public class JJumpListMenuItem extends JMenuItem {
   }
 
   private boolean isModernWindowsLaF;
-  private boolean isFlatLaF;
+  private boolean isFlatLaf;
   
   @Override
   public void setUI(MenuItemUI ui) {
     LookAndFeel lookAndFeel = UIManager.getLookAndFeel();
     isModernWindowsLaF = lookAndFeel.isNativeLookAndFeel() && System.getProperty("os.name").startsWith("Windows") && !Boolean.parseBoolean(System.getProperty("swing.noxp")) && !lookAndFeel.getClass().getName().endsWith("WindowsClassicLookAndFeel");
-    isFlatLaF = lookAndFeel.getClass().getName().startsWith("com.formdev.flatlaf.");
+    try {
+      isFlatLaf = Class.forName("com.formdev.flatlaf.FlatLaf").isInstance(UIManager.getLookAndFeel());
+    } catch(Exception e) {
+      isFlatLaf = false;
+    }
     super.setUI(ui);
   }
   
@@ -240,7 +244,7 @@ public class JJumpListMenuItem extends JMenuItem {
     int x;
     boolean isLeftToRight = getComponentOrientation().isLeftToRight();
     Color foregroundColor = null;
-    boolean isFlatLafUnderline = isFlatLaF && "underline".equals(UIManager.getString("MenuItem.selectionType"));
+    boolean isFlatLafUnderline = isFlatLaf && "underline".equals(UIManager.getString("MenuItem.selectionType"));
     if(isArmed && !isModernWindowsLaF && !isFlatLafUnderline) {
       // With certain look and feels, namely windows with XP style, we must use the foreground and not the selectionForeground.
       foregroundColor = UIManager.getColor("Menu.selectionForeground");
